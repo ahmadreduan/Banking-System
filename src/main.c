@@ -589,7 +589,7 @@ void search_and_view_balance(const char *account_number_for_balance)
  * 
  * @param account_number_for_deposit_funds The account number to search for and deposit funds into.
  */
-void search_and_deposit_funds(const char *account_number_for_deposit_funds)
+void deposit_funds(const char *account_number_for_deposit_funds)
 {
     char filename[150];
     snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number_for_deposit_funds);
@@ -768,7 +768,7 @@ int main()
                         printf("Enter the account number: ");
                         fgets(account_number_for_deposit_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number_for_deposit_funds);
-                        search_and_deposit_funds(account_number_for_deposit_funds);
+                        deposit_funds(account_number_for_deposit_funds);
                         break;
                     }
 
