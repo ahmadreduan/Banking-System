@@ -1,0 +1,15 @@
+Account Number : 23212449
+Full Name      : redua afhd
+Date of Birth  : 
+Mobile Number  : 54494
+Email          : 548749
+NID            : 4749
+User Name      : 548749
+Password       : 49879
+Account type   : Waqf Deposit Account
+Initial Deposit: 564494.00
+Account Pin    : 54979
+Nominee Name   : 49879
+Noninee NID    : 4969
+Address        : 5494
+----------------------------------------

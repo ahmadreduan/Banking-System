@@ -14,6 +14,10 @@
 #define BORDER_CHAR '*'
 #define WIDTH 35
 
+#define PHONE_PREFIX "+880"
+#define PHONE_DIGITS 10
+#define PHONE_LENGTH (strlen(PHONE_PREFIX) + PHONE_DIGITS + 1) // +1 for null terminator
+
 typedef struct
 {
     char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // 8 digits + null terminator
@@ -85,6 +89,149 @@ void remove_newline(char *str)
         str[len - 1] = '\0'; // Replace newline with null terminator
     }
 }
+// Function to check if the input contains only alphabets
+int is_valid_name(const char *name)
+{
+    for (int i = 0; name[i] != '\0'; i++)
+    {
+        // Check if each character is either alphabetic or a space
+        if (!isalpha(name[i]) && name[i] != ' ')
+        {
+            return 0; // Invalid if any character is not an alphabet or space
+        }
+    }
+    return 1; // Valid if all characters are alphabets or spaces
+}
+
+// Function to check if a string contains only digits
+int is_valid_digit(const char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (!isdigit(str[i]))
+        {
+            return 0; // Not a digit
+        }
+    }
+    return 1; // All characters are digits
+}
+
+// Function to check if a given date is valid
+int is_valid_date(int day, int month, int year)
+{
+    // Check for valid year
+    if (year < 1900 || year > 2024)
+    {
+        return 0;
+    }
+
+    // Check for valid month
+    if (month < 1 || month > 12)
+    {
+        return 0;
+    }
+
+    // Check for valid day based on month
+    int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // Adjust for leap years
+    if (month == 2 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+    {
+        days_in_month[1] = 29; // February has 29 days in leap year
+    }
+
+    if (day < 1 || day > days_in_month[month - 1])
+    {
+        return 0; // Invalid day for the given month
+    }
+
+    return 1; // Date is valid
+}
+
+// Function to input and validate the Date of Birth
+void input_and_validate_dob(char *dob)
+{
+    int day, month, year;
+
+    while (1)
+    {
+        printf("Enter date of birth (DD/MM/YYYY): ");
+        fgets(dob, 100, stdin);         // Read input
+        dob[strcspn(dob, "\n")] = '\0'; // Remove newline character
+
+        // Validate format (length should be 10: "DD/MM/YYYY")
+        if (strlen(dob) != 10 || dob[2] != '/' || dob[5] != '/')
+        {
+            printf("Invalid format! Please enter the date in DD/MM/YYYY format.\n");
+            continue;
+        }
+
+        // Extract day, month, year as strings
+        char day_str[3] = {dob[0], dob[1], '\0'};
+        char month_str[3] = {dob[3], dob[4], '\0'};
+        char year_str[5] = {dob[6], dob[7], dob[8], dob[9], '\0'};
+
+        // Validate if day, month, and year are digits
+        if (!is_valid_digit(day_str) || !is_valid_digit(month_str) || !is_valid_digit(year_str))
+        {
+            printf("Invalid date! Please enter numeric values for day, month, and year.\n");
+            continue;
+        }
+
+        // Convert day, month, year strings to integers
+        day = atoi(day_str);
+        month = atoi(month_str);
+        year = atoi(year_str);
+
+        // Validate the date itself (correct day, month, year)
+        if (!is_valid_date(day, month, year))
+        {
+            printf("Invalid date! Please enter a valid date.\n");
+            continue;
+        }
+
+        // If all validations pass, break out of the loop
+        //  printf("Date of birth is valid: %02d/%02d/%d\n", day, month, year);
+        break;
+    }
+}
+
+// Function to validate and format phone number
+// void input_and_validate_phone(char *phone)
+// {
+//     char digits[PHONE_DIGITS + 1]; // Buffer for the 10-digit phone number
+
+//     while (1)
+//     {
+//         printf("Enter phone number (10 digits): ");
+//         fgets(digits, sizeof(digits), stdin);
+//         digits[strcspn(digits, "\n")] = '\0'; // Remove newline character
+
+//         // Check if input contains exactly 10 digits
+//         if (strlen(digits) == PHONE_DIGITS)
+//         {
+//             int valid = 1;
+//             for (int i = 0; i < PHONE_DIGITS; i++)
+//             {
+//                 if (!isdigit(digits[i]))
+//                 {
+//                     valid = 0;
+//                     break;
+//                 }
+//             }
+
+//             if (valid)
+//             {
+//                 snprintf(phone, PHONE_LENGTH, "%s%s", PHONE_PREFIX, digits);
+//                 printf("Phone number is valid: %s\n", phone);
+//                 break;
+//             }
+//         }
+
+//         printf("Invalid phone number. Please enter exactly 10 digits.\n");
+//     }
+// }
+
 /**
  * Registers a new account by collecting user information and saving it to a file.
  * The account number is generated and displayed only after all other information is collected.
@@ -103,30 +250,84 @@ void register_account()
     }
     char first_name[50], last_name[50];
 
-    printf("Enter first name                : ");
-    fgets(first_name, sizeof(first_name), stdin);
-    remove_newline(first_name);
-
-    printf("Enter Last name                 : ");
-    fgets(last_name, sizeof(last_name), stdin);
-    remove_newline(last_name);
-
-    snprintf(new_user.full_name, sizeof(new_user.full_name), "%s %s", first_name, last_name);
-
     /*
     printf("Enter full name: ");
     fgets(new_user.full_name, 100, stdin);
     remove_newline(new_user.full_name);
     */
 
-    printf("Enter date of birth (DD/MM/YYYY): ");
-    fgets(new_user.dob, 100, stdin);
-    remove_newline(new_user.dob);
+    // printf("Enter first name                : ");
+    // fgets(first_name, sizeof(first_name), stdin);
+    // remove_newline(first_name);
+
+    while (1)
+    {
+        printf("Enter first name                : ");
+        fgets(first_name, sizeof(first_name), stdin); // Read input
+        remove_newline(first_name);                   // Remove newline
+
+        if (is_valid_name(first_name))
+        {
+            // If the name is valid (contains only alphabets)
+            // printf("First name entered: %s\n", first_name);
+            break;
+        }
+        else
+        {
+            // If invalid input (contains numbers or special characters)
+            printf("Invalid input! Please enter only alphabets.\n");
+        }
+    }
+
+    // printf("Enter Last name                 : ");
+    // fgets(last_name, sizeof(last_name), stdin);
+    // remove_newline(last_name);
+
+    // Input for last name with validation
+    while (1)
+    {
+        printf("Enter last name                 : ");
+        fgets(last_name, sizeof(last_name), stdin); // Read input
+        remove_newline(last_name);                  // Remove newline
+
+        if (is_valid_name(last_name))
+        {
+            // If the name is valid (contains only alphabets)
+            break;
+        }
+        else
+        {
+            // If invalid input (contains numbers or special characters)
+            printf("Invalid input! Please enter only alphabets.\n");
+        }
+    }
+
+    snprintf(new_user.full_name, sizeof(new_user.full_name), "%s %s", first_name, last_name);
+
+    // printf("Enter date of birth (DD/MM/YYYY): ");
+    // fgets(new_user.dob, 100, stdin);
+    // remove_newline(new_user.dob);
+
+
+
+
+    /*next work start from this line update date of birth condition */
+
+
+
+    
+
+
+    char dob[100];
+    input_and_validate_dob(dob);
 
     printf("Enter phone number              : ");
     fgets(new_user.phone, 100, stdin);
     remove_newline(new_user.phone);
 
+    // char phone[PHONE_LENGTH];
+    // input_and_validate_phone(phone);
+    
     printf("Enter email address             : ");
     fgets(new_user.email, 100, stdin);
     remove_newline(new_user.email);
@@ -455,7 +656,7 @@ int admin_login()
     return 0; // Failed login
 }
 
-/** 
+/**
  * Handles the customer login process by verifying the provided credentials.
  * Allows login using account number, email, or username.
  * @return The index of the customer in the users array if login is successful, -1 otherwise.
@@ -586,7 +787,7 @@ void search_and_view_balance(const char *account_number_for_balance)
  * Searches for a user account based on the provided account number and allows deposit of funds.
  * Loads the account details from the corresponding file, retrieves the current balance,
  * prompts the user to enter a deposit amount, and updates the balance in the file.
- * 
+ *
  * @param account_number_for_deposit_funds The account number to search for and deposit funds into.
  */
 void deposit_funds(const char *account_number_for_deposit_funds)
@@ -623,7 +824,7 @@ void deposit_funds(const char *account_number_for_deposit_funds)
         printf("Current Balance: %.2lf\n", initial_deposit);
         printf("Enter amount to deposit: ");
         scanf("%lf", &deposit_amount);
-        getchar(); // Consume newline character
+        // getchar(); // Consume newline character
 
         if (deposit_amount > 0)
         {
@@ -632,7 +833,8 @@ void deposit_funds(const char *account_number_for_deposit_funds)
 
             // Update the balance in the file
             fseek(file, balance_pos - strlen(line), SEEK_SET); // Move to the balance line
-            fprintf(file, "Initial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
+            // fflush(stdin);
+            fprintf(file, "nitial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
         }
         else
         {
@@ -646,8 +848,6 @@ void deposit_funds(const char *account_number_for_deposit_funds)
 
     fclose(file);
 }
-
-
 
 int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin)
 {
@@ -706,7 +906,7 @@ int main()
     printf("*                                          *\n");
     printf("********************************************\n\n\n");
 
-    load_users_from_file(); // Load existing users from the file at the start
+    // load_users_from_file(); // Load existing users from the file at the start
 
     int choice, logged_in = 0, customer_index = -1;
     while (1)
