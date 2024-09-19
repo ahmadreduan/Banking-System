@@ -42,7 +42,7 @@ size_t user_count = 0;    // Current number of users
 size_t user_capacity = 0; // Current allocated capacity of the users array
 
 // Predefines admin usernames and passwords
-const char *admin_usernames[NUM_ADMIN_USERS] = {"ahmadreduan", "asraful", "trisha"};
+const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
 const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "23235292"};
 
 /**
@@ -196,41 +196,7 @@ void input_and_validate_dob(char *dob)
     }
 }
 
-// Function to validate and format phone number
-// void input_and_validate_phone(char *phone)
-// {
-//     char digits[PHONE_DIGITS + 1]; // Buffer for the 10-digit phone number
 
-//     while (1)
-//     {
-//         printf("Enter phone number (10 digits): ");
-//         fgets(digits, sizeof(digits), stdin);
-//         digits[strcspn(digits, "\n")] = '\0'; // Remove newline character
-
-//         // Check if input contains exactly 10 digits
-//         if (strlen(digits) == PHONE_DIGITS)
-//         {
-//             int valid = 1;
-//             for (int i = 0; i < PHONE_DIGITS; i++)
-//             {
-//                 if (!isdigit(digits[i]))
-//                 {
-//                     valid = 0;
-//                     break;
-//                 }
-//             }
-
-//             if (valid)
-//             {
-//                 snprintf(phone, PHONE_LENGTH, "%s%s", PHONE_PREFIX, digits);
-//                 printf("Phone number is valid: %s\n", phone);
-//                 break;
-//             }
-//         }
-
-//         printf("Invalid phone number. Please enter exactly 10 digits.\n");
-//     }
-// }
 
 /**
  * Registers a new account by collecting user information and saving it to a file.
@@ -250,15 +216,6 @@ void register_account()
     }
     char first_name[50], last_name[50];
 
-    /*
-    printf("Enter full name: ");
-    fgets(new_user.full_name, 100, stdin);
-    remove_newline(new_user.full_name);
-    */
-
-    // printf("Enter first name                : ");
-    // fgets(first_name, sizeof(first_name), stdin);
-    // remove_newline(first_name);
 
     while (1)
     {
@@ -278,10 +235,6 @@ void register_account()
             printf("Invalid input! Please enter only alphabets.\n");
         }
     }
-
-    // printf("Enter Last name                 : ");
-    // fgets(last_name, sizeof(last_name), stdin);
-    // remove_newline(last_name);
 
     // Input for last name with validation
     while (1)
@@ -304,14 +257,8 @@ void register_account()
 
     snprintf(new_user.full_name, sizeof(new_user.full_name), "%s %s", first_name, last_name);
 
-    // printf("Enter date of birth (DD/MM/YYYY): ");
-    // fgets(new_user.dob, 100, stdin);
-    // remove_newline(new_user.dob);
 
-
-
-
-    /*next work start from this line update date of birth condition */
+    /*next work start from this line update date of the birth condition */
 
 
 
@@ -335,9 +282,22 @@ void register_account()
     // Username is set to the email
     strcpy(new_user.username, new_user.email);
 
-    printf("Enter NID or Birth Certificate number: ");
-    fgets(new_user.nid_or_birth_cert, 100, stdin);
-    remove_newline(new_user.nid_or_birth_cert);
+    // Input for NID or Birth Certificate number (must be 10 or 13 digits)
+    while (1) {
+        printf("Enter NID or Birth Certificate number (10 or 13 Digits): ");
+        fgets(new_user.nid_or_birth_cert, 13, stdin);  // Reading up to 13 characters (including newline)
+        remove_newline(new_user.nid_or_birth_cert);
+
+        // Check if the input contains only digits and has a valid length
+        int length = strlen(new_user.nid_or_birth_cert);
+
+        if (is_valid_digit(new_user.nid_or_birth_cert) && (length == 10 || length == 13)) {
+            break;  // Valid input (either 10 or 13 digits)
+        } else {
+            printf("Invalid input! Please enter exactly 10 or 13 digits.\n");
+        }
+    }
+
 
     printf("Enter password                       : ");
     fgets(new_user.password, 100, stdin);
@@ -348,17 +308,17 @@ void register_account()
       remove_newline(new_user.account_type); */
 
     // Account type selection
-    printf("          Select account type:\n");
-    printf("          01. Mudaraba Term Deposit\n");
-    printf("          02. Al-Wadiah Current Account\n");
-    printf("          03. Mudaraba Scheme Deposits\n");
-    printf("          04. Super Savings Account\n");
-    printf("          05. Waqf Deposit Account\n");
-    printf("          06. Mudaraba Savings Account\n");
-    printf("          07. Bai-salam (Pc)\n");
-    printf("          08. Mudaraba Bashsthan Savings Scheme\n");
-    printf("          09. Mudaraba Hajj Saving Scheme\n");
-    printf("          10. Student Account\n");
+    printf("\tSelect account type:\n");
+    printf("\t01. Mudaraba Term Deposit\n");
+    printf("\t02. Al-Wadiah Current Account\n");
+    printf("\t03. Mudaraba Scheme Deposits\n");
+    printf("\t04. Super Savings Account\n");
+    printf("\t05. Waqf Deposit Account\n");
+    printf("\t06. Mudaraba Savings Account\n");
+    printf("\t07. Bai-salam (Pc)\n");
+    printf("\t08. Mudaraba Bashsthan Savings Scheme\n");
+    printf("\t09. Mudaraba Hajj Saving Scheme\n");
+    printf("\t10. Student Account\n");
 
     int account_type_choice;
     printf("Enter the number corresponding to your account type: ");
