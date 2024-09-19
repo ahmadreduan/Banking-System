@@ -17,6 +17,7 @@
 #define PHONE_PREFIX "+880"
 #define PHONE_DIGITS 10
 #define PHONE_LENGTH (strlen(PHONE_PREFIX) + PHONE_DIGITS + 1) // +1 for null terminator
+#define MAX_PASSWORD_LENGTH 100
 
 typedef struct
 {
@@ -246,6 +247,31 @@ int is_valid_email(const char *email)
     return 1; // Email is valid
 }
 
+// Function to validate password based on certain criteria
+int is_valid_password(const char *password)
+{
+    int has_upper = 0, has_lower = 0, has_digit = 0, has_special = 0;
+
+    if (strlen(password) < 8)
+    {
+        return 0; // Password is too short
+    }
+
+    for (int i = 0; password[i] != '\0'; i++)
+    {
+        if (isupper(password[i]))
+            has_upper = 1;
+        else if (islower(password[i]))
+            has_lower = 1;
+        else if (isdigit(password[i]))
+            has_digit = 1;
+        else if (ispunct(password[i]))
+            has_special = 1;
+    }
+
+    return has_upper && has_lower && has_digit && has_special;
+}
+
 /**
  * Registers a new account by collecting user information and saving it to a file.
  * The account number is generated and displayed only after all other information is collected.
@@ -364,13 +390,36 @@ void register_account()
         }
     }
 
-    printf("Enter password                       : ");
-    fgets(new_user.password, 100, stdin);
-    remove_newline(new_user.password);
+    char confirm_password[MAX_PASSWORD_LENGTH];
+    // Input for Password (must meet security criteria and match the confirmation password)
+    while (1)
+    {
+        printf("Enter password: ");
+        fgets(new_user.password, sizeof(new_user.password), stdin);
+        remove_newline(new_user.password);
 
-    /*printf("Enter account type                   : ");
-      fgets(new_user.account_type, 100, stdin);
-      remove_newline(new_user.account_type); */
+        if (is_valid_password(new_user.password))
+        {
+            printf("Confirm password: ");
+            fgets(confirm_password, sizeof(confirm_password), stdin);
+            remove_newline(confirm_password);
+
+            // Check if both passwords match
+            if (strcmp(new_user.password, confirm_password) == 0)
+            {
+                printf("Password accepted!\n");
+                break;
+            }
+            else
+            {
+                printf("Passwords do not match! Please try again.\n");
+            }
+        }
+        else
+        {
+            printf("Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a digit, and a special character.\n");
+        }
+    }
 
     // Account type selection
     printf("\tSelect account type:\n");

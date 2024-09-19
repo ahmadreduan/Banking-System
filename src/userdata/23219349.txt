@@ -1,0 +1,15 @@
+Account Number : 23219349
+Full Name      : Hello REduan
+Date of Birth  : 
+Mobile Number  : 01718485840
+Email          : reduan@gmail.com
+NID            : 5123647890
+User Name      : reduan@gmail.com
+Password       : Re@23235016
+Account type   : Mudaraba Term Deposit
+Initial Deposit: 10000.00
+Account Pin    : 123456
+Nominee Name   : Reduan
+Noninee NID    : 2568941
+Address        : Banga
+----------------------------------------
