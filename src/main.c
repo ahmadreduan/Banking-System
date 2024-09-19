@@ -196,6 +196,22 @@ void input_and_validate_dob(char *dob)
     }
 }
 
+// Function to validate Bangladeshi phone number format
+int is_valid_phone(const char *phone) {
+    int length = strlen(phone);
+
+    // Check if it starts with +8801 and is 14 characters long
+    if (strncmp(phone, "+8801", 5) == 0 && length == 14) {
+        return is_valid_digit(phone + 5); // Check if remaining part contains only digits
+    }
+    // Check if it starts with 01 and is 11 characters long
+    else if (strncmp(phone, "01", 2) == 0 && length == 11) {
+        return is_valid_digit(phone + 2); // Check if remaining part contains only digits
+    }
+    
+    return 0; // Invalid phone number
+}
+
 
 
 /**
@@ -268,9 +284,22 @@ void register_account()
     char dob[100];
     input_and_validate_dob(dob);
 
-    printf("Enter phone number              : ");
-    fgets(new_user.phone, 100, stdin);
-    remove_newline(new_user.phone);
+     // Input for Phone Number (Bangladeshi format: +8801XXXXXXXXX or 01XXXXXXXXX)
+    while (1) {
+        printf("Enter phone number (+8801XXXXXXXXX or 01XXXXXXXXX): ");
+        fgets(new_user.phone, sizeof(new_user.phone), stdin);
+        remove_newline(new_user.phone);
+
+        if (is_valid_phone(new_user.phone)) {
+            break;
+        } else {
+            printf("Invalid input! Please enter a valid Bangladeshi phone number (e.g., +8801XXXXXXXXX or 01XXXXXXXXX).\n");
+        }
+    }
+
+    // printf("Enter phone number              : ");
+    // fgets(new_user.phone, 100, stdin);
+    // remove_newline(new_user.phone);
 
     // char phone[PHONE_LENGTH];
     // input_and_validate_phone(phone);
