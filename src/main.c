@@ -197,22 +197,54 @@ void input_and_validate_dob(char *dob)
 }
 
 // Function to validate Bangladeshi phone number format
-int is_valid_phone(const char *phone) {
+int is_valid_phone(const char *phone)
+{
     int length = strlen(phone);
 
     // Check if it starts with +8801 and is 14 characters long
-    if (strncmp(phone, "+8801", 5) == 0 && length == 14) {
+    if (strncmp(phone, "+8801", 5) == 0 && length == 14)
+    {
         return is_valid_digit(phone + 5); // Check if remaining part contains only digits
     }
     // Check if it starts with 01 and is 11 characters long
-    else if (strncmp(phone, "01", 2) == 0 && length == 11) {
+    else if (strncmp(phone, "01", 2) == 0 && length == 11)
+    {
         return is_valid_digit(phone + 2); // Check if remaining part contains only digits
     }
-    
+
     return 0; // Invalid phone number
 }
 
+// Function to validate email format
+int is_valid_email(const char *email)
+{
+    const char *at_sign = strchr(email, '@');
+    if (at_sign == NULL)
+    {
+        return 0; // No '@' character
+    }
 
+    // Ensure there's at least one dot after the '@'
+    const char *dot = strchr(at_sign, '.');
+    if (dot == NULL || dot == at_sign + 1)
+    {
+        return 0; // No dot, or dot is right after the '@'
+    }
+
+    // Check for valid characters before and after '@'
+    if (at_sign == email || at_sign == email + strlen(email) - 1)
+    {
+        return 0; // '@' is the first or last character
+    }
+
+    // Ensure the domain part isn't too short
+    if (strlen(dot + 1) < 2)
+    {
+        return 0; // The domain is too short (e.g. '@domain.c')
+    }
+
+    return 1; // Email is valid
+}
 
 /**
  * Registers a new account by collecting user information and saving it to a file.
@@ -231,7 +263,6 @@ void register_account()
         return;
     }
     char first_name[50], last_name[50];
-
 
     while (1)
     {
@@ -273,60 +304,65 @@ void register_account()
 
     snprintf(new_user.full_name, sizeof(new_user.full_name), "%s %s", first_name, last_name);
 
-
-    /*next work start from this line update date of the birth condition */
-
-
-
-    
-
-
     char dob[100];
     input_and_validate_dob(dob);
 
-     // Input for Phone Number (Bangladeshi format: +8801XXXXXXXXX or 01XXXXXXXXX)
-    while (1) {
+    // Input for Phone Number (Bangladeshi format: +8801XXXXXXXXX or 01XXXXXXXXX)
+    while (1)
+    {
         printf("Enter phone number (+8801XXXXXXXXX or 01XXXXXXXXX): ");
         fgets(new_user.phone, sizeof(new_user.phone), stdin);
         remove_newline(new_user.phone);
 
-        if (is_valid_phone(new_user.phone)) {
+        if (is_valid_phone(new_user.phone))
+        {
             break;
-        } else {
+        }
+        else
+        {
             printf("Invalid input! Please enter a valid Bangladeshi phone number (e.g., +8801XXXXXXXXX or 01XXXXXXXXX).\n");
         }
     }
 
-    // printf("Enter phone number              : ");
-    // fgets(new_user.phone, 100, stdin);
-    // remove_newline(new_user.phone);
+    // Input for Email Address (email format)
+    while (1)
+    {
+        printf("Enter email address: ");
+        fgets(new_user.email, sizeof(new_user.email), stdin);
+        remove_newline(new_user.email);
 
-    // char phone[PHONE_LENGTH];
-    // input_and_validate_phone(phone);
-    
-    printf("Enter email address             : ");
-    fgets(new_user.email, 100, stdin);
-    remove_newline(new_user.email);
+        if (is_valid_email(new_user.email))
+        {
+            break;
+        }
+        else
+        {
+            printf("Invalid input! Please enter a valid email address.\n");
+        }
+    }
 
     // Username is set to the email
     strcpy(new_user.username, new_user.email);
 
     // Input for NID or Birth Certificate number (must be 10 or 13 digits)
-    while (1) {
+    while (1)
+    {
         printf("Enter NID or Birth Certificate number (10 or 13 Digits): ");
-        fgets(new_user.nid_or_birth_cert, 13, stdin);  // Reading up to 13 characters (including newline)
+        fgets(new_user.nid_or_birth_cert, 13, stdin); // Reading up to 13 characters (including newline)
         remove_newline(new_user.nid_or_birth_cert);
 
         // Check if the input contains only digits and has a valid length
         int length = strlen(new_user.nid_or_birth_cert);
 
-        if (is_valid_digit(new_user.nid_or_birth_cert) && (length == 10 || length == 13)) {
-            break;  // Valid input (either 10 or 13 digits)
-        } else {
+        if (is_valid_digit(new_user.nid_or_birth_cert) && (length == 10 || length == 13))
+        {
+            break; // Valid input (either 10 or 13 digits)
+        }
+        else
+        {
             printf("Invalid input! Please enter exactly 10 or 13 digits.\n");
         }
     }
-
 
     printf("Enter password                       : ");
     fgets(new_user.password, 100, stdin);
