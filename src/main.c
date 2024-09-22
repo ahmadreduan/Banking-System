@@ -4,6 +4,7 @@
 #include <time.h>
 #include <sys/stat.h>  // Add this for mkdir  Required for creating directories
 #include <sys/types.h> // Also include this for POSIX systems
+#include <ctype.h>
 
 #define ACCOUNT_NUMBER_LENGTH 8
 #define ACCOUNT_START 232
@@ -18,6 +19,7 @@
 #define PHONE_DIGITS 10
 #define PHONE_LENGTH (strlen(PHONE_PREFIX) + PHONE_DIGITS + 1) // +1 for null terminator
 #define MAX_PASSWORD_LENGTH 100
+#define MAX_PIN_LENGTH 5 // 4 digits + null terminator
 
 typedef struct
 {
@@ -272,6 +274,24 @@ int is_valid_password(const char *password)
     return has_upper && has_lower && has_digit && has_special;
 }
 
+// Function to validate the PIN (4-digit numeric input)
+int is_valid_pin(const char *pin)
+{
+    if (strlen(pin) != 4)
+    {
+        return 0; // PIN is not exactly 4 digits
+    }
+    return is_valid_digit(pin); // Check if all characters are digits
+}
+
+// Function to clear the input buffer
+void clear_input_buffer()
+{
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF)
+        ;
+}
+
 /**
  * Registers a new account by collecting user information and saving it to a file.
  * The account number is generated and displayed only after all other information is collected.
@@ -281,12 +301,15 @@ void register_account()
     ensure_capacity(user_count + 1); // Ensure enough capacity for new user
 
     User new_user;
-
-    struct stat st = {0};
-    if (stat("userdata", &st) == -1 && mkdir("userdata", 0700) != 0)
+    struct stat st;  // Declare the stat structure
+ // Check if the directory 'userdata' exists, and if not, create it
+    if (stat("userdata", &st) == -1)
     {
-        perror("Error creating userdata directory");
-        return;
+        if (mkdir("userdata", 0700) != 0)
+        {
+            perror("Error creating userdata directory");
+            return;
+        }
     }
     char first_name[50], last_name[50];
 
@@ -439,10 +462,11 @@ void register_account()
     while (scanf("%d", &account_type_choice) != 1 || account_type_choice < 1 || account_type_choice > 10)
     {
         printf("Invalid choice. Please enter a number between 1 and 10: ");
-        while (getchar() != '\n')
-            ; // Clear the input buffer
+        // while (getchar() != '\n'); // Clear the input buffer
+        clear_input_buffer();
     }
-    getchar(); // Consume the leftover newline character
+    // getchar(); // Consume the leftover newline character
+    clear_input_buffer();
 
     // Assign the chosen account type
     switch (account_type_choice)
@@ -483,22 +507,91 @@ void register_account()
     while (scanf("%lf", &new_user.initial_deposit) != 1)
     {
         printf("Invalid input. Please enter a valid amount: ");
-        while (getchar() != '\n')
-            ; // Clear the input buffer
+        // while (getchar() != '\n'); // Clear the input buffer
+        clear_input_buffer();
     }
-    getchar(); // Consume the leftover newline character
+    // getchar(); // Consume the leftover newline character
+    clear_input_buffer();
 
-    printf("Enter PIN                            : ");
-    fgets(new_user.pin, 100, stdin);
-    remove_newline(new_user.pin);
+    
+    // Input for PIN (must be 4 digits and entered twice)
+    char confirm_pin[MAX_PIN_LENGTH];
+    // Input for PIN
+    while (1)
+    {
+        printf("Enter 4-digit PIN: ");
+        if (!fgets(new_user.pin, sizeof(new_user.pin), stdin))
+        {
+            printf("Error reading input.\n");
+            continue;
+        }
+        remove_newline(new_user.pin);
 
-    printf("Enter nominee name                   : ");
-    fgets(new_user.nominee_name, 100, stdin);
-    remove_newline(new_user.nominee_name);
+        if (is_valid_pin(new_user.pin))
+        {
+            printf("Confirm PIN: ");
+            if (!fgets(confirm_pin, sizeof(confirm_pin), stdin))
+            {
+                printf("Error reading input.\n");
+                continue;
+            }
+            remove_newline(confirm_pin);
 
-    printf("Enter nominee NID                    : ");
-    fgets(new_user.nominee_nid, 100, stdin);
-    remove_newline(new_user.nominee_nid);
+            if (strcmp(new_user.pin, confirm_pin) == 0)
+            {
+                printf("PIN accepted!\n");
+                break;
+            }
+            else
+            {
+                printf("PINs do not match! Please try again.\n");
+            }
+        }
+        else
+        {
+            printf("Invalid PIN! Please enter a 4-digit number.\n");
+        }
+    }
+
+    // Input for nominee name with validation
+    while (1)
+    {
+        printf("Enter nominee name: ");
+        fgets(new_user.nominee_name, sizeof(new_user.nominee_name), stdin);
+        remove_newline(new_user.nominee_name);
+
+        if (is_valid_name(new_user.nominee_name))
+        {
+            printf("Nominee name accepted: %s\n", new_user.nominee_name);
+            break; // Break the loop if the name is valid
+        }
+        else
+        {
+            printf("Invalid name! Please enter only alphabetic characters and spaces.\n");
+        }
+    }
+
+    // Input for nominee NID with validation
+    while (1)
+    {
+        printf("Enter nominee NID or Birth Certificate number (10 or 13 Digits): ");
+        fgets(new_user.nominee_nid, 13, stdin); // Reading up to 13 characters (including newline)
+        remove_newline(new_user.nominee_nid);
+
+        // Check if the input contains only digits and has a valid length
+        int length = strlen(new_user.nominee_nid);
+
+        if (is_valid_digit(new_user.nominee_nid) && (length == 10 || length == 13))
+        {
+            break; // Valid input (either 10 or 13 digits)
+        }
+        else
+        {
+            printf("Invalid input! Please enter exactly 10 or 13 digits.\n");
+        }
+    }
+
+    // Input for nominee NID with validation
 
     printf("Enter address (city, state, postal zip code, country): ");
     fgets(new_user.address, 100, stdin);

@@ -1,0 +1,15 @@
+Account Number : 23222774
+Full Name      : REduan Ahmad
+Date of Birth  : 
+Mobile Number  : 01847856952
+Email          : redy@gmail.com
+NID            : 1234567896
+User Name      : redy@gmail.com
+Password       : Re@23206016
+Account type   : Mudaraba Term Deposit
+Initial Deposit: 10000.00
+Account Pin    : 1234
+Nominee Name   : 1234
+Noninee NID    : 15456
+Address        : Babga
+----------------------------------------
