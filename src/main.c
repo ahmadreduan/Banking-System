@@ -5,6 +5,38 @@
 #include <sys/stat.h>  // Add this for mkdir  Required for creating directories
 #include <sys/types.h> // Also include this for POSIX systems
 #include <ctype.h>
+#include <windows.h>
+
+// Regular text and style definitions as per your list
+#define BLK "\e[0;30m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define YEL "\e[0;33m"
+#define BLU "\e[0;34m"
+#define MAG "\e[0;35m"
+#define CYN "\e[0;36m"
+#define WHT "\e[0;37m"
+
+// Bold text definitions
+#define BBLK "\e[1;30m"
+#define BRED "\e[1;31m"
+#define BGRN "\e[1;32m"
+#define BYEL "\e[1;33m"
+#define BBLU "\e[1;34m"
+#define BMAG "\e[1;35m"
+#define BCYN "\e[1;36m"
+#define BWHT "\e[1;37m"
+
+// Reset color
+#define RESET "\x1B[0m"
+
+// ANSI escape codes for colors
+#define GREEN "\x1B[32m"
+#define YELLOW "\x1B[33m"
+#define BLUE "\x1B[34m"
+#define MAGENTA "\x1B[35m"
+#define CYAN "\x1B[36m"
+#define WHITE "\x1B[37m"
 
 #define ACCOUNT_NUMBER_LENGTH 8
 #define ACCOUNT_START 232
@@ -72,7 +104,7 @@ void ensure_capacity(size_t new_capacity)
         User *temp_users = realloc(users, new_capacity * sizeof(User));
         if (temp_users == NULL)
         {
-            printf("Memory allocation failed!\n");
+            printf(BRED"Memory allocation failed!\n"RESET);
             exit(1);
         }
         users = temp_users;
@@ -158,14 +190,14 @@ void input_and_validate_dob(char *dob)
 
     while (1)
     {
-        printf("Enter date of birth (DD/MM/YYYY): ");
+        printf(BGRN"Enter date of birth (DD/MM/YYYY): "RESET);
         fgets(dob, 100, stdin);         // Read input
         dob[strcspn(dob, "\n")] = '\0'; // Remove newline character
 
         // Validate format (length should be 10: "DD/MM/YYYY")
         if (strlen(dob) != 10 || dob[2] != '/' || dob[5] != '/')
         {
-            printf("Invalid format! Please enter the date in DD/MM/YYYY format.\n");
+            printf(BRED"Invalid format! Please enter the date in DD/MM/YYYY format.\n"RESET);
             continue;
         }
 
@@ -177,7 +209,7 @@ void input_and_validate_dob(char *dob)
         // Validate if day, month, and year are digits
         if (!is_valid_digit(day_str) || !is_valid_digit(month_str) || !is_valid_digit(year_str))
         {
-            printf("Invalid date! Please enter numeric values for day, month, and year.\n");
+            printf(BRED"Invalid date! Please enter numeric values for day, month, and year.\n"RESET);
             continue;
         }
 
@@ -189,7 +221,7 @@ void input_and_validate_dob(char *dob)
         // Validate the date itself (correct day, month, year)
         if (!is_valid_date(day, month, year))
         {
-            printf("Invalid date! Please enter a valid date.\n");
+            printf(BRED"Invalid date! Please enter a valid date.\n"RESET);
             continue;
         }
 
@@ -288,8 +320,7 @@ int is_valid_pin(const char *pin)
 void clear_input_buffer()
 {
     int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF)
-        ;
+    while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
 /**
@@ -307,7 +338,7 @@ void register_account()
     {
         if (mkdir("userdata", 0700) != 0)
         {
-            perror("Error creating userdata directory");
+            perror(BRED"Error creating userdata directory"RESET);
             return;
         }
     }
@@ -315,7 +346,7 @@ void register_account()
 
     while (1)
     {
-        printf("Enter first name                : ");
+        printf(BYEL"Enter first name                : "RESET);
         fgets(first_name, sizeof(first_name), stdin); // Read input
         remove_newline(first_name);                   // Remove newline
 
@@ -328,14 +359,14 @@ void register_account()
         else
         {
             // If invalid input (contains numbers or special characters)
-            printf("Invalid input! Please enter only alphabets.\n");
+            printf(BRED"Invalid input! Please enter only alphabets.\n"RESET);
         }
     }
 
     // Input for last name with validation
     while (1)
     {
-        printf("Enter last name                 : ");
+        printf(BYEL"Enter last name                 : "RESET);
         fgets(last_name, sizeof(last_name), stdin); // Read input
         remove_newline(last_name);                  // Remove newline
 
@@ -347,7 +378,7 @@ void register_account()
         else
         {
             // If invalid input (contains numbers or special characters)
-            printf("Invalid input! Please enter only alphabets.\n");
+            printf(BRED"Invalid input! Please enter only alphabets.\n"BYEL);
         }
     }
 
@@ -369,14 +400,14 @@ void register_account()
         }
         else
         {
-            printf("Invalid input! Please enter a valid Bangladeshi phone number (e.g., +8801XXXXXXXXX or 01XXXXXXXXX).\n");
+            printf(BRED"Invalid input! Please enter a valid Bangladeshi phone number (e.g., +8801XXXXXXXXX or 01XXXXXXXXX).\n"RESET);
         }
     }
 
     // Input for Email Address (email format)
     while (1)
     {
-        printf("Enter email address: ");
+        printf(BMAG"Enter email address: "RESET);
         fgets(new_user.email, sizeof(new_user.email), stdin);
         remove_newline(new_user.email);
 
@@ -386,7 +417,7 @@ void register_account()
         }
         else
         {
-            printf("Invalid input! Please enter a valid email address.\n");
+            printf(BRED"Invalid input! Please enter a valid email address.\n"RESET);
         }
     }
 
@@ -396,7 +427,7 @@ void register_account()
     // Input for NID or Birth Certificate number (must be 10 or 13 digits)
     while (1)
     {
-        printf("Enter NID or Birth Certificate number (10 or 13 Digits): ");
+        printf(BBLU"Enter NID or Birth Certificate number (10 or 13 Digits): "RESET);
         fgets(new_user.nid_or_birth_cert, 13, stdin); // Reading up to 13 characters (including newline)
         remove_newline(new_user.nid_or_birth_cert);
 
@@ -409,7 +440,7 @@ void register_account()
         }
         else
         {
-            printf("Invalid input! Please enter exactly 10 or 13 digits.\n");
+            printf(BRED"Invalid input! Please enter exactly 10 or 13 digits.\n"RESET);
         }
     }
 
@@ -417,30 +448,30 @@ void register_account()
     // Input for Password (must meet security criteria and match the confirmation password)
     while (1)
     {
-        printf("Enter password: ");
+        printf(BGRN"Enter password: "RESET);
         fgets(new_user.password, sizeof(new_user.password), stdin);
         remove_newline(new_user.password);
 
         if (is_valid_password(new_user.password))
         {
-            printf("Confirm password: ");
+            printf(BGRN"Confirm password: "RESET);
             fgets(confirm_password, sizeof(confirm_password), stdin);
             remove_newline(confirm_password);
 
             // Check if both passwords match
             if (strcmp(new_user.password, confirm_password) == 0)
             {
-                printf("Password accepted!\n");
+                printf(BGRN"Password accepted!\n"RESET);
                 break;
             }
             else
             {
-                printf("Passwords do not match! Please try again.\n");
+                printf(BRED"Passwords do not match! Please try again.\n"RESET);
             }
         }
         else
         {
-            printf("Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a digit, and a special character.\n");
+            printf(BRED"Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a digit, and a special character.\n"RESET);
         }
     }
 
@@ -551,7 +582,7 @@ void register_account()
         {
             printf("Invalid PIN! Please enter a 4-digit number.\n");
         }
-    }
+    }fflush(stdin);
 
     // Input for nominee name with validation
     while (1)
@@ -569,7 +600,7 @@ void register_account()
         {
             printf("Invalid name! Please enter only alphabetic characters and spaces.\n");
         }
-    }
+    }fflush(stdin);
 
     // Input for nominee NID with validation
     while (1)
@@ -589,7 +620,7 @@ void register_account()
         {
             printf("Invalid input! Please enter exactly 10 or 13 digits.\n");
         }
-    }
+    }fflush(stdin);
 
     // Input for nominee NID with validation
 
@@ -699,7 +730,7 @@ void search_and_view_account(const char *account_number)
 
 void print_border()
 {
-    printf("+-----------------------------------------+\n");
+    printf(BYEL "------------------------------------------\n" RESET);
 }
 
 /**
@@ -719,26 +750,26 @@ void display_banking_system_home_features()
  */
 void display_banking_system_features()
 {
-    print_border();
-    printf("| 1. Register Account                     |\n");
-    printf("| 2. View Account Details                 |\n");
-    printf("| 3. Search Account by Account Number     |\n"); // for view all details
-    printf("| 4. Blance check by Account Number       |\n"); // for balcnce ck
-    printf("| 5. Deposit Funds                        |\n");
-    printf("| 6. Withdraw Funds                       |\n");
-    printf("| 7. Transfer Funds                       |\n");
-    printf("| 8. Exit                                 |\n");
-    print_border();
+    print_border();  // Print top border
+    printf(BBLU "| 1. Register Account                     |\n" RESET);   // Option 1: Register Account (Blue)
+    printf(BGRN "| 2. View Account Details                 |\n" RESET);   // Option 2: View Account Details (Green)
+    printf(BYEL "| 3. Search Account by Account Number     |\n" RESET);   // Option 3: Search Account (Yellow)
+    printf(BBLU "| 4. Balance Check by Account Number      |\n" RESET);   // Option 4: Balance Check (Blue)
+    printf(BMAG "| 5. Deposit Funds                        |\n" RESET);   // Option 5: Deposit Funds (Magenta)
+    printf(BRED "| 6. Withdraw Funds                       |\n" RESET);   // Option 6: Withdraw Funds (Red)
+    printf(BGRN "| 7. Transfer Funds                       |\n" RESET);   // Option 7: Transfer Funds (Green)
+    printf(BRED "| 8. Exit                                 |\n" RESET);   // Option 8: Exit (Red)
+    print_border();  // Print bottom border
 }
 
 void display_customer_options()
 {
-    print_border();
-    printf("| 1. View Balance                         |\n");
-    printf("| 2. Transfer Funds                       |\n");
-    printf("| 3. View Transaction History             |\n");
-    printf("| 4. Logout                               |\n");
-    print_border();
+    print_border();  // Print top border
+    printf(BBLU "| 1. View Balance                         |\n" RESET);   // Option 1: View Balance
+    printf(BBLU "| 2. Transfer Funds                       |\n" RESET);   // Option 2: Transfer Funds
+    printf(BBLU "| 3. View Transaction History             |\n" RESET);   // Option 3: View Transaction History
+    printf(BBLU "| 4. Logout                               |\n" RESET);   // Option 4: Logout
+    print_border();  // Print bottom border
 }
 
 /**Load users from the file */
@@ -1046,32 +1077,39 @@ int transfer_funds(size_t customer_index, double amount, const char *recipient_a
  */
 void banking_rules()
 {
-    printf("Welcome to the Bank Management System!\n");
-    printf("Here are the rules and guidelines for using our system:\n");
-    printf("1. Ensure the accuracy of your personal information during account registration.\n");
-    printf("2. Keep your account credentials and PIN secure and do not share them with anyone.\n");
-    printf("3. Maintain a minimum balance in your account as per the bank's policy.\n");
-    printf("4. Report any suspicious activities or unauthorized transactions to the bank immediately.\n");
-    printf("5. Follow the bank's guidelines for transactions, including transfer limits and withdrawal limits.\n");
-    printf("6. Keep your contact information up to date to receive important notifications.\n");
-    printf("7. If you have any questions or need assistance, please contact our customer support.\n");
+    // Title of the system in bold cyan
+    printf(BCYN "Welcome to the Bank Management System!\n\n" RESET);
+
+    // Introductory text in bold yellow
+    printf(BYEL "Here are the rules and guidelines for using our system:\n\n" RESET);
+
+    // Individual rules printed in different styles for emphasis
+    printf(BMAG "1. Ensure the accuracy of your personal information during account registration.\n" RESET);
+    printf(BGRN "2. Keep your account credentials and PIN secure and do not share them with anyone.\n" RESET);
+    printf(BMAG "3. Maintain a minimum balance in your account as per the bank's policy.\n" RESET);
+    printf(BRED "4. Report any suspicious activities or unauthorized transactions to the bank immediately.\n" RESET);
+    printf(BGRN "5. Follow the bank's guidelines for transactions, including transfer limits and withdrawal limits.\n" RESET);
+    printf(BGRN "6. Keep your contact information up to date to receive important notifications.\n" RESET);
+    printf(BMAG "7. If you have any questions or need assistance, please contact our customer support.\n" RESET);
 }
 
 int main()
 {
-    printf("                  *****   \n");
-    printf("                 *     *  \n");
-    printf("                *  O O  * \n");
-    printf("                *   ^   * \n");
-    printf("                *  \\_/  * \n");
-    printf("                 *     *  \n");
-    printf("                  *****   \n");
+    // Print the face with different colors
+    printf(BLUE "                  *****   \n" RESET);
+    printf(BLUE "                 *     *  \n" RESET);
+    printf(YELLOW "                *  " BLUE "O O" YELLOW "  * \n" RESET);
+    printf(YELLOW "                *   " RED "^" YELLOW "   * \n" RESET);
+    printf(YELLOW "                *  " GREEN "\\_/" YELLOW "  * \n" RESET);
+    printf(BLUE "                 *     *  \n" RESET);
+    printf(BLUE "                  *****   \n" RESET);
 
-    printf("********************************************\n");
-    printf("*                                          *\n");
-    printf("*      Welcome to the Banking System!      *\n");
-    printf("*                                          *\n");
-    printf("********************************************\n\n\n");
+    // Set color to CYAN for the border and YELLOW for the text inside
+    printf(CYAN "********************************************\n" RESET);
+    printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
+    printf(CYAN "*" RESET "  " YELLOW "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
+    printf(CYAN "********************************************\n\n\n" RESET);
 
     // load_users_from_file(); // Load existing users from the file at the start
 

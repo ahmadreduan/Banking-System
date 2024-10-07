@@ -7,7 +7,7 @@ NID            : 5646531
 User Name      : reduan@gmail.com
 Password       : 123456
 Account type   : Al-Wadiah Current Account
-Initial Deposit: 120000.00
+Initial Deposit: 240000.00
 Account Pin    : 1234
 Nominee Name   : sadfas
 Noninee NID    : 5656+
