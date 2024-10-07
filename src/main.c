@@ -21,6 +21,7 @@
 #define MAX_PASSWORD_LENGTH 100
 #define MAX_PIN_LENGTH 5 // 4 digits + null terminator
 
+
 typedef struct
 {
     char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // 8 digits + null terminator
