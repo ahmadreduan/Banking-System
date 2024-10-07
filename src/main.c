@@ -105,7 +105,7 @@ void ensure_capacity(size_t new_capacity)
         User *temp_users = realloc(users, new_capacity * sizeof(User));
         if (temp_users == NULL)
         {
-            printf(BRED"Memory allocation failed!\n"RESET);
+            printf(BRED "Memory allocation failed!\n" RESET);
             exit(1);
         }
         users = temp_users;
@@ -191,14 +191,14 @@ void input_and_validate_dob(char *dob)
 
     while (1)
     {
-        printf(BGRN"Enter date of birth (DD/MM/YYYY): "RESET);
+        printf(BGRN "Enter date of birth (DD/MM/YYYY): " RESET);
         fgets(dob, 100, stdin);         // Read input
         dob[strcspn(dob, "\n")] = '\0'; // Remove newline character
 
         // Validate format (length should be 10: "DD/MM/YYYY")
         if (strlen(dob) != 10 || dob[2] != '/' || dob[5] != '/')
         {
-            printf(BRED"Invalid format! Please enter the date in DD/MM/YYYY format.\n"RESET);
+            printf(BRED "Invalid format! Please enter the date in DD/MM/YYYY format.\n" RESET);
             continue;
         }
 
@@ -210,7 +210,7 @@ void input_and_validate_dob(char *dob)
         // Validate if day, month, and year are digits
         if (!is_valid_digit(day_str) || !is_valid_digit(month_str) || !is_valid_digit(year_str))
         {
-            printf(BRED"Invalid date! Please enter numeric values for day, month, and year.\n"RESET);
+            printf(BRED "Invalid date! Please enter numeric values for day, month, and year.\n" RESET);
             continue;
         }
 
@@ -222,7 +222,7 @@ void input_and_validate_dob(char *dob)
         // Validate the date itself (correct day, month, year)
         if (!is_valid_date(day, month, year))
         {
-            printf(BRED"Invalid date! Please enter a valid date.\n"RESET);
+            printf(BRED "Invalid date! Please enter a valid date.\n" RESET);
             continue;
         }
 
@@ -321,7 +321,8 @@ int is_valid_pin(const char *pin)
 void clear_input_buffer()
 {
     int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF);
+    while ((ch = getchar()) != '\n' && ch != EOF)
+        ;
 }
 
 /**
@@ -333,13 +334,13 @@ void register_account()
     ensure_capacity(user_count + 1); // Ensure enough capacity for new user
 
     User new_user;
-    struct stat st;  // Declare the stat structure
- // Check if the directory 'userdata' exists, and if not, create it
+    struct stat st; // Declare the stat structure
+                    // Check if the directory 'userdata' exists, and if not, create it
     if (stat("userdata", &st) == -1)
     {
         if (mkdir("userdata", 0700) != 0)
         {
-            perror(BRED"Error creating userdata directory"RESET);
+            perror(BRED "Error creating userdata directory" RESET);
             return;
         }
     }
@@ -347,7 +348,7 @@ void register_account()
 
     while (1)
     {
-        printf(BYEL"Enter first name                : "RESET);
+        printf(BYEL "Enter first name                : " RESET);
         fgets(first_name, sizeof(first_name), stdin); // Read input
         remove_newline(first_name);                   // Remove newline
 
@@ -360,14 +361,14 @@ void register_account()
         else
         {
             // If invalid input (contains numbers or special characters)
-            printf(BRED"Invalid input! Please enter only alphabets.\n"RESET);
+            printf(BRED "Invalid input! Please enter only alphabets.\n" RESET);
         }
     }
 
     // Input for last name with validation
     while (1)
     {
-        printf(BYEL"Enter last name                 : "RESET);
+        printf(BYEL "Enter last name                 : " RESET);
         fgets(last_name, sizeof(last_name), stdin); // Read input
         remove_newline(last_name);                  // Remove newline
 
@@ -379,7 +380,7 @@ void register_account()
         else
         {
             // If invalid input (contains numbers or special characters)
-            printf(BRED"Invalid input! Please enter only alphabets.\n"BYEL);
+            printf(BRED "Invalid input! Please enter only alphabets.\n" BYEL);
         }
     }
 
@@ -401,14 +402,14 @@ void register_account()
         }
         else
         {
-            printf(BRED"Invalid input! Please enter a valid Bangladeshi phone number (e.g., +8801XXXXXXXXX or 01XXXXXXXXX).\n"RESET);
+            printf(BRED "Invalid input! Please enter a valid Bangladeshi phone number (e.g., +8801XXXXXXXXX or 01XXXXXXXXX).\n" RESET);
         }
     }
 
     // Input for Email Address (email format)
     while (1)
     {
-        printf(BMAG"Enter email address: "RESET);
+        printf(BMAG "Enter email address: " RESET);
         fgets(new_user.email, sizeof(new_user.email), stdin);
         remove_newline(new_user.email);
 
@@ -418,7 +419,7 @@ void register_account()
         }
         else
         {
-            printf(BRED"Invalid input! Please enter a valid email address.\n"RESET);
+            printf(BRED "Invalid input! Please enter a valid email address.\n" RESET);
         }
     }
 
@@ -428,7 +429,7 @@ void register_account()
     // Input for NID or Birth Certificate number (must be 10 or 13 digits)
     while (1)
     {
-        printf(BBLU"Enter NID or Birth Certificate number (10 or 13 Digits): "RESET);
+        printf(BBLU "Enter NID or Birth Certificate number (10 or 13 Digits): " RESET);
         fgets(new_user.nid_or_birth_cert, 13, stdin); // Reading up to 13 characters (including newline)
         remove_newline(new_user.nid_or_birth_cert);
 
@@ -441,7 +442,7 @@ void register_account()
         }
         else
         {
-            printf(BRED"Invalid input! Please enter exactly 10 or 13 digits.\n"RESET);
+            printf(BRED "Invalid input! Please enter exactly 10 or 13 digits.\n" RESET);
         }
     }
 
@@ -449,30 +450,30 @@ void register_account()
     // Input for Password (must meet security criteria and match the confirmation password)
     while (1)
     {
-        printf(BGRN"Enter password: "RESET);
+        printf(BGRN "Enter password: " RESET);
         fgets(new_user.password, sizeof(new_user.password), stdin);
         remove_newline(new_user.password);
 
         if (is_valid_password(new_user.password))
         {
-            printf(BGRN"Confirm password: "RESET);
+            printf(BGRN "Confirm password: " RESET);
             fgets(confirm_password, sizeof(confirm_password), stdin);
             remove_newline(confirm_password);
 
             // Check if both passwords match
             if (strcmp(new_user.password, confirm_password) == 0)
             {
-                printf(BGRN"Password accepted!\n"RESET);
+                printf(BGRN "Password accepted!\n" RESET);
                 break;
             }
             else
             {
-                printf(BRED"Passwords do not match! Please try again.\n"RESET);
+                printf(BRED "Passwords do not match! Please try again.\n" RESET);
             }
         }
         else
         {
-            printf(BRED"Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a digit, and a special character.\n"RESET);
+            printf(BRED "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a digit, and a special character.\n" RESET);
         }
     }
 
@@ -583,7 +584,7 @@ void register_account()
         {
             printf("Invalid PIN! Please enter a 4-digit number.\n");
         }
-    }fflush(stdin);
+    }
 
     // Input for nominee name with validation
     while (1)
@@ -601,7 +602,8 @@ void register_account()
         {
             printf("Invalid name! Please enter only alphabetic characters and spaces.\n");
         }
-    }fflush(stdin);
+    }
+    fflush(stdin);
 
     // Input for nominee NID with validation
     while (1)
@@ -621,7 +623,8 @@ void register_account()
         {
             printf("Invalid input! Please enter exactly 10 or 13 digits.\n");
         }
-    }fflush(stdin);
+    }
+    fflush(stdin);
 
     // Input for nominee NID with validation
 
@@ -739,11 +742,11 @@ void print_border()
  */
 void display_banking_system_home_features()
 {
-    print_border();
-    printf("| 1. Admin Login                          |\n");
-    printf("| 2. Customer Login                       |\n");
-    printf("| 3. View Banking Rules                   |\n");
-    print_border();
+    print_border();                                                     // Print top border
+    printf(BBLU "| 1. Admin Login                          |\n" RESET); // Option 1: Admin Login (Bold Blue)
+    printf(BGRN "| 2. Customer Login                       |\n" RESET); // Option 2: Customer Login (Bold Green)
+    printf(BYEL "| 3. View Banking Rules                   |\n" RESET); // Option 3: View Banking Rules (Bold Yellow)
+    print_border();                                                     // Print bottom border
 }
 
 /**
@@ -751,26 +754,26 @@ void display_banking_system_home_features()
  */
 void display_banking_system_features()
 {
-    print_border();  // Print top border
-    printf(BBLU "| 1. Register Account                     |\n" RESET);   // Option 1: Register Account (Blue)
-    printf(BGRN "| 2. View Account Details                 |\n" RESET);   // Option 2: View Account Details (Green)
-    printf(BYEL "| 3. Search Account by Account Number     |\n" RESET);   // Option 3: Search Account (Yellow)
-    printf(BBLU "| 4. Balance Check by Account Number      |\n" RESET);   // Option 4: Balance Check (Blue)
-    printf(BMAG "| 5. Deposit Funds                        |\n" RESET);   // Option 5: Deposit Funds (Magenta)
-    printf(BRED "| 6. Withdraw Funds                       |\n" RESET);   // Option 6: Withdraw Funds (Red)
-    printf(BGRN "| 7. Transfer Funds                       |\n" RESET);   // Option 7: Transfer Funds (Green)
-    printf(BRED "| 8. Exit                                 |\n" RESET);   // Option 8: Exit (Red)
-    print_border();  // Print bottom border
+    print_border();                                                     // Print top border
+    printf(BBLU "| 1. Register Account                     |\n" RESET); // Option 1: Register Account (Blue)
+    printf(BGRN "| 2. View Account Details                 |\n" RESET); // Option 2: View Account Details (Green)
+    printf(BYEL "| 3. Search Account by Account Number     |\n" RESET); // Option 3: Search Account (Yellow)
+    printf(BBLU "| 4. Balance Check by Account Number      |\n" RESET); // Option 4: Balance Check (Blue)
+    printf(BMAG "| 5. Deposit Funds                        |\n" RESET); // Option 5: Deposit Funds (Magenta)
+    printf(BRED "| 6. Withdraw Funds                       |\n" RESET); // Option 6: Withdraw Funds (Red)
+    printf(BGRN "| 7. Transfer Funds                       |\n" RESET); // Option 7: Transfer Funds (Green)
+    printf(BRED "| 8. Exit                                 |\n" RESET); // Option 8: Exit (Red)
+    print_border();                                                     // Print bottom border
 }
 
 void display_customer_options()
 {
-    print_border();  // Print top border
-    printf(BBLU "| 1. View Balance                         |\n" RESET);   // Option 1: View Balance
-    printf(BBLU "| 2. Transfer Funds                       |\n" RESET);   // Option 2: Transfer Funds
-    printf(BBLU "| 3. View Transaction History             |\n" RESET);   // Option 3: View Transaction History
-    printf(BBLU "| 4. Logout                               |\n" RESET);   // Option 4: Logout
-    print_border();  // Print bottom border
+    print_border();                                                     // Print top border
+    printf(BBLU "| 1. View Balance                         |\n" RESET); // Option 1: View Balance
+    printf(BBLU "| 2. Transfer Funds                       |\n" RESET); // Option 2: Transfer Funds
+    printf(BBLU "| 3. View Transaction History             |\n" RESET); // Option 3: View Transaction History
+    printf(BBLU "| 4. Logout                               |\n" RESET); // Option 4: Logout
+    print_border();                                                     // Print bottom border
 }
 
 /**Load users from the file */
@@ -1048,6 +1051,74 @@ void deposit_funds(const char *account_number_for_deposit_funds)
     fclose(file);
 }
 
+/**
+ * Searches for a user account based on the provided account number and allows withdrawal of funds.
+ * Loads the account details from the corresponding file, retrieves the current balance,
+ * prompts the user to enter a withdrawal amount, and updates the balance in the file.
+ *
+ * @param account_number_for_withdraw_funds The account number to search for and withdraw funds from.
+ */
+void withdraw_funds(const char *account_number_for_withdraw_funds)
+{
+    char filename[150];
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number_for_withdraw_funds);
+
+    FILE *file = fopen(filename, "r+"); // Open the file in read+write mode to update balance
+    if (file == NULL)
+    {
+        printf(RED "No account found with the account number: %s\n" RESET, account_number_for_withdraw_funds);
+        return;
+    }
+
+    char line[256];
+    double current_balance = 0;
+    int found_balance = 0;
+    long balance_pos = 0;
+
+    // Search for "Initial Deposit" line and record its position
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
+        {
+            found_balance = 1;
+            balance_pos = ftell(file); // Save the current position to update the balance later
+            break;
+        }
+    }
+
+    if (found_balance)
+    {
+        double withdrawal_amount;
+        printf(GRN "Current Balance: %.2lf\n" RESET, current_balance);
+        printf("Enter amount to withdraw: ");
+        scanf("%lf", &withdrawal_amount);
+
+        if (withdrawal_amount > 0 && withdrawal_amount <= current_balance)
+        {
+            current_balance -= withdrawal_amount;
+            printf(GRN "Withdrawal successful. New balance: %.2lf\n" RESET, current_balance);
+
+            // Update the balance in the file
+            fseek(file, balance_pos - strlen(line), SEEK_SET);          // Move to the balance line
+            fprintf(file, "Initial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
+        }
+        else if (withdrawal_amount > current_balance)
+        {
+            printf(RED "Insufficient balance! Your current balance is: %.2lf\n" RESET, current_balance);
+        }
+        else
+        {
+            printf(RED "Invalid withdrawal amount.\n" RESET);
+        }
+    }
+    else
+    {
+        printf(RED "Error reading the account balance for account number: %s\n" RESET, account_number_for_withdraw_funds);
+    }
+
+    fclose(file); // Close the file
+}
+
 int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin)
 {
     if (strcmp(pin, users[customer_index].pin) != 0)
@@ -1175,6 +1246,15 @@ int main()
                         fgets(account_number_for_deposit_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number_for_deposit_funds);
                         deposit_funds(account_number_for_deposit_funds);
+                        break;
+                    }
+                    case 6:
+                    {
+                        char account_number_for_withdraw_funds[ACCOUNT_NUMBER_LENGTH + 1];
+                        printf("Enter the account number: ");
+                        fgets(account_number_for_withdraw_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(account_number_for_withdraw_funds);
+                        withdraw_funds(account_number_for_withdraw_funds);
                         break;
                     }
 
