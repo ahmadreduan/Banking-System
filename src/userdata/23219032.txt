@@ -7,7 +7,7 @@ NID            : 5111362074
 User Name      : reduan@gmail.con
 Password       : Re@23235016
 Account type   : Mudaraba Term Deposit
-Initial Deposit: 100000.00
+Initial Deposit: 30000.00
 Account Pin    : 123456
 Nominee Name   : redua
 Noninee NID    : 54654

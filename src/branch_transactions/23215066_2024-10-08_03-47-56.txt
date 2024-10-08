@@ -1,0 +1,5 @@
+Account Number: 23215066
+Transaction Type: Withdrawal
+Amount: 10000.00
+Date: 2024-10-08
+Time: 03:47:56

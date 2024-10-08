@@ -776,60 +776,6 @@ void display_customer_options()
     print_border();                                                     // Print bottom border
 }
 
-/**Load users from the file */
-void load_users_from_file()
-{
-    FILE *file = fopen("users.txt", "r");
-    if (file == NULL)
-    {
-        printf("Error opening file!\n");
-        return;
-    }
-
-    User temp_user;
-    char buffer[MAX_STRING_LENGTH];
-    while (fgets(buffer, sizeof(buffer), file) != NULL)
-    {
-        if (strncmp(buffer, "Account Number:", 15) == 0)
-        {
-            sscanf(buffer + 15, "%8s", temp_user.account_number);
-            fgets(temp_user.full_name, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.full_name);
-            fgets(temp_user.dob, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.dob);
-            fgets(temp_user.address, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.address);
-            fgets(temp_user.phone, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.phone);
-            fgets(temp_user.email, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.email);
-            fgets(temp_user.nid_or_birth_cert, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.nid_or_birth_cert);
-            fgets(temp_user.username, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.username);
-            fgets(temp_user.password, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.password);
-            fgets(temp_user.account_type, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.account_type);
-            fscanf(file, "Initial Deposit: %lf\n", &temp_user.initial_deposit);
-            fgets(temp_user.pin, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.pin);
-            fgets(temp_user.nominee_name, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.nominee_name);
-            fgets(temp_user.nominee_nid, MAX_STRING_LENGTH, file);
-            remove_newline(temp_user.nominee_nid);
-            fgets(buffer, sizeof(buffer), file); // Read separator line
-
-            // Add debug print
-            printf("Loaded User: %s\n", temp_user.username);
-
-            ensure_capacity(user_count + 1);
-            users[user_count++] = temp_user;
-        }
-    }
-    fclose(file);
-}
-
 /**
  * Handles the admin login process by verifying the provided credentials.
  * @return 1 if login is successful, 0 otherwise.
@@ -1050,6 +996,78 @@ void deposit_funds(const char *account_number_for_deposit_funds)
 
     fclose(file);
 }
+/**
+ * Logs a transaction (withdrawal or deposit) to the specific branch transaction file.
+ *
+ * @param account_number The account number for which the transaction is being made.
+ * @param transaction_type The type of transaction ("Deposit" or "Withdrawal").
+ * @param amount The amount being transacted.
+ */
+void log_transaction(const char *account_number, const char *transaction_type, double amount)
+{
+    char filename[150];
+    snprintf(filename, sizeof(filename), "branch_transactions/%s_transactions.txt", account_number);
+
+    // Open the transaction file in append mode
+    FILE *file = fopen(filename, "a");
+    if (file == NULL)
+    {
+        printf("Error opening transaction file for account number: %s\n", account_number);
+        return;
+    }
+
+    // Get the current date and time
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+
+    // Format the current date and time as a string
+    char date_time[100];
+    strftime(date_time, sizeof(date_time), "%Y-%m-%d %H:%M:%S", t);
+
+    // Write the transaction details to the file
+    fprintf(file, "Account Number: %s\n", account_number);
+    fprintf(file, "Transaction Type: %s\n", transaction_type);
+    fprintf(file, "Amount: %.2lf\n", amount);
+    fprintf(file, "Date: %s\n", date_time);
+    fprintf(file, "----------------------------------------\n");
+
+    fclose(file);
+}
+
+
+void log_transaction_to_branch(const char *account_number, double amount)
+{
+    // Directory for branch transactions
+    char branch_dir[] = "branch_transactions/";
+
+    // Create directory if it doesn't exist
+    mkdir(branch_dir, 0777);  // 0777 gives full permissions
+
+    // Prepare the file name with the account number and timestamp
+    char transaction_file[256];
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    snprintf(transaction_file, sizeof(transaction_file), "%s%s_%04d-%02d-%02d_%02d-%02d-%02d.txt", 
+             branch_dir, account_number, tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, 
+             tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+    // Open the file for writing
+    FILE *file = fopen(transaction_file, "w");
+    if (file == NULL)
+    {
+        printf("Error creating transaction log file.\n");
+        return;
+    }
+
+    // Write the transaction details
+    fprintf(file, "Account Number: %s\n", account_number);
+    fprintf(file, "Transaction Type: Withdrawal\n");
+    fprintf(file, "Amount: %.2lf\n", amount);
+    fprintf(file, "Date: %04d-%02d-%02d\n", tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
+    fprintf(file, "Time: %02d:%02d:%02d\n", tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+    fclose(file);  // Close the file after writing
+}
 
 /**
  * Searches for a user account based on the provided account number and allows withdrawal of funds.
@@ -1078,10 +1096,14 @@ void withdraw_funds(const char *account_number_for_withdraw_funds)
     // Search for "Initial Deposit" line and record its position
     while (fgets(line, sizeof(line), file) != NULL)
     {
+       // printf("Reading line: %s", line);   Debug: print the line being read
+
+        // Check for the correct line and formatting
         if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
         {
+            printf("Found balance: %.2lf\n", current_balance);  // Debug: print the found balance
             found_balance = 1;
-            balance_pos = ftell(file); // Save the current position to update the balance later
+            balance_pos = ftell(file); // Save the current position after reading the balance
             break;
         }
     }
@@ -1098,9 +1120,11 @@ void withdraw_funds(const char *account_number_for_withdraw_funds)
             current_balance -= withdrawal_amount;
             printf(GRN "Withdrawal successful. New balance: %.2lf\n" RESET, current_balance);
 
-            // Update the balance in the file
-            fseek(file, balance_pos - strlen(line), SEEK_SET);          // Move to the balance line
-            fprintf(file, "Initial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
+            // Move the file pointer back to the position of the balance line before writing
+            fseek(file, balance_pos - strlen(line), SEEK_SET);
+            fprintf(file, "nitial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
+
+            fflush(file); // Ensure data is written to the file immediately
         }
         else if (withdrawal_amount > current_balance)
         {
@@ -1118,6 +1142,8 @@ void withdraw_funds(const char *account_number_for_withdraw_funds)
 
     fclose(file); // Close the file
 }
+
+
 
 int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin)
 {

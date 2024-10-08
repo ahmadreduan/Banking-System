@@ -7,7 +7,8 @@ NID            : 1234567893
 User Name      : redyaa@gmail.com
 Password       : Re@23235016
 Account type   : Mudaraba Term Deposit
-Initial Deposit: 10000.00
+Initial Deposit: 0.00
+0
 Account Pin    : 1234
 Nominee Name   : 
 Noninee NID    : 564897
