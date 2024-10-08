@@ -1,0 +1,5 @@
+Account Number: 23215066
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-10-08 16:19:24
+----------------------------------------

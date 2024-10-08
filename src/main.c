@@ -53,6 +53,92 @@
 #define MAX_PASSWORD_LENGTH 100
 #define MAX_PIN_LENGTH 5 // 4 digits + null terminator
 
+// Generates a random account number starting from 232 and having a length of 8 digits
+// Generates a random account number starting from 232 and having a length of 8 digits
+void generate_account_number(char *account_number);
+
+// Ensures that there is enough capacity in the users array to accommodate new users
+void ensure_capacity(size_t new_capacity);
+
+// Removes the newline character from the end of a string, if it exists
+void remove_newline(char *str);
+
+// Checks if the input contains only alphabets
+int is_valid_name(const char *name);
+
+// Checks if a string contains only digits
+int is_valid_digit(const char *str);
+
+// Checks if a given date is valid
+int is_valid_date(int day, int month, int year);
+
+// Inputs and validates the Date of Birth
+void input_and_validate_dob(char *dob);
+
+// Validates Bangladeshi phone number format
+int is_valid_phone(const char *phone);
+
+// Validates email format
+int is_valid_email(const char *email);
+
+// Function prototype for logging transactions
+void log_transaction(const char *account_number, const char *transaction_type, double amount);
+
+// Function to validate password based on certain criteria
+int is_valid_password(const char *password);
+
+// Function to validate the PIN (4-digit numeric input)
+int is_valid_pin(const char *pin);
+
+// Function to clear the input buffer
+void clear_input_buffer(void);
+
+// Function to register a new account
+void register_account(void);
+
+// Function to search and view an account based on account number
+void search_and_view_account(const char *account_number);
+
+// Function to view the balance of a customer
+void view_balance(size_t customer_index);
+
+// Function to search and display balance based on account number
+void search_and_view_balance(const char *account_number_for_balance);
+
+// Function to deposit funds into a user account
+void deposit_funds(const char *account_number_for_deposit_funds);
+
+// Function to log a transaction into the branch directory
+void log_transaction_to_branch(const char *account_number, double amount);
+
+// Function to withdraw funds from a user account
+void withdraw_funds(const char *account_number_for_withdraw_funds);
+
+// Function to transfer funds between accounts
+int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin);
+
+// Function to display banking rules for customers
+void banking_rules(void);
+
+// Function to print a border
+void print_border(void);
+
+// Function to display the home features of the banking system
+void display_banking_system_home_features(void);
+
+// Function to display the main features of the banking system
+void display_banking_system_features(void);
+
+// Function to display customer options after login
+void display_customer_options(void);
+
+// Function to handle the admin login process
+int admin_login(void);
+
+// Function to handle the customer login process
+int customer_login(void);
+
+
 
 typedef struct
 {
@@ -81,6 +167,168 @@ size_t user_capacity = 0; // Current allocated capacity of the users array
 const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
 const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "23235292"};
 
+
+
+int main()
+{
+    // Print the face with different colors
+    printf(BLUE "                  *****   \n" RESET);
+    printf(BLUE "                 *     *  \n" RESET);
+    printf(YELLOW "                *  " BLUE "O O" YELLOW "  * \n" RESET);
+    printf(YELLOW "                *   " RED "^" YELLOW "   * \n" RESET);
+    printf(YELLOW "                *  " GREEN "\\_/" YELLOW "  * \n" RESET);
+    printf(BLUE "                 *     *  \n" RESET);
+    printf(BLUE "                  *****   \n" RESET);
+
+    // Set color to CYAN for the border and YELLOW for the text inside
+    printf(CYAN "********************************************\n" RESET);
+    printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
+    printf(CYAN "*" RESET "  " YELLOW "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
+    printf(CYAN "********************************************\n\n\n" RESET);
+
+    // load_users_from_file(); // Load existing users from the file at the start
+
+    int choice, logged_in = 0, customer_index = -1;
+    while (1)
+    {
+        display_banking_system_home_features();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar(); // To consume the leftover newline character from scanf
+
+        switch (choice)
+        {
+        case 1: // Admin Login
+            logged_in = admin_login();
+            if (logged_in)
+            {
+                while (logged_in)
+                {
+                    display_banking_system_features();
+                    printf("Enter your choice: ");
+                    scanf("%d", &choice);
+                    getchar(); // To consume the leftover newline character from scanf
+
+                    switch (choice)
+                    {
+                    case 1:
+                        register_account();
+                        break;
+                    case 2:
+                        if (customer_index != -1)
+                        {
+                            view_balance(customer_index);
+                        }
+                        else
+                        {
+                            printf("Please login as a customer first.\n");
+                        }
+                        break;
+                    case 3: // Search Account by Account Number
+                    {
+                        char account_number[ACCOUNT_NUMBER_LENGTH + 1];
+                        printf("Enter the account number: ");
+                        fgets(account_number, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(account_number);
+                        search_and_view_account(account_number);
+                        break;
+                    }
+                    case 4:
+                    {
+                        char account_number_for_balance[ACCOUNT_NUMBER_LENGTH + 1];
+                        printf("Enter the account number: ");
+                        fgets(account_number_for_balance, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(account_number_for_balance);
+                        search_and_view_balance(account_number_for_balance);
+                        break;
+                    }
+                    case 5:
+                    {
+                        char account_number_for_deposit_funds[ACCOUNT_NUMBER_LENGTH + 1];
+                        printf("Enter the account number: ");
+                        fgets(account_number_for_deposit_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(account_number_for_deposit_funds);
+                        deposit_funds(account_number_for_deposit_funds);
+                        break;
+                    }
+                    case 6:
+                    {
+                        char account_number_for_withdraw_funds[ACCOUNT_NUMBER_LENGTH + 1];
+                        printf("Enter the account number: ");
+                        fgets(account_number_for_withdraw_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(account_number_for_withdraw_funds);
+                        withdraw_funds(account_number_for_withdraw_funds);
+                        break;
+                    }
+
+                    case 8:
+                        logged_in = 0; // Logout
+                        break;
+                    default:
+                        printf("Invalid choice.\n");
+                    }
+                }
+            }
+            break;
+        case 2: // Customer Login
+            customer_index = customer_login();
+            logged_in = customer_index != -1;
+            if (logged_in)
+            {
+                while (logged_in)
+                {
+                    display_customer_options();
+                    printf("Enter your choice: ");
+                    scanf("%d", &choice);
+                    getchar(); // To consume the leftover newline character from scanf
+
+                    switch (choice)
+                    {
+                    case 1:
+                        view_balance(customer_index);
+                        break;
+                    case 2:
+                    {
+                        double amount;
+                        char recipient_account[ACCOUNT_NUMBER_LENGTH + 1];
+                        char pin[MAX_STRING_LENGTH];
+
+                        printf("Enter amount to transfer: ");
+                        scanf("%lf", &amount);
+                        getchar(); // To consume the leftover newline character from scanf
+
+                        printf("Enter recipient account number: ");
+                        fgets(recipient_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(recipient_account);
+
+                        printf("Enter your PIN: ");
+                        fgets(pin, MAX_STRING_LENGTH, stdin);
+                        remove_newline(pin);
+
+                        transfer_funds(customer_index, amount, recipient_account, pin);
+                        break;
+                    }
+                    case 4:
+                        logged_in = 0; // Logout
+                        break;
+                    default:
+                        printf("Invalid choice.\n");
+                    }
+                }
+            }
+            break;
+        case 3: // View Banking Rules
+            banking_rules();
+            break;
+        default:
+            printf("Invalid choice.\n");
+        }
+    }
+
+    free(users); // Free allocated memory before exiting
+    return 0;
+}
 /**
  * Generates a random account number starting from 232 and having a length of 8 digits.
  * @param account_number Pointer to a string where the generated account number will be stored.
@@ -981,8 +1229,10 @@ void deposit_funds(const char *account_number_for_deposit_funds)
 
             // Update the balance in the file
             fseek(file, balance_pos - strlen(line), SEEK_SET); // Move to the balance line
-            // fflush(stdin);
             fprintf(file, "nitial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
+
+            // Log the deposit transaction
+            log_transaction(account_number_for_deposit_funds, "Deposit", deposit_amount);
         }
         else
         {
@@ -996,6 +1246,7 @@ void deposit_funds(const char *account_number_for_deposit_funds)
 
     fclose(file);
 }
+
 /**
  * Logs a transaction (withdrawal or deposit) to the specific branch transaction file.
  *
@@ -1096,14 +1347,10 @@ void withdraw_funds(const char *account_number_for_withdraw_funds)
     // Search for "Initial Deposit" line and record its position
     while (fgets(line, sizeof(line), file) != NULL)
     {
-       // printf("Reading line: %s", line);   Debug: print the line being read
-
-        // Check for the correct line and formatting
         if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
         {
-            printf("Found balance: %.2lf\n", current_balance);  // Debug: print the found balance
             found_balance = 1;
-            balance_pos = ftell(file); // Save the current position after reading the balance
+            balance_pos = ftell(file); // Save the current position to update the balance later
             break;
         }
     }
@@ -1120,11 +1367,12 @@ void withdraw_funds(const char *account_number_for_withdraw_funds)
             current_balance -= withdrawal_amount;
             printf(GRN "Withdrawal successful. New balance: %.2lf\n" RESET, current_balance);
 
-            // Move the file pointer back to the position of the balance line before writing
-            fseek(file, balance_pos - strlen(line), SEEK_SET);
-            fprintf(file, "nitial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
+            // Update the balance in the file
+            fseek(file, balance_pos - strlen(line), SEEK_SET);          // Move to the balance line
+            fprintf(file, "Initial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
 
-            fflush(file); // Ensure data is written to the file immediately
+            // Log the withdrawal transaction
+            log_transaction(account_number_for_withdraw_funds, "Withdrawal", withdrawal_amount);
         }
         else if (withdrawal_amount > current_balance)
         {
@@ -1142,7 +1390,6 @@ void withdraw_funds(const char *account_number_for_withdraw_funds)
 
     fclose(file); // Close the file
 }
-
 
 
 int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin)
@@ -1191,163 +1438,4 @@ void banking_rules()
     printf(BMAG "7. If you have any questions or need assistance, please contact our customer support.\n" RESET);
 }
 
-int main()
-{
-    // Print the face with different colors
-    printf(BLUE "                  *****   \n" RESET);
-    printf(BLUE "                 *     *  \n" RESET);
-    printf(YELLOW "                *  " BLUE "O O" YELLOW "  * \n" RESET);
-    printf(YELLOW "                *   " RED "^" YELLOW "   * \n" RESET);
-    printf(YELLOW "                *  " GREEN "\\_/" YELLOW "  * \n" RESET);
-    printf(BLUE "                 *     *  \n" RESET);
-    printf(BLUE "                  *****   \n" RESET);
 
-    // Set color to CYAN for the border and YELLOW for the text inside
-    printf(CYAN "********************************************\n" RESET);
-    printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET "  " YELLOW "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
-    printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "********************************************\n\n\n" RESET);
-
-    // load_users_from_file(); // Load existing users from the file at the start
-
-    int choice, logged_in = 0, customer_index = -1;
-    while (1)
-    {
-        display_banking_system_home_features();
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        getchar(); // To consume the leftover newline character from scanf
-
-        switch (choice)
-        {
-        case 1: // Admin Login
-            logged_in = admin_login();
-            if (logged_in)
-            {
-                while (logged_in)
-                {
-                    display_banking_system_features();
-                    printf("Enter your choice: ");
-                    scanf("%d", &choice);
-                    getchar(); // To consume the leftover newline character from scanf
-
-                    switch (choice)
-                    {
-                    case 1:
-                        register_account();
-                        break;
-                    case 2:
-                        if (customer_index != -1)
-                        {
-                            view_balance(customer_index);
-                        }
-                        else
-                        {
-                            printf("Please login as a customer first.\n");
-                        }
-                        break;
-                    case 3: // Search Account by Account Number
-                    {
-                        char account_number[ACCOUNT_NUMBER_LENGTH + 1];
-                        printf("Enter the account number: ");
-                        fgets(account_number, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        remove_newline(account_number);
-                        search_and_view_account(account_number);
-                        break;
-                    }
-                    case 4:
-                    {
-                        char account_number_for_balance[ACCOUNT_NUMBER_LENGTH + 1];
-                        printf("Enter the account number: ");
-                        fgets(account_number_for_balance, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        remove_newline(account_number_for_balance);
-                        search_and_view_balance(account_number_for_balance);
-                        break;
-                    }
-                    case 5:
-                    {
-                        char account_number_for_deposit_funds[ACCOUNT_NUMBER_LENGTH + 1];
-                        printf("Enter the account number: ");
-                        fgets(account_number_for_deposit_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        remove_newline(account_number_for_deposit_funds);
-                        deposit_funds(account_number_for_deposit_funds);
-                        break;
-                    }
-                    case 6:
-                    {
-                        char account_number_for_withdraw_funds[ACCOUNT_NUMBER_LENGTH + 1];
-                        printf("Enter the account number: ");
-                        fgets(account_number_for_withdraw_funds, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        remove_newline(account_number_for_withdraw_funds);
-                        withdraw_funds(account_number_for_withdraw_funds);
-                        break;
-                    }
-
-                    case 8:
-                        logged_in = 0; // Logout
-                        break;
-                    default:
-                        printf("Invalid choice.\n");
-                    }
-                }
-            }
-            break;
-        case 2: // Customer Login
-            customer_index = customer_login();
-            logged_in = customer_index != -1;
-            if (logged_in)
-            {
-                while (logged_in)
-                {
-                    display_customer_options();
-                    printf("Enter your choice: ");
-                    scanf("%d", &choice);
-                    getchar(); // To consume the leftover newline character from scanf
-
-                    switch (choice)
-                    {
-                    case 1:
-                        view_balance(customer_index);
-                        break;
-                    case 2:
-                    {
-                        double amount;
-                        char recipient_account[ACCOUNT_NUMBER_LENGTH + 1];
-                        char pin[MAX_STRING_LENGTH];
-
-                        printf("Enter amount to transfer: ");
-                        scanf("%lf", &amount);
-                        getchar(); // To consume the leftover newline character from scanf
-
-                        printf("Enter recipient account number: ");
-                        fgets(recipient_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        remove_newline(recipient_account);
-
-                        printf("Enter your PIN: ");
-                        fgets(pin, MAX_STRING_LENGTH, stdin);
-                        remove_newline(pin);
-
-                        transfer_funds(customer_index, amount, recipient_account, pin);
-                        break;
-                    }
-                    case 4:
-                        logged_in = 0; // Logout
-                        break;
-                    default:
-                        printf("Invalid choice.\n");
-                    }
-                }
-            }
-            break;
-        case 3: // View Banking Rules
-            banking_rules();
-            break;
-        default:
-            printf("Invalid choice.\n");
-        }
-    }
-
-    free(users); // Free allocated memory before exiting
-    return 0;
-}

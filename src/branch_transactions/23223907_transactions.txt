@@ -1,0 +1,15 @@
+Account Number: 23223907
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-10-08 16:15:31
+----------------------------------------
+Account Number: 23223907
+Transaction Type: Withdrawal
+Amount: 10000.00
+Date: 2024-10-08 16:16:25
+----------------------------------------
+Account Number: 23223907
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-10-08 16:37:20
+----------------------------------------

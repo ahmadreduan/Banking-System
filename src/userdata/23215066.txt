@@ -7,8 +7,7 @@ NID            : 1234567896
 User Name      : redu@gmail.com
 Password       : Re#123456789
 Account type   : Mudaraba Term Deposit
-Initial Deposit: 500.00
-
+IInitial Deposit: 5500.00
 ccount Pin    : 1234
 Nominee Name   : REdua
 Noninee NID    : 1234567896
