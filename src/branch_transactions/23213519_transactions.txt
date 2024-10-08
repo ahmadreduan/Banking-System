@@ -1,0 +1,35 @@
+Account Number: 23213519
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-10-08 19:05:22
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Withdrawal
+Amount: 50000.00
+Date: 2024-10-08 19:05:57
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-10-08 20:18:53
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-10-08 20:22:13
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-10-08 20:24:23
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-10-08 20:24:37
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Withdrawal
+Amount: 200000.00
+Date: 2024-10-08 20:25:04
+----------------------------------------

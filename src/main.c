@@ -6,6 +6,11 @@
 #include <sys/types.h> // Also include this for POSIX systems
 #include <ctype.h>
 #include <windows.h>
+//#include <direct.h> // For _mkdir
+
+// next day te dekbo account create ar problem ar shob bug fixt korbo inshallah
+
+
 
 // Regular text and style definitions as per your list
 #define BLK "\e[0;30m"
@@ -16,7 +21,6 @@
 #define MAG "\e[0;35m"
 #define CYN "\e[0;36m"
 #define WHT "\e[0;37m"
-
 // Bold text definitions
 #define BBLK "\e[1;30m"
 #define BRED "\e[1;31m"
@@ -26,11 +30,7 @@
 #define BMAG "\e[1;35m"
 #define BCYN "\e[1;36m"
 #define BWHT "\e[1;37m"
-
-// Reset color
-#define RESET "\x1B[0m"
-
-// ANSI escape codes for colors
+#define RESET "\x1B[0m" // Reset color
 #define GREEN "\x1B[32m"
 #define YELLOW "\x1B[33m"
 #define BLUE "\x1B[34m"
@@ -52,8 +52,31 @@
 #define PHONE_LENGTH (strlen(PHONE_PREFIX) + PHONE_DIGITS + 1) // +1 for null terminator
 #define MAX_PASSWORD_LENGTH 100
 #define MAX_PIN_LENGTH 5 // 4 digits + null terminator
+#define BRANCH_TRANSACTION_FILE "branch_transaction.txt"
+#define BRANCH_ACCOUNT_FILE "branch_account.txt"
+#define BRANCH_ACCOUNT_BALANCE 100000000000000.00 // 100 thousand crore
 
-// Generates a random account number starting from 232 and having a length of 8 digits
+
+
+typedef struct
+{
+    char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // 8 digits + null terminator
+    double balance;
+    char full_name[100];
+    char date_of_birth[11]; // Date of birth in DD/MM/YYYY format
+    char address[100];
+    char phone[100];
+    char email[100];
+    char nid_or_birth_cert[14];// 13 digits + null terminator
+    char username[100];
+    char password[100];
+    char account_type[100];
+    double initial_deposit;
+    char pin[5];// For PIN, make sure it can hold 4 digits + null terminator
+    char nominee_name[100];
+    char nominee_nid[100];
+} User;
+
 // Generates a random account number starting from 232 and having a length of 8 digits
 void generate_account_number(char *account_number);
 
@@ -73,7 +96,7 @@ int is_valid_digit(const char *str);
 int is_valid_date(int day, int month, int year);
 
 // Inputs and validates the Date of Birth
-void input_and_validate_dob(char *dob);
+void input_and_validate_dob(User *user);
 
 // Validates Bangladeshi phone number format
 int is_valid_phone(const char *phone);
@@ -106,13 +129,13 @@ void view_balance(size_t customer_index);
 void search_and_view_balance(const char *account_number_for_balance);
 
 // Function to deposit funds into a user account
-void deposit_funds(const char *account_number_for_deposit_funds);
+void deposit_funds(const char *account_number);
+
+// Function to withdraw funds from a user account
+void withdraw_funds(const char *account_number);
 
 // Function to log a transaction into the branch directory
 void log_transaction_to_branch(const char *account_number, double amount);
-
-// Function to withdraw funds from a user account
-void withdraw_funds(const char *account_number_for_withdraw_funds);
 
 // Function to transfer funds between accounts
 int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin);
@@ -138,39 +161,36 @@ int admin_login(void);
 // Function to handle the customer login process
 int customer_login(void);
 
+// Function to initialize the branch account with an initial balance
+void initialize_branch_account(void);
+
+// Function to get the balance of the Branch account
+double get_branch_account_balance();
+
+void log_transaction(const char *account_number, const char *transaction_type, double amount);
+double read_branch_account_balance();
+
+// Function to update the balance of the Branch account
+void update_branch_account_balance(double amount);
 
 
-typedef struct
-{
-    char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // 8 digits + null terminator
-    char full_name[100];
-    char dob[100]; // Date of birth in DD/MM/YYYY format
-    char address[100];
-    char phone[100];
-    char email[100];
-    char nid_or_birth_cert[100];
-    char username[100];
-    char password[100];
-    char account_type[100];
-    double initial_deposit;
-    char pin[100];
-    char nominee_name[100];
-    char nominee_nid[100];
-} User;
+
+
 
 // Dynamic array to store users
 User *users = NULL;
-size_t user_count = 0;    // Current number of users
+size_t user_count;        // Current number of users
 size_t user_capacity = 0; // Current allocated capacity of the users array
 
 // Predefines admin usernames and passwords
 const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
 const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "23235292"};
 
-
-
 int main()
 {
+
+    // Initialize the branch account at the start
+    initialize_branch_account(); // Ensure branch account is initialized
     // Print the face with different colors
     printf(BLUE "                  *****   \n" RESET);
     printf(BLUE "                 *     *  \n" RESET);
@@ -183,7 +203,7 @@ int main()
     // Set color to CYAN for the border and YELLOW for the text inside
     printf(CYAN "********************************************\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET "  " YELLOW "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET "  " YELLOW "*""  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
     printf(CYAN "********************************************\n\n\n" RESET);
 
@@ -205,6 +225,8 @@ int main()
             {
                 while (logged_in)
                 {
+                    //double balance = get_branch_account_balance();
+                    //printf("Current branch account balance: %.2f\n", balance);
                     display_banking_system_features();
                     printf("Enter your choice: ");
                     scanf("%d", &choice);
@@ -433,14 +455,15 @@ int is_valid_date(int day, int month, int year)
 }
 
 // Function to input and validate the Date of Birth
-void input_and_validate_dob(char *dob)
+void input_and_validate_dob(User *user)
 {
     int day, month, year;
+    char dob[11]; // Buffer for the date
 
     while (1)
     {
         printf(BGRN "Enter date of birth (DD/MM/YYYY): " RESET);
-        fgets(dob, 100, stdin);         // Read input
+        fgets(dob, sizeof(dob), stdin);         // Read input
         dob[strcspn(dob, "\n")] = '\0'; // Remove newline character
 
         // Validate format (length should be 10: "DD/MM/YYYY")
@@ -474,11 +497,15 @@ void input_and_validate_dob(char *dob)
             continue;
         }
 
+        // Assign the validated date to the user struct
+        snprintf(user->date_of_birth, sizeof(user->date_of_birth), "%s", dob);
+
         // If all validations pass, break out of the loop
-        //  printf("Date of birth is valid: %02d/%02d/%d\n", day, month, year);
         break;
     }
+    fflush(stdin);
 }
+
 
 // Function to validate Bangladeshi phone number format
 int is_valid_phone(const char *phone)
@@ -634,8 +661,8 @@ void register_account()
 
     snprintf(new_user.full_name, sizeof(new_user.full_name), "%s %s", first_name, last_name);
 
-    char dob[100];
-    input_and_validate_dob(dob);
+    // Input and validate date of birth
+    input_and_validate_dob(&new_user);
 
     // Input for Phone Number (Bangladeshi format: +8801XXXXXXXXX or 01XXXXXXXXX)
     while (1)
@@ -794,7 +821,6 @@ void register_account()
     // getchar(); // Consume the leftover newline character
     clear_input_buffer();
 
-    
     // Input for PIN (must be 4 digits and entered twice)
     char confirm_pin[MAX_PIN_LENGTH];
     // Input for PIN
@@ -833,6 +859,7 @@ void register_account()
             printf("Invalid PIN! Please enter a 4-digit number.\n");
         }
     }
+    fflush(stdin);
 
     // Input for nominee name with validation
     while (1)
@@ -895,7 +922,7 @@ void register_account()
 
     fprintf(file, "Account Number : %s\n", new_user.account_number);
     fprintf(file, "Full Name      : %s\n", new_user.full_name);
-    fprintf(file, "Date of Birth  : %s\n", new_user.dob);
+    fprintf(file, "Date of Birth  : %s\n", new_user.date_of_birth);
     fprintf(file, "Mobile Number  : %s\n", new_user.phone);
     fprintf(file, "Email          : %s\n", new_user.email);
     fprintf(file, "NID            : %s\n", new_user.nid_or_birth_cert);
@@ -938,8 +965,8 @@ void search_and_view_account(const char *account_number)
     fscanf(file, "Account Number : %s\n", temp_user.account_number);
     fgets(temp_user.full_name, MAX_STRING_LENGTH, file);
     remove_newline(temp_user.full_name);
-    fgets(temp_user.dob, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.dob);
+    fgets(temp_user.date_of_birth, MAX_STRING_LENGTH, file);
+    remove_newline(temp_user.date_of_birth);
     fgets(temp_user.phone, MAX_STRING_LENGTH, file);
     remove_newline(temp_user.phone);
     fgets(temp_user.email, MAX_STRING_LENGTH, file);
@@ -969,7 +996,7 @@ void search_and_view_account(const char *account_number)
     printf("| %s\n", temp_user.full_name);
     printf("+-----------------------------------------+\n");
     printf("| Account Number: %s                     \n", temp_user.account_number);
-    printf("| %s                     \n", temp_user.dob);
+    printf("| %s                     \n", temp_user.date_of_birth);
     printf("| %s                     \n", temp_user.phone);
     printf("| %s                     \n", temp_user.email);
     printf("| %s                     \n", temp_user.account_type);
@@ -1179,6 +1206,77 @@ void search_and_view_balance(const char *account_number_for_balance)
         printf("Error reading the account balance for account number: %s\n", account_number_for_balance);
     }
 }
+
+// Function to initialize the branch account
+void initialize_branch_account()
+{
+    // Check if branch account file exists
+    FILE *file = fopen(BRANCH_ACCOUNT_FILE, "r");
+    if (file == NULL)
+    {
+        // Create a new branch account with an initial balance
+        file = fopen(BRANCH_ACCOUNT_FILE, "w");
+        if (file != NULL)
+        {
+            fprintf(file, "%.2f\n", 1000000000.00); // Set initial balance to 1 billion
+            fclose(file);
+            printf("Branch account initialized with balance: 1000000000.00\n");
+        }
+        else
+        {
+            printf("Error creating branch account file.\n");
+        }
+    }
+    else
+    {
+        fclose(file);
+        printf("Branch account already exists.\n");
+    }
+}
+
+// Function to read the current balance of the branch account
+double read_branch_account_balance()
+{
+    FILE *file = fopen(BRANCH_ACCOUNT_FILE, "r");
+    if (file == NULL)
+    {
+        printf("Error opening branch account file.\n");
+        return 0.0; // Assuming 0 if the file can't be opened
+    }
+    double balance;
+    if (fscanf(file, "%lf", &balance) != 1)
+    {                  // Ensure successful read
+        balance = 0.0; // Default to 0 if reading fails
+    }
+    fclose(file);
+    return balance;
+}
+
+// Function to update the balance of the branch account
+void update_branch_account_balance(double amount)
+{
+    double current_balance = read_branch_account_balance();
+    double new_balance = current_balance + amount;
+
+    FILE *file = fopen(BRANCH_ACCOUNT_FILE, "w");
+    if (file != NULL)
+    {
+        fprintf(file, "%.2f\n", new_balance); // Write the new balance to the file
+        fclose(file);
+        printf("Branch account balance updated to: %.2f\n", new_balance);
+    }
+    else
+    {
+        printf("Error updating branch account balance.\n");
+    }
+}
+
+// Function to get the branch account balance
+double get_branch_account_balance()
+{
+    return read_branch_account_balance();
+}
+
 /**
  * Searches for a user account based on the provided account number and allows deposit of funds.
  * Loads the account details from the corresponding file, retrieves the current balance,
@@ -1186,21 +1284,28 @@ void search_and_view_balance(const char *account_number_for_balance)
  *
  * @param account_number_for_deposit_funds The account number to search for and deposit funds into.
  */
-void deposit_funds(const char *account_number_for_deposit_funds)
+void deposit_funds(const char *account_number)
 {
+    double branch_balance = get_branch_account_balance();
+    if (branch_balance <= 0)
+    {
+        printf("Insufficient funds in the branch account. Current balance: %.2lf\n", branch_balance);
+        return; // Exit function if branch account balance is zero or negative
+    }
+
+    // Construct the filename for the user's account
     char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number_for_deposit_funds);
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
 
     FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
     if (file == NULL)
     {
-        printf("No account found with the account number: %s\n", account_number_for_deposit_funds);
+        printf("No account found with the account number: %s\n", account_number);
         return;
     }
 
     char line[256];
     double initial_deposit = 0;
-    int found_balance = 0;
     long balance_pos = 0;
 
     // Search for "Initial Deposit" line and record its position
@@ -1208,31 +1313,40 @@ void deposit_funds(const char *account_number_for_deposit_funds)
     {
         if (sscanf(line, "Initial Deposit: %lf", &initial_deposit) == 1)
         {
-            found_balance = 1;
-            balance_pos = ftell(file); // Save the current position
+            balance_pos = ftell(file); // Save the current position for updating
             break;
         }
     }
 
-    if (found_balance)
-    {
+    if (balance_pos != 0)
+    { // If balance was found
         double deposit_amount;
         printf("Current Balance: %.2lf\n", initial_deposit);
         printf("Enter amount to deposit: ");
         scanf("%lf", &deposit_amount);
-        // getchar(); // Consume newline character
 
         if (deposit_amount > 0)
         {
-            initial_deposit += deposit_amount;
-            printf("Deposit successful. New balance: %.2lf\n", initial_deposit);
+            // Check if there's enough balance in the branch account
+            if (deposit_amount <= branch_balance)
+            {
+                initial_deposit += deposit_amount;
+                printf("Deposit successful. New balance: %.2lf\n", initial_deposit);
 
-            // Update the balance in the file
-            fseek(file, balance_pos - strlen(line), SEEK_SET); // Move to the balance line
-            fprintf(file, "nitial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
+                // Update the branch account balance
+                update_branch_account_balance(branch_balance - deposit_amount);
 
-            // Log the deposit transaction
-            log_transaction(account_number_for_deposit_funds, "Deposit", deposit_amount);
+                // Update the balance in the user's file
+                fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line
+                fprintf(file, "nitial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
+
+                // Log the transaction
+                log_transaction(account_number, "Deposit", deposit_amount);
+            }
+            else
+            {
+                printf("Insufficient funds in the branch account. Current balance: %.2lf\n", branch_balance);
+            }
         }
         else
         {
@@ -1241,10 +1355,87 @@ void deposit_funds(const char *account_number_for_deposit_funds)
     }
     else
     {
-        printf("Error reading the account balance for account number: %s\n", account_number_for_deposit_funds);
+        printf("Error reading the account balance for account number: %s\n", account_number);
     }
 
     fclose(file);
+}
+
+/**
+ * Searches for a user account based on the provided account number and allows withdrawal of funds.
+ * Loads the account details from the corresponding file, retrieves the current balance,
+ * prompts the user to enter a withdrawal amount, and updates the balance in the file.
+ *
+ * @param account_number_for_withdraw_funds The account number to search for and withdraw funds from.
+ */
+void withdraw_funds(const char *account_number)
+{
+    char filename[150];
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
+
+    FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
+    if (file == NULL)
+    {
+        printf("No account found with the account number: %s\n", account_number);
+        return;
+    }
+
+    char line[256];
+    double current_balance = 0;
+    int found_balance = 0;
+    long balance_pos = 0;
+
+    // Search for "Initial Deposit" line and record its position
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
+        {
+            found_balance = 1;
+            balance_pos = ftell(file); // Save the current position to update the balance later
+            break;
+        }
+    }
+
+    if (found_balance)
+    {
+        double withdrawal_amount;
+        printf("Current Balance: %.2lf\n", current_balance);
+        printf("Enter amount to withdraw: ");
+        scanf("%lf", &withdrawal_amount);
+
+        if (withdrawal_amount > 0 && withdrawal_amount <= current_balance)
+        {
+            current_balance -= withdrawal_amount;
+            printf("Withdrawal successful. New balance: %.2lf\n", current_balance);
+
+            // Update the balance in the file
+            fseek(file, balance_pos - strlen(line), SEEK_SET);          // Move to the balance line
+            fprintf(file, "nitial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
+
+            // Update the branch account
+            double branch_balance = get_branch_account_balance();
+            branch_balance += withdrawal_amount; // Add to the branch account
+            update_branch_account_balance(branch_balance);
+            printf("Branch account updated. New balance: %.2lf\n", branch_balance);
+
+            // Log the transaction
+           log_transaction(account_number, "Withdrawal", withdrawal_amount);
+        }
+        else if (withdrawal_amount > current_balance)
+        {
+            printf("Insufficient balance! Your current balance is: %.2lf\n", current_balance);
+        }
+        else
+        {
+            printf("Invalid withdrawal amount.\n");
+        }
+    }
+    else
+    {
+        printf("Error reading the account balance for account number: %s\n", account_number);
+    }
+
+    fclose(file); // Close the file
 }
 
 /**
@@ -1285,21 +1476,20 @@ void log_transaction(const char *account_number, const char *transaction_type, d
     fclose(file);
 }
 
-
 void log_transaction_to_branch(const char *account_number, double amount)
 {
     // Directory for branch transactions
     char branch_dir[] = "branch_transactions/";
 
     // Create directory if it doesn't exist
-    mkdir(branch_dir, 0777);  // 0777 gives full permissions
+    mkdir(branch_dir, 0777); // 0777 gives full permissions
 
     // Prepare the file name with the account number and timestamp
     char transaction_file[256];
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    snprintf(transaction_file, sizeof(transaction_file), "%s%s_%04d-%02d-%02d_%02d-%02d-%02d.txt", 
-             branch_dir, account_number, tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, 
+    snprintf(transaction_file, sizeof(transaction_file), "%s%s_%04d-%02d-%02d_%02d-%02d-%02d.txt",
+             branch_dir, account_number, tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
              tm->tm_hour, tm->tm_min, tm->tm_sec);
 
     // Open the file for writing
@@ -1309,88 +1499,7 @@ void log_transaction_to_branch(const char *account_number, double amount)
         printf("Error creating transaction log file.\n");
         return;
     }
-
-    // Write the transaction details
-    fprintf(file, "Account Number: %s\n", account_number);
-    fprintf(file, "Transaction Type: Withdrawal\n");
-    fprintf(file, "Amount: %.2lf\n", amount);
-    fprintf(file, "Date: %04d-%02d-%02d\n", tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday);
-    fprintf(file, "Time: %02d:%02d:%02d\n", tm->tm_hour, tm->tm_min, tm->tm_sec);
-
-    fclose(file);  // Close the file after writing
 }
-
-/**
- * Searches for a user account based on the provided account number and allows withdrawal of funds.
- * Loads the account details from the corresponding file, retrieves the current balance,
- * prompts the user to enter a withdrawal amount, and updates the balance in the file.
- *
- * @param account_number_for_withdraw_funds The account number to search for and withdraw funds from.
- */
-void withdraw_funds(const char *account_number_for_withdraw_funds)
-{
-    char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number_for_withdraw_funds);
-
-    FILE *file = fopen(filename, "r+"); // Open the file in read+write mode to update balance
-    if (file == NULL)
-    {
-        printf(RED "No account found with the account number: %s\n" RESET, account_number_for_withdraw_funds);
-        return;
-    }
-
-    char line[256];
-    double current_balance = 0;
-    int found_balance = 0;
-    long balance_pos = 0;
-
-    // Search for "Initial Deposit" line and record its position
-    while (fgets(line, sizeof(line), file) != NULL)
-    {
-        if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
-        {
-            found_balance = 1;
-            balance_pos = ftell(file); // Save the current position to update the balance later
-            break;
-        }
-    }
-
-    if (found_balance)
-    {
-        double withdrawal_amount;
-        printf(GRN "Current Balance: %.2lf\n" RESET, current_balance);
-        printf("Enter amount to withdraw: ");
-        scanf("%lf", &withdrawal_amount);
-
-        if (withdrawal_amount > 0 && withdrawal_amount <= current_balance)
-        {
-            current_balance -= withdrawal_amount;
-            printf(GRN "Withdrawal successful. New balance: %.2lf\n" RESET, current_balance);
-
-            // Update the balance in the file
-            fseek(file, balance_pos - strlen(line), SEEK_SET);          // Move to the balance line
-            fprintf(file, "Initial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
-
-            // Log the withdrawal transaction
-            log_transaction(account_number_for_withdraw_funds, "Withdrawal", withdrawal_amount);
-        }
-        else if (withdrawal_amount > current_balance)
-        {
-            printf(RED "Insufficient balance! Your current balance is: %.2lf\n" RESET, current_balance);
-        }
-        else
-        {
-            printf(RED "Invalid withdrawal amount.\n" RESET);
-        }
-    }
-    else
-    {
-        printf(RED "Error reading the account balance for account number: %s\n" RESET, account_number_for_withdraw_funds);
-    }
-
-    fclose(file); // Close the file
-}
-
 
 int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin)
 {
@@ -1437,5 +1546,3 @@ void banking_rules()
     printf(BGRN "6. Keep your contact information up to date to receive important notifications.\n" RESET);
     printf(BMAG "7. If you have any questions or need assistance, please contact our customer support.\n" RESET);
 }
-
-
