@@ -6,11 +6,9 @@
 #include <sys/types.h> // Also include this for POSIX systems
 #include <ctype.h>
 #include <windows.h>
-//#include <direct.h> // For _mkdir
+// #include <direct.h> // For _mkdir
 
 // next day te dekbo account create ar problem ar shob bug fixt korbo inshallah
-
-
 
 // Regular text and style definitions as per your list
 #define BLK "\e[0;30m"
@@ -56,8 +54,6 @@
 #define BRANCH_ACCOUNT_FILE "branch_account.txt"
 #define BRANCH_ACCOUNT_BALANCE 100000000000000.00 // 100 thousand crore
 
-
-
 typedef struct
 {
     char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // 8 digits + null terminator
@@ -67,12 +63,12 @@ typedef struct
     char address[100];
     char phone[100];
     char email[100];
-    char nid_or_birth_cert[14];// 13 digits + null terminator
+    char nid_or_birth_cert[14]; // 13 digits + null terminator
     char username[100];
     char password[100];
     char account_type[100];
     double initial_deposit;
-    char pin[5];// For PIN, make sure it can hold 4 digits + null terminator
+    char pin[100]; // For PIN, make sure it can hold 4 digits + null terminator
     char nominee_name[100];
     char nominee_nid[100];
 } User;
@@ -173,10 +169,6 @@ double read_branch_account_balance();
 // Function to update the balance of the Branch account
 void update_branch_account_balance(double amount);
 
-
-
-
-
 // Dynamic array to store users
 User *users = NULL;
 size_t user_count;        // Current number of users
@@ -188,7 +180,7 @@ const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "2323529
 
 int main()
 {
-
+    srand(time(NULL)); // Seed the random number generator with the current time
     // Initialize the branch account at the start
     initialize_branch_account(); // Ensure branch account is initialized
     // Print the face with different colors
@@ -203,7 +195,8 @@ int main()
     // Set color to CYAN for the border and YELLOW for the text inside
     printf(CYAN "********************************************\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET "  " YELLOW "*""  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET "  " YELLOW "*"
+                "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
     printf(CYAN "********************************************\n\n\n" RESET);
 
@@ -225,8 +218,8 @@ int main()
             {
                 while (logged_in)
                 {
-                    //double balance = get_branch_account_balance();
-                    //printf("Current branch account balance: %.2f\n", balance);
+                    // double balance = get_branch_account_balance();
+                    // printf("Current branch account balance: %.2f\n", balance);
                     display_banking_system_features();
                     printf("Enter your choice: ");
                     scanf("%d", &choice);
@@ -463,7 +456,7 @@ void input_and_validate_dob(User *user)
     while (1)
     {
         printf(BGRN "Enter date of birth (DD/MM/YYYY): " RESET);
-        fgets(dob, sizeof(dob), stdin);         // Read input
+        fgets(dob, sizeof(dob), stdin); // Read input
         dob[strcspn(dob, "\n")] = '\0'; // Remove newline character
 
         // Validate format (length should be 10: "DD/MM/YYYY")
@@ -505,7 +498,6 @@ void input_and_validate_dob(User *user)
     }
     fflush(stdin);
 }
-
 
 // Function to validate Bangladeshi phone number format
 int is_valid_phone(const char *phone)
@@ -832,8 +824,9 @@ void register_account()
             printf("Error reading input.\n");
             continue;
         }
-        remove_newline(new_user.pin);
+        remove_newline(new_user.pin); // Remove newline from PIN input
 
+        // Check if the PIN is valid (4 digits and numeric)
         if (is_valid_pin(new_user.pin))
         {
             printf("Confirm PIN: ");
@@ -842,12 +835,13 @@ void register_account()
                 printf("Error reading input.\n");
                 continue;
             }
-            remove_newline(confirm_pin);
+            remove_newline(confirm_pin); // Remove newline from confirmation PIN
 
+            // Compare the two PINs
             if (strcmp(new_user.pin, confirm_pin) == 0)
             {
                 printf("PIN accepted!\n");
-                break;
+                break; // Exit the loop if the PINs match
             }
             else
             {
@@ -870,12 +864,12 @@ void register_account()
 
         if (is_valid_name(new_user.nominee_name))
         {
-            printf("Nominee name accepted: %s\n", new_user.nominee_name);
+           // printf("Nominee name accepted: %s\n", new_user.nominee_name);
             break; // Break the loop if the name is valid
         }
         else
         {
-            printf("Invalid name! Please enter only alphabetic characters and spaces.\n");
+            printf(BRED"Invalid name! Please enter only alphabetic characters and spaces.\n"RESET);
         }
     }
     fflush(stdin);
@@ -1230,7 +1224,7 @@ void initialize_branch_account()
     else
     {
         fclose(file);
-        printf("Branch account already exists.\n");
+        //printf("Branch account already exists.\n");
     }
 }
 
@@ -1409,7 +1403,7 @@ void withdraw_funds(const char *account_number)
             printf("Withdrawal successful. New balance: %.2lf\n", current_balance);
 
             // Update the balance in the file
-            fseek(file, balance_pos - strlen(line), SEEK_SET);          // Move to the balance line
+            fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line
             fprintf(file, "nitial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
 
             // Update the branch account
@@ -1419,7 +1413,7 @@ void withdraw_funds(const char *account_number)
             printf("Branch account updated. New balance: %.2lf\n", branch_balance);
 
             // Log the transaction
-           log_transaction(account_number, "Withdrawal", withdrawal_amount);
+            log_transaction(account_number, "Withdrawal", withdrawal_amount);
         }
         else if (withdrawal_amount > current_balance)
         {
@@ -1436,6 +1430,18 @@ void withdraw_funds(const char *account_number)
     }
 
     fclose(file); // Close the file
+}
+
+// Function to generate a random alphanumeric transaction ID
+void generate_transaction_id(char *transaction_id, size_t length)
+{
+    const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (size_t i = 0; i < length; i++)
+    {
+        int key = rand() % (int)(sizeof(charset) - 1);
+        transaction_id[i] = charset[key];
+    }
+    transaction_id[length] = '\0'; // Null-terminate the string
 }
 
 /**
@@ -1466,11 +1472,16 @@ void log_transaction(const char *account_number, const char *transaction_type, d
     char date_time[100];
     strftime(date_time, sizeof(date_time), "%Y-%m-%d %H:%M:%S", t);
 
+    // Generate a random transaction ID
+    char transaction_id[13]; // Length 12 for the ID + 1 for null terminator
+    generate_transaction_id(transaction_id, 12);
+
     // Write the transaction details to the file
     fprintf(file, "Account Number: %s\n", account_number);
     fprintf(file, "Transaction Type: %s\n", transaction_type);
     fprintf(file, "Amount: %.2lf\n", amount);
     fprintf(file, "Date: %s\n", date_time);
+    fprintf(file, "Transaction ID: %s\n", transaction_id);
     fprintf(file, "----------------------------------------\n");
 
     fclose(file);
