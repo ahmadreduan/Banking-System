@@ -25,3 +25,15 @@ Amount: 3000.00
 Date: 2024-10-09 15:15:29
 Transaction ID: L2TG9E4XjsSV
 ----------------------------------------
+Account Number: 23205504
+Transaction Type: Deposit
+Amount: 10000.00
+Date: 2024-10-09 15:58:31
+Transaction ID: 1rPMWlWVv4SJ
+----------------------------------------
+Account Number: 23205504
+Transaction Type: Withdrawal
+Amount: 50000.00
+Date: 2024-10-09 15:59:09
+Transaction ID: h39OFU9gf9lt
+----------------------------------------

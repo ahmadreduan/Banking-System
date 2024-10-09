@@ -8,8 +8,6 @@
 #include <windows.h>
 // #include <direct.h> // For _mkdir
 
-// next day te dekbo account create ar problem ar shob bug fixt korbo inshallah
-
 // Regular text and style definitions as per your list
 #define BLK "\e[0;30m"
 #define RED "\e[0;31m"
