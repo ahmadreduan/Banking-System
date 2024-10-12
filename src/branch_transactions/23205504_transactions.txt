@@ -37,3 +37,15 @@ Amount: 50000.00
 Date: 2024-10-09 15:59:09
 Transaction ID: h39OFU9gf9lt
 ----------------------------------------
+Account Number: 23205504
+Transaction Type: Deposit
+Amount: 40000.00
+Date: 2024-10-12 19:57:33
+Transaction ID: PYI809WXY5LC
+----------------------------------------
+Account Number: 23205504
+Transaction Type: Transfer Out
+Amount: 10000.00
+Date: 2024-10-12 20:42:42
+Transaction ID: 2KKNKRBIR6XL
+----------------------------------------

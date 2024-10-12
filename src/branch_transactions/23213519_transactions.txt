@@ -33,3 +33,15 @@ Transaction Type: Withdrawal
 Amount: 200000.00
 Date: 2024-10-08 20:25:04
 ----------------------------------------
+Account Number: 23213519
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-10-12 19:52:37
+Transaction ID: LZD8UYA8Q764
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Transfer In
+Amount: 10000.00
+Date: 2024-10-12 20:42:42
+Transaction ID: ZDEVGCCQALIO
+----------------------------------------

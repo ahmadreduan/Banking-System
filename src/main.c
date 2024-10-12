@@ -132,7 +132,8 @@ void withdraw_funds(const char *account_number);
 void log_transaction_to_branch(const char *account_number, double amount);
 
 // Function to transfer funds between accounts
-int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin);
+// int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin);
+void transfer_funds(const char *source_account, const char *destination_account, double amount);
 
 // Function to display banking rules for customers
 void banking_rules(void);
@@ -167,9 +168,13 @@ double read_branch_account_balance();
 // Function to update the balance of the Branch account
 void update_branch_account_balance(double amount);
 
-double get_account_balance(const char *account_number); // Retrieve balance from the file
-void update_account_balance(const char *account_number, double new_balance); // Update balance in the file
-void log_transaction(const char *account_number, const char *transaction_type, double amount); // Log transactions
+double read_account_balance(const char *account_number);
+
+void update_account_balance(const char *account_number, double new_balance);
+
+void generate_transaction_id(char *id, int length);
+
+void admin_transfer_funds();
 
 // Dynamic array to store users
 User *users = NULL;
@@ -278,6 +283,11 @@ int main()
                         withdraw_funds(account_number_for_withdraw_funds);
                         break;
                     }
+                    case 7:
+                    {
+                        admin_transfer_funds();
+                        break;
+                    }
 
                     case 8:
                         logged_in = 0; // Logout
@@ -307,24 +317,24 @@ int main()
                         break;
                     case 2:
                     {
-                        double amount;
-                        char recipient_account[ACCOUNT_NUMBER_LENGTH + 1];
-                        char pin[MAX_STRING_LENGTH];
+                        // double amount;
+                        // char recipient_account[ACCOUNT_NUMBER_LENGTH + 1];
+                        // char pin[MAX_STRING_LENGTH];
 
-                        printf("Enter amount to transfer: ");
-                        scanf("%lf", &amount);
-                        getchar(); // To consume the leftover newline character from scanf
+                        // printf("Enter amount to transfer: ");
+                        // scanf("%lf", &amount);
+                        // getchar(); // To consume the leftover newline character from scanf
 
-                        printf("Enter recipient account number: ");
-                        fgets(recipient_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        remove_newline(recipient_account);
+                        // printf("Enter recipient account number: ");
+                        // fgets(recipient_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        // remove_newline(recipient_account);
 
-                        printf("Enter your PIN: ");
-                        fgets(pin, MAX_STRING_LENGTH, stdin);
-                        remove_newline(pin);
+                        // printf("Enter your PIN: ");
+                        // fgets(pin, MAX_STRING_LENGTH, stdin);
+                        // remove_newline(pin);
 
-                        transfer_funds(customer_index, amount, recipient_account, pin);
-                        break;
+                        // transfer_funds(source_account, recipient_account);
+                        // break;
                     }
                     case 4:
                         logged_in = 0; // Logout
@@ -490,7 +500,6 @@ int customer_login()
     printf("Invalid credentials. Please try again.\n");
     return -1; // Return -1 to indicate login failure
 }
-
 
 /**
  * Generates a random account number starting from 232 and having a length of 8 digits.
@@ -1012,12 +1021,12 @@ void register_account()
 
         if (is_valid_name(new_user.nominee_name))
         {
-           // printf("Nominee name accepted: %s\n", new_user.nominee_name);
+            // printf("Nominee name accepted: %s\n", new_user.nominee_name);
             break; // Break the loop if the name is valid
         }
         else
         {
-            printf(BRED"Invalid name! Please enter only alphabetic characters and spaces.\n"RESET);
+            printf(BRED "Invalid name! Please enter only alphabetic characters and spaces.\n" RESET);
         }
     }
     fflush(stdin);
@@ -1154,7 +1163,6 @@ void print_border()
     printf(BYEL "------------------------------------------\n" RESET);
 }
 
-
 void view_balance(size_t customer_index)
 {
     printf("Your current balance is: %.2f Taka\n", users[customer_index].initial_deposit);
@@ -1230,7 +1238,7 @@ void initialize_branch_account()
     else
     {
         fclose(file);
-        //printf("Branch account already exists.\n");
+        // printf("Branch account already exists.\n");
     }
 }
 
@@ -1437,17 +1445,197 @@ void withdraw_funds(const char *account_number)
 
     fclose(file); // Close the file
 }
+void admin_transfer_funds()
+{
+    char source_account[ACCOUNT_NUMBER_LENGTH + 1];
+    char destination_account[ACCOUNT_NUMBER_LENGTH + 1];
+    double amount;
+
+    // Capture source account number
+    printf("Enter the source account number: ");
+    fgets(source_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+    fflush(stdin);
+
+    // Capture destination account number
+    printf("Enter the destination account number: ");
+    fgets(destination_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+    fflush(stdin);
+
+    // Capture transfer amount
+    printf("Enter the amount to transfer: ");
+    scanf("%lf", &amount);
+    getchar(); // To consume the leftover newline character from scanf
+
+    // Perform the transfer
+    transfer_funds(source_account, destination_account, amount);
+}
+
+void transfer_funds(const char *source_account, const char *destination_account, double amount)
+{
+    char source_filename[150], destination_filename[150];
+    FILE *source_file, *destination_file;
+    double source_balance = 0, destination_balance = 0;
+    char line[256];
+    long source_balance_pos = 0, destination_balance_pos = 0;
+    int source_balance_found = 0, destination_balance_found = 0;
+
+    // Create file paths for source and destination accounts
+    snprintf(source_filename, sizeof(source_filename), "userdata/%s.txt", source_account);
+    snprintf(destination_filename, sizeof(destination_filename), "userdata/%s.txt", destination_account);
+
+    // Open source account file
+    source_file = fopen(source_filename, "r+");
+    if (source_file == NULL)
+    {
+        printf("Error: Could not open source account file for account: %s\n", source_account);
+        return;
+    }
+
+    // Open destination account file
+    destination_file = fopen(destination_filename, "r+");
+    if (destination_file == NULL)
+    {
+        printf("Error: Could not open destination account file for account: %s\n", destination_account);
+        fclose(source_file); // Close source file since we're exiting
+        return;
+    }
+
+    // Read the current balance from the source account file
+    while (fgets(line, sizeof(line), source_file) != NULL)
+    {
+        if (sscanf(line, "Initial Deposit: %lf", &source_balance) == 1)
+        {
+            source_balance_pos = ftell(source_file); // Save the position of balance for updating later
+            break;
+        }
+    }
+
+    // Read the current balance from the destination account file
+    while (fgets(line, sizeof(line), destination_file) != NULL)
+    {
+        if (sscanf(line, "Initial Deposit: %lf", &destination_balance) == 1)
+        {
+            destination_balance_pos = ftell(destination_file); // Save the position of balance for updating later
+            break;
+        }
+    }
+
+    // Check if there is enough balance in the source account for the transfer
+    if (source_balance < amount)
+    {
+        printf("Error: Insufficient funds in source account. Current balance: %.2f\n", source_balance);
+        fclose(source_file);
+        fclose(destination_file);
+        return;
+    }
+
+    // Update the balances
+    source_balance -= amount;      // Deduct from source account
+    destination_balance += amount; // Add to destination account
+
+    // Update source account file with new balance
+    fseek(source_file, source_balance_pos - strlen(line), SEEK_SET); // Go back to balance line
+    fprintf(source_file, "Initial Deposit: %.2f\n", source_balance);
+
+    // Update destination account file with new balance
+    fseek(destination_file, destination_balance_pos - strlen(line), SEEK_SET); // Go back to balance line
+    fprintf(destination_file, "Initial Deposit: %.2f\n", destination_balance);
+
+    // Close the files
+    fclose(source_file);
+    fclose(destination_file);
+
+    // Log the transaction for both accounts
+    log_transaction(source_account, "Transfer Out", amount);
+    log_transaction(destination_account, "Transfer In", amount);
+
+    printf("Transfer successful! %.2f has been transferred from account %s to account %s.\n", amount, source_account, destination_account);
+}
+
+/**
+ * Reads the current balance from the specified account file.
+ *
+ * @param account_number The account number to read the balance from.
+ * @return The current balance if found, -1 otherwise.
+ */
+double read_account_balance(const char *account_number)
+{
+    char filename[150];
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
+
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        return -1; // Return -1 if the file cannot be opened
+    }
+
+    char line[256];
+    double current_balance = -1;
+
+    // Search for "Initial Deposit" line and read the balance
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
+        {
+            break;
+        }
+    }
+
+    fclose(file);
+    return current_balance;
+}
+
+/**
+ * Updates the account balance in the specified file.
+ *
+ * @param account_number The account number to update.
+ * @param new_balance The new balance to be written.
+ */
+void update_account_balance(const char *account_number, double new_balance)
+{
+    char filename[150];
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
+
+    FILE *file = fopen(filename, "r+");
+    if (file == NULL)
+    {
+        printf("Error opening account file: %s\n", filename);
+        return;
+    }
+
+    char line[256];
+    long balance_pos = 0;
+
+    // Find the "Initial Deposit" line
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        if (sscanf(line, "Initial Deposit: %lf", &new_balance) == 1)
+        {
+            balance_pos = ftell(file);
+            break;
+        }
+    }
+
+    // Update the balance
+    if (balance_pos != 0)
+    {
+        fseek(file, balance_pos - strlen(line), SEEK_SET);
+        fprintf(file, "Initial Deposit: %.2lf\n", new_balance);
+    }
+
+    fclose(file);
+}
 
 // Function to generate a random alphanumeric transaction ID
-void generate_transaction_id(char *transaction_id, size_t length)
+void generate_transaction_id(char *id, int length)
 {
-    const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     for (size_t i = 0; i < length; i++)
     {
         int key = rand() % (int)(sizeof(charset) - 1);
-        transaction_id[i] = charset[key];
+        id[i] = charset[key];
     }
-    transaction_id[length] = '\0'; // Null-terminate the string
+    id[length] = '\0'; // Null-terminate the string
 }
 
 /**
@@ -1479,15 +1667,15 @@ void log_transaction(const char *account_number, const char *transaction_type, d
     strftime(date_time, sizeof(date_time), "%Y-%m-%d %H:%M:%S", t);
 
     // Generate a random transaction ID
-    char transaction_id[13]; // Length 12 for the ID + 1 for null terminator
-    generate_transaction_id(transaction_id, 12);
+    char id[13]; // Length 12 for the ID + 1 for null terminator
+    generate_transaction_id(id, 12);
 
     // Write the transaction details to the file
     fprintf(file, "Account Number: %s\n", account_number);
     fprintf(file, "Transaction Type: %s\n", transaction_type);
     fprintf(file, "Amount: %.2lf\n", amount);
     fprintf(file, "Date: %s\n", date_time);
-    fprintf(file, "Transaction ID: %s\n", transaction_id);
+    fprintf(file, "Transaction ID: %s\n", id);
     fprintf(file, "----------------------------------------\n");
 
     fclose(file);
@@ -1516,31 +1704,6 @@ void log_transaction_to_branch(const char *account_number, double amount)
         printf("Error creating transaction log file.\n");
         return;
     }
-}
-
-int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin)
-{
-    if (strcmp(pin, users[customer_index].pin) != 0)
-    {
-        printf("Invalid PIN.\n");
-        return 0; // Transfer failed
-    }
-    if (amount <= 0)
-    {
-        printf("Invalid amount.\n");
-        return 0; // Transfer failed
-    }
-    if (amount > users[customer_index].initial_deposit)
-    {
-        printf("Insufficient funds.\n");
-        return 0; // Transfer failed
-    }
-
-    // Simulate fund transfer
-    users[customer_index].initial_deposit -= amount;
-    printf("Transferred %.2f Taka to account %s.\n", amount, recipient_account);
-    printf("New balance: %.2f Taka\n", users[customer_index].initial_deposit);
-    return 1; // Transfer successful
 }
 
 /**
