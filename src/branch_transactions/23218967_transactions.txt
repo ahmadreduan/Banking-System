@@ -1,0 +1,6 @@
+Account Number: 23218967
+Transaction Type: Transfer Out
+Amount: 5000.00
+Date: 2024-10-12 21:06:44
+Transaction ID: 2YU7AKAS72RW
+----------------------------------------

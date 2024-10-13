@@ -1,180 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <sys/stat.h>  // Add this for mkdir  Required for creating directories
-#include <sys/types.h> // Also include this for POSIX systems
-#include <ctype.h>
-#include <windows.h>
+
+//#include <windows.h>
+#include "banking_system.h" // Include the shared header file
 // #include <direct.h> // For _mkdir
-
-// Regular text and style definitions as per your list
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
-// Bold text definitions
-#define BBLK "\e[1;30m"
-#define BRED "\e[1;31m"
-#define BGRN "\e[1;32m"
-#define BYEL "\e[1;33m"
-#define BBLU "\e[1;34m"
-#define BMAG "\e[1;35m"
-#define BCYN "\e[1;36m"
-#define BWHT "\e[1;37m"
-#define RESET "\x1B[0m" // Reset color
-#define GREEN "\x1B[32m"
-#define YELLOW "\x1B[33m"
-#define BLUE "\x1B[34m"
-#define MAGENTA "\x1B[35m"
-#define CYAN "\x1B[36m"
-#define WHITE "\x1B[37m"
-
-#define ACCOUNT_NUMBER_LENGTH 8
-#define ACCOUNT_START 232
-#define MAX_STRING_LENGTH 100
-
 #define NUM_ADMIN_USERS 3
+#include"usersite.c"
 
-#define BORDER_CHAR '*'
-#define WIDTH 35
-
-#define PHONE_PREFIX "+880"
-#define PHONE_DIGITS 10
-#define PHONE_LENGTH (strlen(PHONE_PREFIX) + PHONE_DIGITS + 1) // +1 for null terminator
-#define MAX_PASSWORD_LENGTH 100
-#define MAX_PIN_LENGTH 5 // 4 digits + null terminator
-#define BRANCH_TRANSACTION_FILE "branch_transaction.txt"
-#define BRANCH_ACCOUNT_FILE "branch_account.txt"
-#define BRANCH_ACCOUNT_BALANCE 100000000000000.00 // 100 thousand crore
-
-typedef struct
-{
-    char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // 8 digits + null terminator
-    double balance;
-    char full_name[100];
-    char date_of_birth[11]; // Date of birth in DD/MM/YYYY format
-    char address[100];
-    char phone[100];
-    char email[100];
-    char nid_or_birth_cert[14]; // 13 digits + null terminator
-    char username[100];
-    char password[100];
-    char account_type[100];
-    double initial_deposit;
-    char pin[100]; // For PIN, make sure it can hold 4 digits + null terminator
-    char nominee_name[100];
-    char nominee_nid[100];
-} User;
-
-// Generates a random account number starting from 232 and having a length of 8 digits
-void generate_account_number(char *account_number);
-
-// Ensures that there is enough capacity in the users array to accommodate new users
-void ensure_capacity(size_t new_capacity);
-
-// Removes the newline character from the end of a string, if it exists
-void remove_newline(char *str);
-
-// Checks if the input contains only alphabets
-int is_valid_name(const char *name);
-
-// Checks if a string contains only digits
-int is_valid_digit(const char *str);
-
-// Checks if a given date is valid
-int is_valid_date(int day, int month, int year);
-
-// Inputs and validates the Date of Birth
-void input_and_validate_dob(User *user);
-
-// Validates Bangladeshi phone number format
-int is_valid_phone(const char *phone);
-
-// Validates email format
-int is_valid_email(const char *email);
-
-// Function prototype for logging transactions
-void log_transaction(const char *account_number, const char *transaction_type, double amount);
-
-// Function to validate password based on certain criteria
-int is_valid_password(const char *password);
-
-// Function to validate the PIN (4-digit numeric input)
-int is_valid_pin(const char *pin);
-
-// Function to clear the input buffer
-void clear_input_buffer(void);
-
-// Function to register a new account
-void register_account(void);
-
-// Function to search and view an account based on account number
-void search_and_view_account(const char *account_number);
-
-// Function to view the balance of a customer
-void view_balance(size_t customer_index);
-
-// Function to search and display balance based on account number
-void search_and_view_balance(const char *account_number_for_balance);
-
-// Function to deposit funds into a user account
-void deposit_funds(const char *account_number);
-
-// Function to withdraw funds from a user account
-void withdraw_funds(const char *account_number);
-
-// Function to log a transaction into the branch directory
-void log_transaction_to_branch(const char *account_number, double amount);
-
-// Function to transfer funds between accounts
-// int transfer_funds(size_t customer_index, double amount, const char *recipient_account, const char *pin);
-void transfer_funds(const char *source_account, const char *destination_account, double amount);
-
-// Function to display banking rules for customers
-void banking_rules(void);
-
-// Function to print a border
-void print_border(void);
-
-// Function to display the home features of the banking system
-void display_banking_system_home_features(void);
-
-// Function to display the main features of the banking system
-void display_banking_system_features(void);
-
-// Function to display customer options after login
-void display_customer_options(void);
-
-// Function to handle the admin login process
-int admin_login(void);
-
-// Function to handle the customer login process
-int customer_login(void);
-
-// Function to initialize the branch account with an initial balance
-void initialize_branch_account(void);
-
-// Function to get the balance of the Branch account
-double get_branch_account_balance();
-
-void log_transaction(const char *account_number, const char *transaction_type, double amount);
-double read_branch_account_balance();
-
-// Function to update the balance of the Branch account
-void update_branch_account_balance(double amount);
-
-double read_account_balance(const char *account_number);
-
-void update_account_balance(const char *account_number, double new_balance);
-
-void generate_transaction_id(char *id, int length);
-
-void admin_transfer_funds();
 
 // Dynamic array to store users
 User *users = NULL;
@@ -210,6 +40,8 @@ int main()
     // load_users_from_file(); // Load existing users from the file at the start
 
     int choice, logged_in = 0, customer_index = -1;
+    User user; // Declare the CUser struct for logged-in customer
+    
     while (1)
     {
         display_banking_system_home_features();
@@ -298,55 +130,12 @@ int main()
                 }
             }
             break;
-        case 2: // Customer Login
-            customer_index = customer_login();
-            logged_in = customer_index != -1;
-            if (logged_in)
-            {
-                while (logged_in)
-                {
-                    display_customer_options();
-                    printf("Enter your choice: ");
-                    scanf("%d", &choice);
-                    getchar(); // To consume the leftover newline character from scanf
-
-                    switch (choice)
-                    {
-                    case 1:
-                        view_balance(customer_index);
-                        break;
-                    case 2:
-                    {
-                        // double amount;
-                        // char recipient_account[ACCOUNT_NUMBER_LENGTH + 1];
-                        // char pin[MAX_STRING_LENGTH];
-
-                        // printf("Enter amount to transfer: ");
-                        // scanf("%lf", &amount);
-                        // getchar(); // To consume the leftover newline character from scanf
-
-                        // printf("Enter recipient account number: ");
-                        // fgets(recipient_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
-                        // remove_newline(recipient_account);
-
-                        // printf("Enter your PIN: ");
-                        // fgets(pin, MAX_STRING_LENGTH, stdin);
-                        // remove_newline(pin);
-
-                        // transfer_funds(source_account, recipient_account);
-                        // break;
-                    }
-                    case 4:
-                        logged_in = 0; // Logout
-                        break;
-                    default:
-                        printf("Invalid choice.\n");
-                    }
-                }
-            }
+        case 2:                            // Customer Login
+          
+           banking_system(); 
             break;
-        case 3: // View Banking Rules
-            banking_rules();
+        case 3:              // View Banking Rules
+            banking_rules(); // Display banking rules
             break;
         default:
             printf("Invalid choice.\n");
@@ -363,9 +152,9 @@ int main()
 void display_banking_system_home_features()
 {
     print_border();                                                     // Print top border
-    printf(BBLU "| 1. Admin Login                          |\n" RESET); // Option 1: Admin Login (Bold Blue)
+    printf(BGRN "| 1. Admin Login                          |\n" RESET); // Option 1: Admin Login (Bold Blue)
     printf(BGRN "| 2. Customer Login                       |\n" RESET); // Option 2: Customer Login (Bold Green)
-    printf(BYEL "| 3. View Banking Rules                   |\n" RESET); // Option 3: View Banking Rules (Bold Yellow)
+    printf(BGRN "| 3. View Banking Rules                   |\n" RESET); // Option 3: View Banking Rules (Bold Yellow)
     print_border();                                                     // Print bottom border
 }
 
@@ -375,24 +164,24 @@ void display_banking_system_home_features()
 void display_banking_system_features()
 {
     print_border();                                                     // Print top border
-    printf(BBLU "| 1. Register Account                     |\n" RESET); // Option 1: Register Account (Blue)
+    printf(BGRN "| 1. Register Account                     |\n" RESET); // Option 1: Register Account (Blue)
     printf(BGRN "| 2. View Account Details                 |\n" RESET); // Option 2: View Account Details (Green)
-    printf(BYEL "| 3. Search Account by Account Number     |\n" RESET); // Option 3: Search Account (Yellow)
-    printf(BBLU "| 4. Balance Check by Account Number      |\n" RESET); // Option 4: Balance Check (Blue)
-    printf(BMAG "| 5. Deposit Funds                        |\n" RESET); // Option 5: Deposit Funds (Magenta)
-    printf(BRED "| 6. Withdraw Funds                       |\n" RESET); // Option 6: Withdraw Funds (Red)
+    printf(BGRN "| 3. Search Account by Account Number     |\n" RESET); // Option 3: Search Account (Yellow)
+    printf(BGRN "| 4. Balance Check by Account Number      |\n" RESET); // Option 4: Balance Check (Blue)
+    printf(BGRN "| 5. Deposit Funds                        |\n" RESET); // Option 5: Deposit Funds (Magenta)
+    printf(BGRN "| 6. Withdraw Funds                       |\n" RESET); // Option 6: Withdraw Funds (Red)
     printf(BGRN "| 7. Transfer Funds                       |\n" RESET); // Option 7: Transfer Funds (Green)
-    printf(BRED "| 8. Exit                                 |\n" RESET); // Option 8: Exit (Red)
+    printf(BGRN "| 8. Exit                                 |\n" RESET); // Option 8: Exit (Red)
     print_border();                                                     // Print bottom border
 }
 
 void display_customer_options()
 {
     print_border();                                                     // Print top border
-    printf(BBLU "| 1. View Balance                         |\n" RESET); // Option 1: View Balance
-    printf(BBLU "| 2. Transfer Funds                       |\n" RESET); // Option 2: Transfer Funds
-    printf(BBLU "| 3. View Transaction History             |\n" RESET); // Option 3: View Transaction History
-    printf(BBLU "| 4. Logout                               |\n" RESET); // Option 4: Logout
+    printf(BGRN "| 1. View Balance                         |\n" RESET); // Option 1: View Balance
+    printf(BGRN "| 2. Transfer Funds                       |\n" RESET); // Option 2: Transfer Funds
+    printf(BGRN "| 3. View Transaction History             |\n" RESET); // Option 3: View Transaction History
+    printf(BGRN "| 4. Logout                               |\n" RESET); // Option 4: Logout
     print_border();                                                     // Print bottom border
 }
 
@@ -424,82 +213,6 @@ int admin_login()
     return 0; // Failed login
 }
 
-/**
- * Handles the customer login process by verifying the provided credentials.
- * Allows login using account number, email, or username.
- * @return The index of the customer in the users array if login is successful, -1 otherwise.
- */
-int customer_login()
-{
-    char input[MAX_STRING_LENGTH];
-    char password[MAX_STRING_LENGTH];
-    int login_option;
-
-    // Ask the user which option they'd like to use for login
-    printf("Login with:\n");
-    printf("1. Account Number\n");
-    printf("2. Email\n");
-    printf("3. Username\n");
-    printf("Enter your choice: ");
-    scanf("%d", &login_option);
-    getchar(); // To consume the leftover newline character from scanf
-
-    // Get the input based on the choice
-    switch (login_option)
-    {
-    case 1:
-        printf("Enter account number: ");
-        fgets(input, MAX_STRING_LENGTH, stdin);
-        remove_newline(input); // Removes newline character
-        break;
-    case 2:
-        printf("Enter email: ");
-        fgets(input, MAX_STRING_LENGTH, stdin);
-        remove_newline(input); // Removes newline character
-        break;
-    case 3:
-        printf("Enter username: ");
-        fgets(input, MAX_STRING_LENGTH, stdin);
-        remove_newline(input); // Removes newline character
-        break;
-    default:
-        printf("Invalid choice. Please try again.\n");
-        return -1; // Return -1 to indicate login failure
-    }
-
-    // Ask for password
-    printf("Enter password: ");
-    fgets(password, MAX_STRING_LENGTH, stdin);
-    remove_newline(password);
-
-    // Search for the user in the users array
-    for (size_t i = 0; i < user_count; i++)
-    {
-        // Check based on the login option
-        if (((login_option == 1 && strcmp(input, users[i].account_number) == 0) ||
-             (login_option == 2 && strcmp(input, users[i].email) == 0) ||
-             (login_option == 3 && strcmp(input, users[i].username) == 0)) &&
-            strcmp(password, users[i].password) == 0) // Check if password matches
-        {
-            // Successful login
-            printf("\n\n\n");
-            printf("+-----------------------------------------+\n");
-            printf("| Login successful!                       |\n");
-            printf("+-----------------------------------------+\n");
-            printf("| Welcome, %s                  \n", users[i].full_name);
-            printf("| Account Number: %s                  \n", users[i].account_number);
-            printf("| Mobile Number: %s                  \n", users[i].phone);
-            printf("+-----------------------------------------+\n");
-            printf("\n");
-
-            return i; // Return index of the user
-        }
-    }
-
-    // If no match is found
-    printf("Invalid credentials. Please try again.\n");
-    return -1; // Return -1 to indicate login failure
-}
 
 /**
  * Generates a random account number starting from 232 and having a length of 8 digits.
@@ -755,6 +468,7 @@ void clear_input_buffer()
  */
 void register_account()
 {
+
     ensure_capacity(user_count + 1); // Ensure enough capacity for new user
 
     User new_user;
@@ -1373,7 +1087,6 @@ void deposit_funds(const char *account_number)
  * Searches for a user account based on the provided account number and allows withdrawal of funds.
  * Loads the account details from the corresponding file, retrieves the current balance,
  * prompts the user to enter a withdrawal amount, and updates the balance in the file.
- *
  * @param account_number_for_withdraw_funds The account number to search for and withdraw funds from.
  */
 void withdraw_funds(const char *account_number)
