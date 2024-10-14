@@ -1,0 +1,6 @@
+Account Number: 23232256
+Transaction Type: Withdrawal
+Amount: 5000.00
+Date: 2024-10-14 18:49:42
+Transaction ID: TOI9J82X08Y4
+----------------------------------------
