@@ -1,6 +1,5 @@
 #include"banking_system.h"
 
-
 void admin_transfer_funds()
 {
     char source_account[ACCOUNT_NUMBER_LENGTH + 1];

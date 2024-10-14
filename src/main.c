@@ -1,17 +1,17 @@
 #include "banking_system.h" // Include the shared header file
-// #include <direct.h> // For _mkdir
-#define NUM_ADMIN_USERS 3
+
+#include"banking_system_display.c"
 #include "usersite.c"
-#include"banking_rules.c"
 #include"admin_deposit_funds.c"
 #include"admin_withdraw_funds.c"
 #include"admin_transfer_funds.c"
-
+#include"generate_transaction_id.c"
+#include"banking_rules.c"
 // Dynamic array to store users
 User *users = NULL;
 size_t user_count;        // Current number of users
 size_t user_capacity = 0; // Current allocated capacity of the users array
-
+#define NUM_ADMIN_USERS 3
 // Predefines admin usernames and passwords
 const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
 const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "23235292"};
@@ -151,44 +151,6 @@ int main()
     return 0;
 }
 
-/**
- * Displays the home features of the banking system with a border around the text.
- */
-void display_banking_system_home_features()
-{
-    print_border();                                                     // Print top border
-    printf(BGRN "| 1. Admin Login                          |\n" RESET); // Option 1: Admin Login (Bold Blue)
-    printf(BGRN "| 2. Customer Login                       |\n" RESET); // Option 2: Customer Login (Bold Green)
-    printf(BGRN "| 3. View Banking Rules                   |\n" RESET); // Option 3: View Banking Rules (Bold Yellow)
-    print_border();                                                     // Print bottom border
-}
-
-/**
- * Displays the banking system features with a border around the text.
- */
-void display_banking_system_features()
-{
-    print_border();                                                     // Print top border
-    printf(BGRN "| 1. Register Account                     |\n" RESET); // Option 1: Register Account (Blue)
-    printf(BGRN "| 2. View Account Details                 |\n" RESET); // Option 2: View Account Details (Green)
-    printf(BGRN "| 3. Search Account by Account Number     |\n" RESET); // Option 3: Search Account (Yellow)
-    printf(BGRN "| 4. Balance Check by Account Number      |\n" RESET); // Option 4: Balance Check (Blue)
-    printf(BGRN "| 5. Deposit Funds                        |\n" RESET); // Option 5: Deposit Funds (Magenta)
-    printf(BGRN "| 6. Withdraw Funds                       |\n" RESET); // Option 6: Withdraw Funds (Red)
-    printf(BGRN "| 7. Transfer Funds                       |\n" RESET); // Option 7: Transfer Funds (Green)
-    printf(BGRN "| 8. Exit                                 |\n" RESET); // Option 8: Exit (Red)
-    print_border();                                                     // Print bottom border
-}
-
-void display_customer_options()
-{
-    print_border();                                                     // Print top border
-    printf(BGRN "| 1. View Balance                         |\n" RESET); // Option 1: View Balance
-    printf(BGRN "| 2. Transfer Funds                       |\n" RESET); // Option 2: Transfer Funds
-    printf(BGRN "| 3. View Transaction History             |\n" RESET); // Option 3: View Transaction History
-    printf(BGRN "| 4. Logout                               |\n" RESET); // Option 4: Logout
-    print_border();                                                     // Print bottom border
-}
 
 /**
  * Handles the admin login process by verifying the provided credentials.
@@ -1079,83 +1041,5 @@ void update_account_balance(const char *account_number, double new_balance)
     fclose(file);
 }
 
-// Function to generate a random alphanumeric transaction ID
-void generate_transaction_id(char *id, int length)
-{
-    const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    for (size_t i = 0; i < length; i++)
-    {
-        int key = rand() % (int)(sizeof(charset) - 1);
-        id[i] = charset[key];
-    }
-    id[length] = '\0'; // Null-terminate the string
-}
 
-/**
- * Logs a transaction (withdrawal or deposit) to the specific branch transaction file.
- *
- * @param account_number The account number for which the transaction is being made.
- * @param transaction_type The type of transaction ("Deposit" or "Withdrawal").
- * @param amount The amount being transacted.
- */
-void log_transaction(const char *account_number, const char *transaction_type, double amount)
-{
-    char filename[150];
-    snprintf(filename, sizeof(filename), "branch_transactions/%s_transactions.txt", account_number);
-
-    // Open the transaction file in append mode
-    FILE *file = fopen(filename, "a");
-    if (file == NULL)
-    {
-        printf("Error opening transaction file for account number: %s\n", account_number);
-        return;
-    }
-
-    // Get the current date and time
-    time_t now = time(NULL);
-    struct tm *t = localtime(&now);
-
-    // Format the current date and time as a string
-    char date_time[100];
-    strftime(date_time, sizeof(date_time), "%Y-%m-%d %H:%M:%S", t);
-
-    // Generate a random transaction ID
-    char id[13]; // Length 12 for the ID + 1 for null terminator
-    generate_transaction_id(id, 12);
-
-    // Write the transaction details to the file
-    fprintf(file, "Account Number: %s\n", account_number);
-    fprintf(file, "Transaction Type: %s\n", transaction_type);
-    fprintf(file, "Amount: %.2lf\n", amount);
-    fprintf(file, "Date: %s\n", date_time);
-    fprintf(file, "Transaction ID: %s\n", id);
-    fprintf(file, "----------------------------------------\n");
-
-    fclose(file);
-}
-
-void log_transaction_to_branch(const char *account_number, double amount)
-{
-    // Directory for branch transactions
-    char branch_dir[] = "branch_transactions/";
-
-    // Create directory if it doesn't exist
-    mkdir(branch_dir, 0777); // 0777 gives full permissions
-
-    // Prepare the file name with the account number and timestamp
-    char transaction_file[256];
-    time_t t = time(NULL);
-    struct tm *tm = localtime(&t);
-    snprintf(transaction_file, sizeof(transaction_file), "%s%s_%04d-%02d-%02d_%02d-%02d-%02d.txt",
-             branch_dir, account_number, tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
-             tm->tm_hour, tm->tm_min, tm->tm_sec);
-
-    // Open the file for writing
-    FILE *file = fopen(transaction_file, "w");
-    if (file == NULL)
-    {
-        printf("Error creating transaction log file.\n");
-        return;
-    }
-}
 
