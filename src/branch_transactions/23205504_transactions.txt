@@ -67,3 +67,9 @@ Amount: 20000.00
 Date: 2024-10-14 16:35:00
 Transaction ID: W8TNBS9RAGH9
 ----------------------------------------
+Account Number: 23205504
+Transaction Type: Transfer Out
+Amount: 50000.00
+Date: 2024-10-14 16:46:43
+Transaction ID: BD0HHA0Y289Z
+----------------------------------------
