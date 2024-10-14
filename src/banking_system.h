@@ -187,10 +187,8 @@ void generate_transaction_id(char *id, int length);
 void admin_transfer_funds();
 
 // Function declarations
-int user_login(User *user); // User login function
-void display_user_options(User *user);
-void view_user_balance(User *user);
-void view_transaction_history(User *user);
+int customer_login(void);
+
 
 
 #endif // BANKING_SYSTEM_H

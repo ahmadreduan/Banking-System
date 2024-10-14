@@ -1,10 +1,7 @@
-
-//#include <windows.h>
 #include "banking_system.h" // Include the shared header file
 // #include <direct.h> // For _mkdir
 #define NUM_ADMIN_USERS 3
-#include"usersite.c"
-
+#include "usersite.c"
 
 // Dynamic array to store users
 User *users = NULL;
@@ -41,7 +38,7 @@ int main()
 
     int choice, logged_in = 0, customer_index = -1;
     User user; // Declare the CUser struct for logged-in customer
-    
+
     while (1)
     {
         display_banking_system_home_features();
@@ -130,9 +127,13 @@ int main()
                 }
             }
             break;
-        case 2:                            // Customer Login
-          
-           banking_system(); 
+        case 2: // Customer Login
+
+            if (customer_login() == 1)
+            {
+                // Successfully logged in, display customer options only
+                return; // Exit the main menu
+            }
             break;
         case 3:              // View Banking Rules
             banking_rules(); // Display banking rules
@@ -212,7 +213,6 @@ int admin_login()
     printf("Invalid username or password.\n");
     return 0; // Failed login
 }
-
 
 /**
  * Generates a random account number starting from 232 and having a length of 8 digits.
@@ -1267,7 +1267,6 @@ void transfer_funds(const char *source_account, const char *destination_account,
 
 /**
  * Reads the current balance from the specified account file.
- *
  * @param account_number The account number to read the balance from.
  * @return The current balance if found, -1 otherwise.
  */
