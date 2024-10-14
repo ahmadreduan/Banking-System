@@ -1,6 +1,7 @@
 #include "banking_system.h" // Include the shared header file
 
 #include"banking_system_display.c"
+#include"admin_login_portal.c"
 #include "usersite.c"
 #include"admin_search_and_view_account_details.c"
 #include"admin_search_and_view_balance.c"
@@ -15,10 +16,7 @@
 User *users = NULL;
 size_t user_count;        // Current number of users
 size_t user_capacity = 0; // Current allocated capacity of the users array
-#define NUM_ADMIN_USERS 3
-// Predefines admin usernames and passwords
-const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
-const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "23235292"};
+
 
 int main()
 {
@@ -156,33 +154,7 @@ int main()
 }
 
 
-/**
- * Handles the admin login process by verifying the provided credentials.
- * @return 1 if login is successful, 0 otherwise.
- */
-int admin_login()
-{
-    char username[MAX_STRING_LENGTH];
-    char password[MAX_STRING_LENGTH];
 
-    printf("Enter admin username : ");
-    fgets(username, MAX_STRING_LENGTH, stdin);
-    remove_newline(username);
-
-    printf("Enter admin password : ");
-    fgets(password, MAX_STRING_LENGTH, stdin);
-    remove_newline(password);
-
-    for (int i = 0; i < NUM_ADMIN_USERS; i++)
-    {
-        if (strcmp(username, admin_usernames[i]) == 0 && strcmp(password, admin_passwords[i]) == 0)
-        {
-            return 1; // successful login
-        }
-    }
-    printf("Invalid username or password.\n");
-    return 0; // Failed login
-}
 
 /**
  * Generates a random account number starting from 232 and having a length of 8 digits.
