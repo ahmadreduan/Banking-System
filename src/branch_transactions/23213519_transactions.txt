@@ -75,3 +75,9 @@ Amount: 30000.00
 Date: 2024-10-13 03:35:50
 Transaction ID: CPIISP4BQV9Z
 ----------------------------------------
+Account Number: 23213519
+Transaction Type: Withdrawal
+Amount: 10000.00
+Date: 2024-10-14 16:41:00
+Transaction ID: J2Z4XA84QWNI
+----------------------------------------
