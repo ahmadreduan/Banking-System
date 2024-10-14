@@ -2,10 +2,12 @@
 
 #include"banking_system_display.c"
 #include "usersite.c"
+#include"admin_search_and_view_balance.c"
 #include"admin_deposit_funds.c"
 #include"admin_withdraw_funds.c"
 #include"admin_transfer_funds.c"
 #include"generate_transaction_id.c"
+
 #include"banking_rules.c"
 // Dynamic array to store users
 User *users = NULL;
@@ -849,52 +851,6 @@ void view_balance(size_t customer_index)
     printf("Your current balance is: %.2f Taka\n", users[customer_index].initial_deposit);
 }
 
-/**
- * Searches for and displays the initial deposit (balance) of a user based on the account number provided.
- * Reads the corresponding file from the "userdata" directory and extracts the initial deposit amount.
- * If the account file or balance information is not found, an error message is displayed.
- *
- * @param account_number_for_balance The account number whose balance is to be viewed.
- */
-
-void search_and_view_balance(const char *account_number_for_balance)
-{
-    char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number_for_balance);
-
-    FILE *file = fopen(filename, "r");
-    if (file == NULL)
-    {
-        printf("No account found with the account number: %s\n", account_number_for_balance);
-        return;
-    }
-
-    char line[256];
-    double initial_deposit = 0;
-    int found_balance = 0;
-
-    // Read through each line in the file
-    while (fgets(line, sizeof(line), file) != NULL)
-    {
-        // Check if the line contains "Initial Deposit"
-        if (sscanf(line, "Initial Deposit: %lf", &initial_deposit) == 1)
-        {
-            found_balance = 1;
-            break;
-        }
-    }
-
-    fclose(file);
-
-    if (found_balance)
-    {
-        printf("Initial Deposit: %.2lf\n", initial_deposit);
-    }
-    else
-    {
-        printf("Error reading the account balance for account number: %s\n", account_number_for_balance);
-    }
-}
 
 // Function to initialize the branch account
 void initialize_branch_account()
