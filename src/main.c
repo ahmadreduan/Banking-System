@@ -2,11 +2,13 @@
 
 #include"banking_system_display.c"
 #include "usersite.c"
+#include"admin_search_and_view_account_details.c"
 #include"admin_search_and_view_balance.c"
 #include"admin_deposit_funds.c"
 #include"admin_withdraw_funds.c"
 #include"admin_transfer_funds.c"
 #include"generate_transaction_id.c"
+
 
 #include"banking_rules.c"
 // Dynamic array to store users
@@ -776,70 +778,7 @@ void register_account()
     printf("Account registered successfully.\n");
 }
 
-/**
- * Searches for a user account based on the provided account number.
- * Loads and displays the user details from the corresponding file.
- * @param account_number The account number to search for.
- */
-void search_and_view_account(const char *account_number)
-{
-    char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
 
-    FILE *file = fopen(filename, "r");
-    if (file == NULL)
-    {
-        printf("No account found with the account number: %s\n", account_number);
-        return;
-    }
-
-    User temp_user;
-
-    // Read user details from the file
-    fscanf(file, "Account Number : %s\n", temp_user.account_number);
-    fgets(temp_user.full_name, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.full_name);
-    fgets(temp_user.date_of_birth, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.date_of_birth);
-    fgets(temp_user.phone, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.phone);
-    fgets(temp_user.email, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.email);
-    fgets(temp_user.nid_or_birth_cert, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.nid_or_birth_cert);
-    fgets(temp_user.username, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.username);
-    fgets(temp_user.password, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.password);
-    fgets(temp_user.account_type, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.account_type);
-    fscanf(file, "Initial Deposit: %lf\n", &temp_user.initial_deposit);
-    fgets(temp_user.pin, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.pin);
-    fgets(temp_user.nominee_name, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.nominee_name);
-    fgets(temp_user.nominee_nid, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.nominee_nid);
-    fgets(temp_user.address, MAX_STRING_LENGTH, file);
-    remove_newline(temp_user.address);
-
-    fclose(file);
-
-    // Display the user details
-    printf("\n\n+-----------------------------------------+\n");
-    printf("| %s\n", temp_user.full_name);
-    printf("+-----------------------------------------+\n");
-    printf("| Account Number: %s                     \n", temp_user.account_number);
-    printf("| %s                     \n", temp_user.date_of_birth);
-    printf("| %s                     \n", temp_user.phone);
-    printf("| %s                     \n", temp_user.email);
-    printf("| %s                     \n", temp_user.account_type);
-    printf("| Initial Deposit: %.2lf \n", temp_user.initial_deposit);
-    printf("| %s                     \n", temp_user.nominee_name);
-    printf("| %s                     \n", temp_user.nominee_nid);
-    printf("| %s                     \n", temp_user.address);
-    printf("+-----------------------------------------+\n");
-}
 
 void print_border()
 {
@@ -921,81 +860,5 @@ double get_branch_account_balance()
 {
     return read_branch_account_balance();
 }
-
-
-
-/**
- * Reads the current balance from the specified account file.
- * @param account_number The account number to read the balance from.
- * @return The current balance if found, -1 otherwise.
- */
-double read_account_balance(const char *account_number)
-{
-    char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
-
-    FILE *file = fopen(filename, "r");
-    if (file == NULL)
-    {
-        return -1; // Return -1 if the file cannot be opened
-    }
-
-    char line[256];
-    double current_balance = -1;
-
-    // Search for "Initial Deposit" line and read the balance
-    while (fgets(line, sizeof(line), file) != NULL)
-    {
-        if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
-        {
-            break;
-        }
-    }
-
-    fclose(file);
-    return current_balance;
-}
-
-/**
- * Updates the account balance in the specified file.
- *
- * @param account_number The account number to update.
- * @param new_balance The new balance to be written.
- */
-void update_account_balance(const char *account_number, double new_balance)
-{
-    char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
-
-    FILE *file = fopen(filename, "r+");
-    if (file == NULL)
-    {
-        printf("Error opening account file: %s\n", filename);
-        return;
-    }
-
-    char line[256];
-    long balance_pos = 0;
-
-    // Find the "Initial Deposit" line
-    while (fgets(line, sizeof(line), file) != NULL)
-    {
-        if (sscanf(line, "Initial Deposit: %lf", &new_balance) == 1)
-        {
-            balance_pos = ftell(file);
-            break;
-        }
-    }
-
-    // Update the balance
-    if (balance_pos != 0)
-    {
-        fseek(file, balance_pos - strlen(line), SEEK_SET);
-        fprintf(file, "Initial Deposit: %.2lf\n", new_balance);
-    }
-
-    fclose(file);
-}
-
 
 
