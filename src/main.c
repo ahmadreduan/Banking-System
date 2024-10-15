@@ -1,24 +1,19 @@
-#include "banking_system.h" // Include the shared header file
-
-#include"banking_system_display.c"
-#include"admin_login_portal.c"
-#include"admin_registration_account.c"
+#include "banking_system.h"
+#include "banking_system_display.c"
+#include "admin_login_portal.c"
+#include "admin_registration_account.c"
 #include "usersite.c"
-#include"admin_search_and_view_account_details.c"
-#include"admin_search_and_view_balance.c"
-#include"admin_deposit_funds.c"
-#include"admin_withdraw_funds.c"
-#include"admin_transfer_funds.c"
-#include"generate_transaction_id.c"
-
-
-#include"banking_rules.c"
-
-
+#include "admin_search_and_view_account_details.c"
+#include "admin_search_and_view_balance.c"
+#include "admin_deposit_funds.c"
+#include "admin_withdraw_funds.c"
+#include "admin_transfer_funds.c"
+#include "generate_transaction_id.c"
+#include "banking_rules.c"
 
 int main()
 {
-    srand(time(NULL)); // Seed the random number generator with the current time
+
     // Initialize the branch account at the start
     initialize_branch_account(); // Ensure branch account is initialized
     // Print the face with different colors
@@ -68,6 +63,7 @@ int main()
                     switch (choice)
                     {
                     case 1:
+                        srand(time(NULL)); // Seed the random number generator with the current time
                         register_account();
                         break;
                     case 2:
@@ -139,7 +135,7 @@ int main()
                 return; // Exit the main menu
             }
             break;
-        case 3:              // View Banking Rules
+        case 3:             
             banking_rules(); // Display banking rules
             break;
         default:
@@ -151,11 +147,6 @@ int main()
     return 0;
 }
 
-
-
-
-
-
 void print_border()
 {
     printf(BYEL "------------------------------------------\n" RESET);
@@ -165,7 +156,6 @@ void view_balance(size_t customer_index)
 {
     printf("Your current balance is: %.2f Taka\n", users[customer_index].initial_deposit);
 }
-
 
 // Function to initialize the branch account
 void initialize_branch_account()
@@ -236,5 +226,3 @@ double get_branch_account_balance()
 {
     return read_branch_account_balance();
 }
-
-
