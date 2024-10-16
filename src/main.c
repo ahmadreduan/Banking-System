@@ -79,7 +79,7 @@ int main()
                     case 3: // Search Account by Account Number
                     {
                         char account_number[ACCOUNT_NUMBER_LENGTH + 1];
-                        printf("Enter the account number: ");
+                        printf(BLUE"Enter the account number: "RESET);
                         fgets(account_number, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number);
                         search_and_view_account(account_number);
