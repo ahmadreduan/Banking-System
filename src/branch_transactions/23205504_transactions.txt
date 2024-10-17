@@ -103,3 +103,21 @@ Amount: 1000.00
 Date: 2024-10-17 23:54:32
 Transaction ID: F98ER24S8UR3
 ----------------------------------------
+Account Number: 23205504
+Transaction Type: Transfer Out
+Amount: 100.00
+Date: 2024-10-18 00:24:45
+Transaction ID: F98ER24S8UR3
+----------------------------------------
+Account Number: 23205504
+Transaction Type: Deposit
+Amount: 1000.00
+Date: 2024-10-18 00:29:49
+Transaction ID: F98ER24S8UR3
+----------------------------------------
+Account Number: 23205504
+Transaction Type: Transfer Out
+Amount: 1000.00
+Date: 2024-10-18 01:01:16
+Transaction ID: F98ER24S8UR3
+----------------------------------------

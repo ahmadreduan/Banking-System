@@ -87,3 +87,15 @@ Amount: 50000.00
 Date: 2024-10-14 16:46:43
 Transaction ID: M4MSPQKMLFHJ
 ----------------------------------------
+Account Number: 23213519
+Transaction Type: Transfer In
+Amount: 100.00
+Date: 2024-10-18 00:24:45
+Transaction ID: ZPZXH0DA1YOJ
+----------------------------------------
+Account Number: 23213519
+Transaction Type: Transfer In
+Amount: 1000.00
+Date: 2024-10-18 01:01:16
+Transaction ID: ZPZXH0DA1YOJ
+----------------------------------------

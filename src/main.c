@@ -1,13 +1,15 @@
 #include "banking_system.h"
 #include "banking_system_display.c"
-#include "admin_login_portal.c"
-#include "admin_registration_account.c"
 
-#include "admin_search_and_view_account_details.c"
-#include "admin_search_and_view_balance.c"
-#include "admin_deposit_funds.c"
-#include "admin_withdraw_funds.c"
-#include "admin_transfer_funds.c"
+
+#include "admin_portal/admin_login_portal.c"
+#include "admin_portal/admin_deposit_funds.c"
+#include "admin_portal/admin_registration_account.c"
+#include "admin_portal/admin_transfer_funds.c"
+#include "admin_portal/admin_search_and_view_account_details.c"
+#include "admin_portal/admin_search_and_view_balance.c"
+#include "admin_portal/admin_withdraw_funds.c"
+
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
 
