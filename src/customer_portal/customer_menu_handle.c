@@ -1,4 +1,6 @@
-#include"banking_system.h"
+#include"../banking_system.h"
+
+#include"customer_fund_transfer.c"
 /**
  * Handles the customer menu after successful login.
  */
@@ -20,8 +22,7 @@ void customer_menu_handle(const char *account_number)
             view_customer_balance(account_number);
             break;
         case 2:
-            // Call the function to transfer funds
-            // transfer_funds();
+            customer_fund_transfer(account_number); // Call the fund transfer function with the logged-in user's account number
             break;
         case 3:
             // Call the function to view transaction history

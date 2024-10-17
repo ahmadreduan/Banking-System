@@ -2,7 +2,7 @@
 #include "banking_system_display.c"
 #include "admin_login_portal.c"
 #include "admin_registration_account.c"
-#include "customer_login_process.c"
+
 #include "admin_search_and_view_account_details.c"
 #include "admin_search_and_view_balance.c"
 #include "admin_deposit_funds.c"
@@ -11,7 +11,12 @@
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
 
-#include "customer_menu_handle.c"
+#include "customer_portal/customer_menu_handle.c"
+#include "customer_portal/customer_login_process.c"
+
+
+
+
 
 int main()
 {

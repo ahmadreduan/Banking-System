@@ -97,3 +97,9 @@ Amount: 3000.00
 Date: 2024-10-14 18:22:43
 Transaction ID: SK83HLBRU6ZF
 ----------------------------------------
+Account Number: 23205504
+Transaction Type: Transfer Out
+Amount: 1000.00
+Date: 2024-10-17 23:54:32
+Transaction ID: F98ER24S8UR3
+----------------------------------------

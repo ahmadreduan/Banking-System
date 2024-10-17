@@ -7,7 +7,7 @@ NID            : 1234567896
 User Name      : asraful@gmail.com
 Password       : As&123456
 Account type   : Waqf Deposit Account
-Initial Deposit: 5000.00
+Initial Deposit: 6000.00
 Account Pin    : 1234
 Nominee Name   : Reduan
 Noninee NID    : 1234569875

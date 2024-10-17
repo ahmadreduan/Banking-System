@@ -196,5 +196,11 @@ void customer_menu_handle(const char *account_number); // Handles customer menu 
 void view_customer_balance(const char *account_number); // Displays balance of the logged-in customer
 
 
+
+
+void customer_fund_transfer(const char *sender_account_number);
+void update_account_balance(const char *account_number, double new_balance);
+
+
 #endif // BANKING_SYSTEM_H
 
