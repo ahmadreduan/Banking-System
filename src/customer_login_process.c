@@ -2,28 +2,29 @@
 
 /**
  * Handles the customer login process by verifying the provided account number and password.
+ * @param account_number_out A buffer to store the logged-in account number.
  * @return 1 if login is successful, 0 otherwise.
  */
-int customer_login() {
-    char account_number[ACCOUNT_NUMBER_LENGTH + 1];
+int customer_login(char *account_number_out)
+{
     char input_password[MAX_PASSWORD_LENGTH];
     char stored_password[MAX_PASSWORD_LENGTH];
     int password_found = 0;
 
     // Ask the user to input their account number
     printf("Enter your account number: ");
-    fgets(account_number, sizeof(account_number), stdin);
-    remove_newline(account_number);  // Remove newline from account number
+    fgets(account_number_out, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+    remove_newline(account_number_out);  // Remove newline from account number
     fflush(stdin);
 
     // Construct the filename based on the account number
     char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number_out);
 
     // Check if the account exists by trying to open the file
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf(RED "No account found with account number: %s\n" RESET, account_number);
+        printf(RED "No account found with account number: %s\n" RESET, account_number_out);
         return 0; // Failed login, no account found
     }
 
@@ -58,7 +59,5 @@ int customer_login() {
         return 0; // Failed login, no password found
     }
 }
-
-
 
 

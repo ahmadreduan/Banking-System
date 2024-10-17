@@ -164,7 +164,7 @@ void display_customer_options(void);
 int admin_login(void);
 
 // Function to handle the customer login process
-int customer_login(void);
+//int customer_login(void);
 
 // Function to initialize the branch account with an initial balance
 void initialize_branch_account(void);
@@ -178,23 +178,22 @@ double read_branch_account_balance();
 // Function to update the balance of the Branch account
 void update_branch_account_balance(double amount);
 
-double read_account_balance(const char *account_number);
-
-void update_account_balance(const char *account_number, double new_balance);
-
 void generate_transaction_id(char *id, int length);
 
 void admin_transfer_funds(void);
 
 // Function declarations
-int customer_login(void);
+//int customer_login(void);
 
 
-void customer_menu_handle();
+//void customer_menu_handle();
 
-void view_customer_balance(void);
+//void view_customer_balance(void);
 
-int main();
+// Customer-related functions
+int customer_login(char *account_number_out); // Handles customer login, stores logged-in account number
+void customer_menu_handle(const char *account_number); // Handles customer menu after login
+void view_customer_balance(const char *account_number); // Displays balance of the logged-in customer
 
 
 #endif // BANKING_SYSTEM_H

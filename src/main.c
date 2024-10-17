@@ -11,8 +11,7 @@
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
 
-#include"customer_menu_handle.c"
-
+#include "customer_menu_handle.c"
 
 int main()
 {
@@ -48,6 +47,9 @@ int main()
         scanf("%d", &choice);
         getchar(); // To consume the leftover newline character from scanf
 
+        char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // Buffer to store logged-in customer's account number
+
+
         switch (choice)
         {
         case 1: // Admin Login
@@ -82,7 +84,7 @@ int main()
                     case 3: // Search Account by Account Number
                     {
                         char account_number[ACCOUNT_NUMBER_LENGTH + 1];
-                        printf(BLUE"Enter the account number: "RESET);
+                        printf(BLUE "Enter the account number: " RESET);
                         fgets(account_number, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number);
                         search_and_view_account(account_number);
@@ -132,15 +134,13 @@ int main()
             break;
         case 2: // Customer Login
 
-            if (customer_login() == 1)
+            if (customer_login(account_number) == 1)
             {
-                // Successfully logged in, display customer options only
-                customer_menu_handle(); 
-                return; // Exit the main menu
-
+                // Successfully logged in
+                customer_menu_handle(account_number);
             }
             break;
-        case 3:             
+        case 3:
             banking_rules(); // Display banking rules
             break;
         default:

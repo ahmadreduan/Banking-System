@@ -2,7 +2,7 @@
 /**
  * Handles the customer menu after successful login.
  */
-void customer_menu_handle()
+void customer_menu_handle(const char *account_number)
 {
     int choice;
 
@@ -17,7 +17,7 @@ void customer_menu_handle()
         {
         case 1:
             // Call the function to view balance
-            view_customer_balance();
+            view_customer_balance(account_number);
             break;
         case 2:
             // Call the function to transfer funds
@@ -43,14 +43,8 @@ void customer_menu_handle()
  *
  * @param account_number The account number of the logged-in customer.
  */
-void view_customer_balance()
+void view_customer_balance(const char *account_number)
 {
-    char account_number[ACCOUNT_NUMBER_LENGTH + 1];
-    // Ask the user to input their account number
-    printf("Enter your account number: ");
-    fgets(account_number, sizeof(account_number), stdin);
-    remove_newline(account_number); // Remove newline from account number
-    fflush(stdin);
 
     char filename[150];
     snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
