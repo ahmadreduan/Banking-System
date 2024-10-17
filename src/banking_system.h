@@ -200,6 +200,7 @@ void view_customer_balance(const char *account_number); // Displays balance of t
 
 void customer_fund_transfer(const char *sender_account_number);
 void update_account_balance(const char *account_number, double new_balance);
+void customer_transaction_history(const char *account_number,int n);
 
 
 #endif // BANKING_SYSTEM_H

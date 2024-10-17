@@ -1,6 +1,7 @@
-#include"../banking_system.h"
+#include "../banking_system.h"
 
-#include"customer_fund_transfer.c"
+#include "customer_fund_transfer.c"
+#include "customer_transaction_history.c"
 /**
  * Handles the customer menu after successful login.
  */
@@ -25,9 +26,14 @@ void customer_menu_handle(const char *account_number)
             customer_fund_transfer(account_number); // Call the fund transfer function with the logged-in user's account number
             break;
         case 3:
+        {
+            int n;
+            printf("How many recent transactions would you like to see? ");
+            scanf("%d", &n);
             // Call the function to view transaction history
-            // view_transaction_history();
+            customer_transaction_history(account_number, n);
             break;
+        }
         case 4:
             printf(GREEN "Logging out...\n" RESET);
             break;
