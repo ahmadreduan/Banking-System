@@ -184,11 +184,17 @@ void update_account_balance(const char *account_number, double new_balance);
 
 void generate_transaction_id(char *id, int length);
 
-void admin_transfer_funds();
+void admin_transfer_funds(void);
 
 // Function declarations
 int customer_login(void);
 
+
+void customer_menu_handle();
+
+void view_customer_balance(void);
+
+int main();
 
 
 #endif // BANKING_SYSTEM_H

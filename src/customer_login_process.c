@@ -48,7 +48,6 @@ int customer_login() {
         // Compare the input password with the stored password
         if (strcmp(input_password, stored_password) == 0) {
             printf(GREEN "Login successful!\n" RESET);
-            display_customer_options(); // Show the customer options upon successful login
             return 1; // Successful login
         } else {
             printf(RED "Invalid password.\n" RESET);
@@ -59,4 +58,7 @@ int customer_login() {
         return 0; // Failed login, no password found
     }
 }
+
+
+
 

@@ -2,7 +2,7 @@
 #include "banking_system_display.c"
 #include "admin_login_portal.c"
 #include "admin_registration_account.c"
-#include "usersite.c"
+#include "customer_login_process.c"
 #include "admin_search_and_view_account_details.c"
 #include "admin_search_and_view_balance.c"
 #include "admin_deposit_funds.c"
@@ -10,6 +10,9 @@
 #include "admin_transfer_funds.c"
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
+
+#include"customer_menu_handle.c"
+
 
 int main()
 {
@@ -132,7 +135,9 @@ int main()
             if (customer_login() == 1)
             {
                 // Successfully logged in, display customer options only
+                customer_menu_handle(); 
                 return; // Exit the main menu
+
             }
             break;
         case 3:             
