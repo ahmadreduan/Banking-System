@@ -18,7 +18,7 @@ void deposit_funds(const char *account_number)
 
     // Construct the filename for the user's account
     char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);// snprintf ফাংশনটি ব্যবহার করে একটি স্ট্রিং (string) তৈরি করা হচ্ছে যেখানে filename ভেরিয়েবলের মধ্যে একটি ফাইলের নাম সংরক্ষণ করা হবে।
 
     FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
     if (file == NULL)
@@ -34,7 +34,7 @@ void deposit_funds(const char *account_number)
     // Search for "Initial Deposit" line and record its position
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        if (sscanf(line, "Initial Deposit: %lf", &initial_deposit) == 1)
+        if (sscanf(line, "Initial Deposit: %lf", &initial_deposit) == 1) // স্ট্রিং থেকে নির্দিষ্ট ফরম্যাট অনুযায়ী ডেটা পড়ার জন্য ব্যবহৃত হয়। sscanf একটি স্ট্রিংয়ের মধ্যে থেকে ভ্যারিয়েবলের ভ্যালু বের করে নেয়
         {
             balance_pos = ftell(file); // Save the current position for updating
             break;

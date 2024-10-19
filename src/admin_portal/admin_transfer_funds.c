@@ -89,7 +89,7 @@ void transfer_funds(const char *source_account, const char *destination_account,
     destination_balance += amount; // Add to destination account
 
     // Update source account file with new balance
-    fseek(source_file, source_balance_pos - strlen(line), SEEK_SET); // Go back to balance line
+    fseek(source_file, source_balance_pos - strlen(line), SEEK_SET); // Go back to balance line fseek এর কাজ হলো ফাইলের পজিশন কার্সরকে নির্দিষ্ট অবস্থানে সরানো, যাতে ফাইলের সেই অংশে নতুন ডেটা লেখা যায়।
     fprintf(source_file, "Initial Deposit: %.2f\n", source_balance);
 
     // Update destination account file with new balance
