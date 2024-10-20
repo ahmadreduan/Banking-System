@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <sys/stat.h>  // Add this for mkdir  Required for creating directories
+#include <sys/stat.h>  // for mkdir  Required for creating directories
 #include <sys/types.h> // Also include this for POSIX systems
 #include <ctype.h>
 
