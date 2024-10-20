@@ -14,7 +14,7 @@ void search_and_view_balance(const char *account_number_for_balance)
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
-        printf("No account found with the account number: %s\n", account_number_for_balance);
+        printf(BRED"No account found with the account number: %s\n"RESET, account_number_for_balance);
         return;
     }
 

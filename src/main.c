@@ -1,7 +1,6 @@
 #include "banking_system.h"
 #include "banking_system_display.c"
 
-
 #include "admin_portal/admin_login_portal.c"
 #include "admin_portal/admin_deposit_funds.c"
 #include "admin_portal/admin_registration_account.c"
@@ -15,8 +14,6 @@
 
 #include "customer_portal/customer_menu_handle.c"
 #include "customer_portal/customer_login_process.c"
-
-
 
 
 
