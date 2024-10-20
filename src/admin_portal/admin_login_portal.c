@@ -1,3 +1,4 @@
+#include"../banking_system.h"
 #define NUM_ADMIN_USERS 3
 // Predefines admin usernames and passwords
 const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
@@ -27,6 +28,6 @@ int admin_login()
             return 1; // successful login
         }
     }
-    printf("Invalid username or password.\n");
+    printf(BRED"Invalid username or password.\n"RESET);
     return 0; // Failed login
 }

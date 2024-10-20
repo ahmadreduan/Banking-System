@@ -45,7 +45,7 @@ void deposit_funds(const char *account_number)
     { // If balance was found
         double deposit_amount;
         printf(BGRN"Current Balance: %.2lf\n"RESET, initial_deposit);
-        printf("Enter amount to deposit: ");
+        printf(BBLU"Enter amount to deposit: "RESET);
         scanf("%lf", &deposit_amount);
 
         if (deposit_amount > 0)
@@ -54,7 +54,7 @@ void deposit_funds(const char *account_number)
             if (deposit_amount <= branch_balance)
             {
                 initial_deposit += deposit_amount;
-                printf("Deposit successful. New balance: %.2lf\n", initial_deposit);
+                printf(BGRN"Deposit successful. New balance: %.2lf\n"RESET, initial_deposit);
 
                 // Update the branch account balance
                 update_branch_account_balance(branch_balance - deposit_amount);
@@ -68,17 +68,17 @@ void deposit_funds(const char *account_number)
             }
             else
             {
-                printf("Insufficient funds in the branch account. Current balance: %.2lf\n", branch_balance);
+                printf(BRED"Insufficient funds in the branch account. Current balance: %.2lf\n"RESET, branch_balance);
             }
         }
         else
         {
-            printf("Invalid deposit amount.\n");
+            printf(BRED"Invalid deposit amount.\n"RESET);
         }
     }
     else
     {
-        printf("Error reading the account balance for account number: %s\n", account_number);
+        printf(BRED"Error reading the account balance for account number: %s\n"RESET, account_number);
     }
 
     fclose(file);
