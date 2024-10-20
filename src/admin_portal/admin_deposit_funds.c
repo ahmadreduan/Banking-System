@@ -12,7 +12,7 @@ void deposit_funds(const char *account_number)
     double branch_balance = get_branch_account_balance();
     if (branch_balance <= 0)
     {
-        printf("Insufficient funds in the branch account. Current balance: %.2lf\n", branch_balance);
+        printf(BGRN"Insufficient funds in the branch account. Current balance: %.2lf\n"RESET, branch_balance);
         return; // Exit function if branch account balance is zero or negative
     }
 
@@ -23,7 +23,7 @@ void deposit_funds(const char *account_number)
     FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
     if (file == NULL)
     {
-        printf("No account found with the account number: %s\n", account_number);
+        printf(BRED"No account found with the account number: %s\n"RESET, account_number);
         return;
     }
 
@@ -44,7 +44,7 @@ void deposit_funds(const char *account_number)
     if (balance_pos != 0)
     { // If balance was found
         double deposit_amount;
-        printf("Current Balance: %.2lf\n", initial_deposit);
+        printf(BGRN"Current Balance: %.2lf\n"RESET, initial_deposit);
         printf("Enter amount to deposit: ");
         scanf("%lf", &deposit_amount);
 
