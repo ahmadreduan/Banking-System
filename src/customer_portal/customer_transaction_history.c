@@ -16,7 +16,7 @@ void customer_transaction_history(const char *account_number, int n) {
     // Open the transaction history file
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Unable to open transaction history file for account number: %s\n", account_number);
+        printf(BRED"Unable to open transaction history file for account number: %s\n"RESET, account_number);
         return;
     }
 
