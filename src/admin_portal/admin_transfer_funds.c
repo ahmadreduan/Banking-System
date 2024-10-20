@@ -7,17 +7,17 @@ void admin_transfer_funds()
     double amount;
 
     // Capture source account number
-    printf("Enter the source account number: ");
+    printf(BGRN"Enter the source account number: "RESET);
     fgets(source_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
     fflush(stdin);
 
     // Capture destination account number
-    printf("Enter the destination account number: ");
+    printf(BGRN"Enter the destination account number: "RESET);
     fgets(destination_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
     fflush(stdin);
 
     // Capture transfer amount
-    printf("Enter the amount to transfer: ");
+    printf(BGRN"Enter the amount to transfer: "RESET);
     scanf("%lf", &amount);
     getchar(); // To consume the leftover newline character from scanf
 
@@ -42,7 +42,7 @@ void transfer_funds(const char *source_account, const char *destination_account,
     source_file = fopen(source_filename, "r+");
     if (source_file == NULL)
     {
-        printf("Error: Could not open source account file for account: %s\n", source_account);
+        printf(BRED"Error: Could not open source account file for account: %s\n"RESET, source_account);
         return;
     }
 
@@ -50,7 +50,7 @@ void transfer_funds(const char *source_account, const char *destination_account,
     destination_file = fopen(destination_filename, "r+");
     if (destination_file == NULL)
     {
-        printf("Error: Could not open destination account file for account: %s\n", destination_account);
+        printf(BRED"Error: Could not open destination account file for account: %s\n"RESET, destination_account);
         fclose(source_file); // Close source file since we're exiting
         return;
     }
@@ -78,7 +78,7 @@ void transfer_funds(const char *source_account, const char *destination_account,
     // Check if there is enough balance in the source account for the transfer
     if (source_balance < amount)
     {
-        printf("Error: Insufficient funds in source account. Current balance: %.2f\n", source_balance);
+        printf(BRED"Error: Insufficient funds in source account. Current balance: %.2f\n"RESET, source_balance);
         fclose(source_file);
         fclose(destination_file);
         return;
@@ -104,5 +104,5 @@ void transfer_funds(const char *source_account, const char *destination_account,
     log_transaction(source_account, "Transfer Out", amount);
     log_transaction(destination_account, "Transfer In", amount);
 
-    printf("Transfer successful! %.2f has been transferred from account %s to account %s.\n", amount, source_account, destination_account);
+    printf(BGRN"Transfer successful! %.2f has been transferred from account %s to account %s.\n"RESET, amount, source_account, destination_account);
 }
