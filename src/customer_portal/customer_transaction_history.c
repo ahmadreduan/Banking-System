@@ -30,16 +30,16 @@ void customer_transaction_history(const char *account_number, int n) {
     fclose(file);
 
     if (count == 0) {
-        printf("No transactions found.\n");
+        printf(BRED"No transactions found.\n"RESET);
         return;
     }
 
     // Determine how many transactions to display
     int display_count = (count < n) ? count : n;
-    printf("Displaying last %d transactions:\n", display_count);
+    printf(BMAG"Displaying last %d transactions:\n"RESET, display_count);
 
     // Display the last N transactions
     for (int i = count - display_count; i < count; i++) {
-        printf("%s", transactions[i]);
+        printf(BBLU"%s"RESET, transactions[i]);
     }
 }

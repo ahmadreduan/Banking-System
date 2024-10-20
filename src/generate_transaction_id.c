@@ -29,7 +29,7 @@ void log_transaction(const char *account_number, const char *transaction_type, d
     FILE *file = fopen(filename, "a");
     if (file == NULL)
     {
-        printf("Error opening transaction file for account number: %s\n", account_number);
+        printf(BRED"Error opening transaction file for account number: %s\n"RESET, account_number);
         return;
     }
 
@@ -76,7 +76,7 @@ void log_transaction_to_branch(const char *account_number, double amount)
     FILE *file = fopen(transaction_file, "w");
     if (file == NULL)
     {
-        printf("Error creating transaction log file.\n");
+        printf(BRED"Error creating transaction log file.\n"RESET);
         return;
     }
 }
