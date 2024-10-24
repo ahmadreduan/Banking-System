@@ -34,12 +34,10 @@ int main()
     // Set color to CYAN for the border and YELLOW for the text inside
     printf(CYAN "********************************************\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET "  " YELLOW "*"
-                "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET " "CYAN "*" "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
     printf(CYAN "********************************************\n\n\n" RESET);
-
-    // load_users_from_file(); // Load existing users from the file at the start
+ 
 
     int choice, logged_in = 0, customer_index = -1;
     User user; // Declare the CUser struct for logged-in customer
