@@ -127,8 +127,7 @@ void register_account(void);
 // Function to search and view an account based on account number
 void search_and_view_account(const char *account_number);
 
-// Function to view the balance of a customer
-void view_balance(size_t customer_index);
+
 
 // Function to search and display balance based on account number
 void search_and_view_balance(const char *account_number_for_balance);
@@ -183,13 +182,8 @@ void generate_transaction_id(char *id, int length);
 
 void admin_transfer_funds(void);
 
-// Function declarations
-//int customer_login(void);
+void view_transaction_history(void);
 
-
-//void customer_menu_handle();
-
-//void view_customer_balance(void);
 
 // Customer-related functions
 int customer_login(char *account_number_out); // Handles customer login, stores logged-in account number

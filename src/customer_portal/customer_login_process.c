@@ -13,7 +13,7 @@ int customer_login(char *account_number_out)
     int password_found = 0;
 
     // Ask the user to input their account number
-    printf("Enter your account number: ");
+    printf(BGRN"Enter your account number: "RESET);
     fgets(account_number_out, ACCOUNT_NUMBER_LENGTH + 1, stdin);
     remove_newline(account_number_out);  // Remove newline from account number
     fflush(stdin);
@@ -25,7 +25,7 @@ int customer_login(char *account_number_out)
     // Check if the account exists by trying to open the file
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf(RED "No account found with account number: %s\n" RESET, account_number_out);
+        printf(BRED "No account found with account number: %s\n" RESET, account_number_out);
         return 0; // Failed login, no account found
     }
 
@@ -42,7 +42,7 @@ int customer_login(char *account_number_out)
 
     // Ask the user to input their password
     if (password_found) {
-        printf("Enter your password: ");
+        printf(BGRN"Enter your password: "RESET);
         fgets(input_password, sizeof(input_password), stdin);
         remove_newline(input_password); // Remove newline from input password
         fflush(stdin);

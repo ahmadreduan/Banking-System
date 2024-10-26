@@ -37,10 +37,10 @@ void search_and_view_balance(const char *account_number_for_balance)
 
     if (found_balance)
     {
-        printf("Initial Deposit: %.2lf\n", initial_deposit);
+        printf(BGRN"Initial Deposit: %.2lf\n"RESET, initial_deposit);
     }
     else
     {
-        printf("Error reading the account balance for account number: %s\n", account_number_for_balance);
+        printf(BRED"Error reading the account balance for account number: %s\n"RESET, account_number_for_balance);
     }
 }

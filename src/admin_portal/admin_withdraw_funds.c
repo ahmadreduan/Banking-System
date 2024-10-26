@@ -15,7 +15,7 @@ void withdraw_funds(const char *account_number)
     FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
     if (file == NULL)
     {
-        printf("No account found with the account number: %s\n", account_number);
+        printf(BRED"No account found with the account number: %s\n"RESET, account_number);
         return;
     }
 
@@ -38,40 +38,40 @@ void withdraw_funds(const char *account_number)
     if (found_balance)
     {
         double withdrawal_amount;
-        printf("Current Balance: %.2lf\n", current_balance);
-        printf("Enter amount to withdraw: ");
+        printf(BBLU"Current Balance: %.2lf\n"RESET, current_balance);
+        printf(BBLU"Enter amount to withdraw: "RESET);
         scanf("%lf", &withdrawal_amount);
 
         if (withdrawal_amount > 0 && withdrawal_amount <= current_balance)
         {
             current_balance -= withdrawal_amount;
-            printf("Withdrawal successful. New balance: %.2lf\n", current_balance);
+            printf(BGRN"Withdrawal successful. New balance: %.2lf\n"RESET, current_balance);
 
             // Update the balance in the file
             fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line
-            fprintf(file, "nitial Deposit: %.2lf\n", current_balance); // Overwrite with new balance
+            fprintf(file, "nitial Deposit: %.2lf", current_balance); // Overwrite with new balance
 
             // Update the branch account
             double branch_balance = get_branch_account_balance();
             branch_balance += withdrawal_amount; // Add to the branch account
             update_branch_account_balance(branch_balance);
-            printf("Branch account updated. New balance: %.2lf\n", branch_balance);
+            printf(BMAG"Branch account updated. New balance: %.2lf\n"RESET, branch_balance);
 
             // Log the transaction
             log_transaction(account_number, "Withdrawal", withdrawal_amount);
         }
         else if (withdrawal_amount > current_balance)
         {
-            printf("Insufficient balance! Your current balance is: %.2lf\n", current_balance);
+            printf(BYEL"Insufficient balance! Your current balance is: %.2lf\n", current_balance);
         }
         else
         {
-            printf("Invalid withdrawal amount.\n");
+            printf(BRED"Invalid withdrawal amount.\n"RESET);
         }
     }
     else
     {
-        printf("Error reading the account balance for account number: %s\n", account_number);
+        printf(BRED"Error reading the account balance for account number: %s\n"RESET, account_number);
     }
 
     fclose(file); // Close the file

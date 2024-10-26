@@ -10,17 +10,17 @@ void customer_fund_transfer(const char *sender_account_number) {
     int pin_found = 0;
 
     // Ask for receiver's account number
-    printf("Enter the receiver's account number: ");
+    printf(BBLU"Enter the receiver's account number: "RESET);
     fgets(receiver_account_number, sizeof(receiver_account_number), stdin);
     remove_newline(receiver_account_number);
 
     // Ask for the amount to transfer
-    printf("Enter the amount to transfer: ");
+    printf(BBLU"Enter the amount to transfer: "RESET);
     scanf("%lf", &amount);
     getchar(); // Consume the leftover newline character
 
     // Ask for the PIN
-    printf("Enter your PIN: ");
+    printf(BGRN"Enter your PIN: ");
     fgets(entered_pin, sizeof(entered_pin), stdin);
     remove_newline(entered_pin);
 
@@ -29,7 +29,7 @@ void customer_fund_transfer(const char *sender_account_number) {
     snprintf(sender_filename, sizeof(sender_filename), "userdata/%s.txt", sender_account_number);
     FILE *sender_file = fopen(sender_filename, "r");
     if (sender_file == NULL) {
-        printf("Sender account not found.\n");
+        printf(BRED"Sender account not found.\n"RESET);
         return;
     }
 
@@ -45,13 +45,13 @@ void customer_fund_transfer(const char *sender_account_number) {
 
     // Validate the PIN
     if (strcmp(entered_pin, stored_pin) != 0) {
-        printf("Incorrect PIN. Transfer failed.\n");
+        printf(BRED"Incorrect PIN. Transfer failed.\n"RESET);
         return;
     }
 
     // Check if sender has enough balance
     if (sender_balance < amount) {
-        printf("Insufficient funds.\n");
+        printf(BGRN"Insufficient funds.\n"RESET);
         return;
     }
 
@@ -60,7 +60,7 @@ void customer_fund_transfer(const char *sender_account_number) {
     snprintf(receiver_filename, sizeof(receiver_filename), "userdata/%s.txt", receiver_account_number);
     FILE *receiver_file = fopen(receiver_filename, "r");
     if (receiver_file == NULL) {
-        printf("Receiver account not found.\n");
+        printf(BRED"Receiver account not found.\n"RESET);
         return;
     }
 
@@ -82,7 +82,7 @@ void customer_fund_transfer(const char *sender_account_number) {
     log_transaction(sender_account_number, "Transfer Out", amount);
     log_transaction(receiver_account_number, "Transfer In", amount);
 
-    printf("Transfer successful! %.2lf has been transferred to %s.\n", amount, receiver_account_number);
+    printf(BGRN"Transfer successful! %.2lf has been transferred to %s.\n"RESET, amount, receiver_account_number);
 }
 
 void update_account_balance(const char *account_number, double new_balance) {
@@ -91,7 +91,7 @@ void update_account_balance(const char *account_number, double new_balance) {
 
     FILE *file = fopen(filename, "r+");
     if (file == NULL) {
-        printf("Account file not found.\n");
+        printf(BRED"Account file not found.\n"RESET);
         return;
     }
 
@@ -99,7 +99,7 @@ void update_account_balance(const char *account_number, double new_balance) {
     snprintf(temp_filename, sizeof(temp_filename), "userdata/temp_%s.txt", account_number);
     FILE *temp_file = fopen(temp_filename, "w");
     if (temp_file == NULL) {
-        printf("Error creating temporary file.\n");
+        printf(BRED"Error creating temporary file.\n"RESET);
         fclose(file);
         return;
     }

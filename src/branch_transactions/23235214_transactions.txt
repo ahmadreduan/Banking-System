@@ -1,0 +1,6 @@
+Account Number: 23235214
+Transaction Type: Transfer Out
+Amount: 50000.00
+Date: 2024-10-26 21:05:20
+Transaction ID: WP5U3JH7OB23
+----------------------------------------

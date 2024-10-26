@@ -28,8 +28,9 @@ void customer_menu_handle(const char *account_number)
         case 3:
         {
             int n;
-            printf("How many recent transactions would you like to see? ");
+            printf(BMAG"How many recent transactions would you like to see? "RESET);
             scanf("%d", &n);
+            //int mul_n = n*6;
             // Call the function to view transaction history
             customer_transaction_history(account_number, n);
             break;

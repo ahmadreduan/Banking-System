@@ -13,11 +13,11 @@ int admin_login()
     char username[MAX_STRING_LENGTH];
     char password[MAX_STRING_LENGTH];
 
-    printf("Enter admin username : ");
+    printf(BGRN"Enter admin username : "RESET);
     fgets(username, MAX_STRING_LENGTH, stdin);
     remove_newline(username);
 
-    printf("Enter admin password : ");
+    printf(BGRN"Enter admin password : "RESET);
     fgets(password, MAX_STRING_LENGTH, stdin);
     remove_newline(password);
 

@@ -252,7 +252,6 @@ void clear_input_buffer()
         ;
 }
 
-
 /**
  * Registers a new account by collecting user information and saving it to a file.
  * The account number is generated and displayed only after all other information is collected.
@@ -321,7 +320,7 @@ void register_account()
     // Input for Phone Number (Bangladeshi format: +8801XXXXXXXXX or 01XXXXXXXXX)
     while (1)
     {
-        printf(BGRN"Enter phone number (+8801XXXXXXXXX or 01XXXXXXXXX): "RESET);
+        printf(BGRN "Enter phone number (+8801XXXXXXXXX or 01XXXXXXXXX): " RESET);
         fgets(new_user.phone, sizeof(new_user.phone), stdin);
         remove_newline(new_user.phone);
 
@@ -407,23 +406,23 @@ void register_account()
     }
 
     // Account type selection
-    printf(BBLU"\tSelect account type:\n"RESET);
-    printf(BYEL"\t01. Mudaraba Term Deposit\n"RESET);
-    printf(BYEL"\t02. Al-Wadiah Current Account\n"RESET);
-    printf(BYEL"\t03. Mudaraba Scheme Deposits\n"RESET);
-    printf(BYEL"\t04. Super Savings Account\n"RESET);
-    printf(BYEL"\t05. Waqf Deposit Account\n"RESET);
-    printf(BYEL"\t06. Mudaraba Savings Account\n"RESET);
-    printf(BYEL"\t07. Bai-salam (Pc)\n"RESET);
-    printf(BYEL"\t08. Mudaraba Bashsthan Savings Scheme\n"RESET);
-    printf(BYEL"\t09. Mudaraba Hajj Saving Scheme\n"RESET);
-    printf(BYEL"\t10. Student Account\n"RESET);
+    printf(BBLU "\tSelect account type:\n" RESET);
+    printf(BYEL "\t01. Mudaraba Term Deposit\n" RESET);
+    printf(BYEL "\t02. Al-Wadiah Current Account\n" RESET);
+    printf(BYEL "\t03. Mudaraba Scheme Deposits\n" RESET);
+    printf(BYEL "\t04. Super Savings Account\n" RESET);
+    printf(BYEL "\t05. Waqf Deposit Account\n" RESET);
+    printf(BYEL "\t06. Mudaraba Savings Account\n" RESET);
+    printf(BYEL "\t07. Bai-salam (Pc)\n" RESET);
+    printf(BYEL "\t08. Mudaraba Bashsthan Savings Scheme\n" RESET);
+    printf(BYEL "\t09. Mudaraba Hajj Saving Scheme\n" RESET);
+    printf(BYEL "\t10. Student Account\n" RESET);
 
     int account_type_choice;
-    printf(BBLU"Enter the number corresponding to your account type: "RESET);
+    printf(BBLU "Enter the number corresponding to your account type: " RESET);
     while (scanf("%d", &account_type_choice) != 1 || account_type_choice < 1 || account_type_choice > 10)
     {
-        printf(BRED"Invalid choice. Please enter a number between 1 and 10: "RESET);
+        printf(BRED "Invalid choice. Please enter a number between 1 and 10: " RESET);
         // while (getchar() != '\n'); // Clear the input buffer
         clear_input_buffer();
     }
@@ -465,10 +464,10 @@ void register_account()
         break;
     }
 
-    printf(BCYN"Enter initial deposit                : "RESET);
+    printf(BCYN "Enter initial deposit                : " RESET);
     while (scanf("%lf", &new_user.initial_deposit) != 1)
     {
-        printf(BRED"Invalid input. Please enter a valid amount: "RESET);
+        printf(BRED "Invalid input. Please enter a valid amount: " RESET);
         // while (getchar() != '\n'); // Clear the input buffer
         clear_input_buffer();
     }
@@ -480,14 +479,14 @@ void register_account()
     // Input for PIN
     while (1)
     {
-        printf(BMAG"Enter 4-digit PIN: "RESET);
+        printf(BMAG "Enter 4-digit PIN: " RESET);
         if (!fgets(new_user.pin, sizeof(new_user.pin), stdin))
         {
-            printf(BRED"Error reading input.\n"RESET);
+            printf(BRED "Error reading input.\n" RESET);
             continue;
         }
         fflush(stdin);
-        //remove_newline(new_user.pin); // Remove newline from PIN input
+        // remove_newline(new_user.pin); // Remove newline from PIN input
 
         // Check if the PIN is valid (4 digits and numeric)
         if (is_valid_pin(new_user.pin))
@@ -508,12 +507,12 @@ void register_account()
             }
             else
             {
-                printf(BRED"PINs do not match! Please try again.\n"RESET);
+                printf(BRED "PINs do not match! Please try again.\n" RESET);
             }
         }
         else
         {
-            printf(BRED"Invalid PIN! Please enter a 4-digit number.\n"RESET);
+            printf(BRED "Invalid PIN! Please enter a 4-digit number.\n" RESET);
         }
     }
     fflush(stdin);
@@ -521,7 +520,7 @@ void register_account()
     // Input for nominee name with validation
     while (1)
     {
-        printf(BYEL"Enter nominee name: "RESET);
+        printf(BYEL "Enter nominee name: " RESET);
         fgets(new_user.nominee_name, sizeof(new_user.nominee_name), stdin);
         remove_newline(new_user.nominee_name);
 
@@ -540,7 +539,7 @@ void register_account()
     // Input for nominee NID with validation
     while (1)
     {
-        printf(BYEL"Enter nominee NID or Birth Certificate number (10 or 13 Digits): "RESET);
+        printf(BYEL "Enter nominee NID or Birth Certificate number (10 or 13 Digits): " RESET);
         fgets(new_user.nominee_nid, 13, stdin); // Reading up to 13 characters (including newline)
         remove_newline(new_user.nominee_nid);
 
@@ -553,19 +552,19 @@ void register_account()
         }
         else
         {
-            printf(BRED"Invalid input! Please enter exactly 10 or 13 digits.\n"RESET);
+            printf(BRED "Invalid input! Please enter exactly 10 or 13 digits.\n" RESET);
         }
     }
     fflush(stdin);
 
     // Input for nominee NID with validation
 
-    printf(BGRN"Enter address (city, state, postal zip code, country): "RESET);
+    printf(BGRN "Enter address (city, state, postal zip code, country): " RESET);
     fgets(new_user.address, 100, stdin);
     remove_newline(new_user.address);
 
     generate_account_number(new_user.account_number);
-    printf(BMAG"Account Number: %s\n"RESET, new_user.account_number);
+    printf(BMAG "Account Number: %s\n" RESET, new_user.account_number);
 
     char filename[150];
     snprintf(filename, sizeof(filename), "userdata/%s.txt", new_user.account_number);
@@ -573,7 +572,7 @@ void register_account()
 
     if (file == NULL)
     {
-        perror(BRED"Error opening file"RESET);
+        perror(BRED "Error opening file" RESET);
         return;
     }
 
@@ -596,6 +595,5 @@ void register_account()
     fclose(file);
 
     users[user_count++] = new_user; // Add new user to the array
-    printf(BGRN"Account registered successfully.\n"RESET);
+    printf(BGRN "Account registered successfully.\n" RESET);
 }
-

@@ -1,8 +1,10 @@
+#include"../banking_system.h"
 /**
  * Searches for a user account based on the provided account number.
  * Loads and displays the user details from the corresponding file.
  * @param account_number The account number to search for.
  */
+
 void search_and_view_account(const char *account_number)
 {
     char filename[150];
@@ -11,7 +13,7 @@ void search_and_view_account(const char *account_number)
     FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
-        printf("No account found with the account number: %s\n", account_number);
+        printf(BRED"No account found with the account number: %s\n"RESET, account_number);
         return;
     }
 
@@ -48,17 +50,17 @@ void search_and_view_account(const char *account_number)
     fclose(file);
 
     // Display the user details
-    printf("\n\n+-----------------------------------------+\n");
-    printf("| %s\n", temp_user.full_name);
-    printf("+-----------------------------------------+\n");
-    printf("| Account Number: %s                     \n", temp_user.account_number);
-    printf("| %s                     \n", temp_user.date_of_birth);
-    printf("| %s                     \n", temp_user.phone);
-    printf("| %s                     \n", temp_user.email);
-    printf("| %s                     \n", temp_user.account_type);
-    printf("| Initial Deposit: %.2lf \n", temp_user.initial_deposit);
-    printf("| %s                     \n", temp_user.nominee_name);
-    printf("| %s                     \n", temp_user.nominee_nid);
-    printf("| %s                     \n", temp_user.address);
-    printf("+-----------------------------------------+\n");
+    printf(BYEL"\n\n+-----------------------------------------+\n"RESET);
+    printf(BGRN"| %s\n"RESET, temp_user.full_name);
+    printf(BYEL"+-----------------------------------------+\n"RESET);
+    printf(BGRN"| Account Number: %s                     \n"RESET, temp_user.account_number);
+    printf(BBLU"| %s                     \n"RESET, temp_user.date_of_birth);
+    printf(BBLU"| %s                     \n"RESET, temp_user.phone);
+    printf(BBLU"| %s                     \n"RESET, temp_user.email);
+    printf(BBLU"| %s                     \n"RESET, temp_user.account_type);
+    printf(BBLU"| Initial Deposit: %.2lf \n"RESET, temp_user.initial_deposit);
+    printf(BBLU"| %s                     \n"RESET, temp_user.nominee_name);
+    printf(BBLU"| %s                     \n"RESET, temp_user.nominee_nid);
+    printf(BBLU"| %s                     \n"RESET, temp_user.address);
+    printf(BYEL"+-----------------------------------------+\n"RESET);
 }

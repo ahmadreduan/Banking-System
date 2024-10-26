@@ -1,0 +1,15 @@
+Account Number : 23235214
+Full Name      : Asraful Alam
+Date of Birth  : 10/02/2004
+Mobile Number  : 01830056945
+Email          : alam@gmail.com
+NID            : 4569871236
+User Name      : alam@gmail.com
+Password       : As&123456
+Account type   : Student Account
+Initial Deposit: 50000.00
+Account Pin    : 0935
+Nominee Name   : Reduan Ahmad
+Noninee NID    : 1234569874
+Address        : Gazipur,Dhaka,1260,Bangaldesh
+----------------------------------------

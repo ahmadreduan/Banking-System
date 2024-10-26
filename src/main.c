@@ -8,6 +8,7 @@
 #include "admin_portal/admin_search_and_view_account_details.c"
 #include "admin_portal/admin_search_and_view_balance.c"
 #include "admin_portal/admin_withdraw_funds.c"
+#include"admin_portal/admin_view_transaction_history.c"
 
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
@@ -45,7 +46,7 @@ int main()
     while (1)
     {
         display_banking_system_home_features();
-        printf("Enter your choice: ");
+        printf(BGRN"Enter your choice: "RESET);
         scanf("%d", &choice);
         getchar(); // To consume the leftover newline character from scanf
 
@@ -74,14 +75,7 @@ int main()
                         register_account();
                         break;
                     case 2:
-                        if (customer_index != -1)
-                        {
-                            view_balance(customer_index);
-                        }
-                        else
-                        {
-                            printf("Please login as a customer first.\n");
-                        }
+                        view_transaction_history();
                         break;
                     case 3: // Search Account by Account Number
                     {
@@ -157,11 +151,6 @@ int main()
 void print_border()
 {
     printf(BYEL "------------------------------------------\n" RESET);
-}
-
-void view_balance(size_t customer_index)
-{
-    printf("Your current balance is: %.2f Taka\n", users[customer_index].initial_deposit);
 }
 
 // Function to initialize the branch account
