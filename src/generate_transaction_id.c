@@ -62,7 +62,7 @@ void log_transaction_to_branch(const char *account_number, double amount)
     char branch_dir[] = "branch_transactions/";
 
     // Create directory if it doesn't exist
-    mkdir(branch_dir, 0777); // 0777 gives full permissions
+    _mkdir(branch_dir); // gives full permissions
 
     // Prepare the file name with the account number and timestamp
     char transaction_file[256];

@@ -59,7 +59,8 @@ int main()
         display_banking_system_home_features();
         printf(BGRN "Enter your choice: " RESET);
         fgets(input, sizeof(input), stdin); // Read input as a string
-                                            // Remove the newline character from input if it exists
+        
+        // Remove the newline character from input if it exists
         input[strcspn(input, "\n")] = 0;
 
         if (is_integer(input))

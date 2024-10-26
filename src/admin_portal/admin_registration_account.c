@@ -264,10 +264,10 @@ void register_account()
 
     User new_user;
     struct stat st; // Declare the stat structure
-                    // Check if the directory 'userdata' exists, and if not, create it
+   // Check if the directory 'userdata' exists, and if not, create it
     if (stat("userdata", &st) == -1)
     {
-        if (mkdir("userdata", 0700) != 0)
+        if (_mkdir("userdata") != 0) // gives full permissions
         {
             perror(BRED "Error creating userdata directory" RESET);
             return;
