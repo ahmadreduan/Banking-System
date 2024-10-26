@@ -8,7 +8,7 @@
 #include "admin_portal/admin_search_and_view_account_details.c"
 #include "admin_portal/admin_search_and_view_balance.c"
 #include "admin_portal/admin_withdraw_funds.c"
-#include"admin_portal/admin_view_transaction_history.c"
+#include "admin_portal/admin_view_transaction_history.c"
 
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
@@ -16,42 +16,63 @@
 #include "customer_portal/customer_menu_handle.c"
 #include "customer_portal/customer_login_process.c"
 
-
+int is_integer(const char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (!isdigit(str[i]))
+        {
+            return 0; // False if any character is not a digit
+        }
+    }
+    return 1; // True if all characters are digits
+}
 
 int main()
 {
 
     // Initialize the branch account at the start
     initialize_branch_account(); // Ensure branch account is initialized
-    // Print the face with different colors
-    printf(BLUE "                  *****   \n" RESET);
-    printf(BLUE "                 *     *  \n" RESET);
-    printf(YELLOW "                *  " BLUE "O O" YELLOW "  * \n" RESET);
-    printf(YELLOW "                *   " RED "^" YELLOW "   * \n" RESET);
-    printf(YELLOW "                *  " GREEN "\\_/" YELLOW "  * \n" RESET);
-    printf(BLUE "                 *     *  \n" RESET);
-    printf(BLUE "                  *****   \n" RESET);
+    printf(BRED "                  _________\n" RESET);
+    printf(BBLU "                 /         \\\n" RESET);
+    printf(BBLU "                /___________\\\n" RESET);
+    printf(BBLU "                |           |\n" RESET);
+    printf(BBLU "                |           |\n" RESET);
+    printf(BGRN "               |||    $    |||\n" RESET);
+    printf(BYEL "               |||         |||\n" RESET);
+    printf(RED "               _|___________|_\n" RESET);
 
     // Set color to CYAN for the border and YELLOW for the text inside
     printf(CYAN "********************************************\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET " "CYAN "*" "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET " " CYAN "*"
+                "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
     printf(CYAN "********************************************\n\n\n" RESET);
- 
 
     int choice, logged_in = 0, customer_index = -1;
-    User user; // Declare the CUser struct for logged-in customer
+    User user;      // Declare the User struct for logged-in customer
+    char input[10]; // Buffer to store user input as a string
 
     while (1)
     {
         display_banking_system_home_features();
-        printf(BGRN"Enter your choice: "RESET);
-        scanf("%d", &choice);
-        getchar(); // To consume the leftover newline character from scanf
+        printf(BGRN "Enter your choice: " RESET);
+        fgets(input, sizeof(input), stdin); // Read input as a string
+                                            // Remove the newline character from input if it exists
+        input[strcspn(input, "\n")] = 0;
+
+        if (is_integer(input))
+        {
+            choice = atoi(input); // Convert valid input to integer
+        }
+        else
+        {
+            printf("Invalid choice. Please enter a number.\n");
+            continue; // Skip to the next iteration if input is invalid
+        }
 
         char account_number[ACCOUNT_NUMBER_LENGTH + 1]; // Buffer to store logged-in customer's account number
-
 
         switch (choice)
         {
