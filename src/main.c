@@ -45,8 +45,7 @@ int main()
     // Set color to CYAN for the border and YELLOW for the text inside
     printf(CYAN "********************************************\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET " " CYAN "*"
-                "  Welcome to the Banking System!  " RESET CYAN "*\n" RESET);
+    printf(CYAN "*" RESET " " CYAN "*" "    Welcome to the Banking System!  " RESET CYAN   "  *" " *\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
     printf(CYAN "********************************************\n\n\n" RESET);
 

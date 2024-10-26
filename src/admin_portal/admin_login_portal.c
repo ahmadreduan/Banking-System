@@ -1,6 +1,8 @@
-#include"../banking_system.h"
-#define NUM_ADMIN_USERS 3
-// Predefines admin usernames and passwords
+#include <conio.h>  // For getch() on Windows
+#include "../banking_system.h"
+
+
+// Predefined admin usernames and passwords
 const char *admin_usernames[NUM_ADMIN_USERS] = {"reduan", "asraful", "trisha"};
 const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "23235292"};
 
@@ -8,26 +10,37 @@ const char *admin_passwords[NUM_ADMIN_USERS] = {"23235016", "23235214", "2323529
  * Handles the admin login process by verifying the provided credentials.
  * @return 1 if login is successful, 0 otherwise.
  */
-int admin_login()
-{
+int admin_login() {
     char username[MAX_STRING_LENGTH];
     char password[MAX_STRING_LENGTH];
+    int i = 0;
+    char ch;
 
-    printf(BGRN"Enter admin username : "RESET);
+    printf("Enter admin username : ");
     fgets(username, MAX_STRING_LENGTH, stdin);
     remove_newline(username);
 
-    printf(BGRN"Enter admin password : "RESET);
-    fgets(password, MAX_STRING_LENGTH, stdin);
-    remove_newline(password);
-
-    for (int i = 0; i < NUM_ADMIN_USERS; i++)
-    {
-        if (strcmp(username, admin_usernames[i]) == 0 && strcmp(password, admin_passwords[i]) == 0)
-        {
-            return 1; // successful login
+    printf("Enter admin password : ");
+    while ((ch = getch()) != '\r') {  // '\r' is Enter key in Windows
+        if (ch == '\b') {  // Handle backspace
+            if (i > 0) {
+                i--;
+                printf("\b \b");  // Remove last '*'
+            }
+        } else if (i < MAX_STRING_LENGTH - 1) {  // Limit password length
+            password[i++] = ch;
+            printf("*");
         }
     }
-    printf(BRED"Invalid username or password.\n"RESET);
-    return 0; // Failed login
+    password[i] = '\0';  // Null-terminate the password
+    printf("\n");  // Move to the next line after password input
+
+    for (int j = 0; j < NUM_ADMIN_USERS; j++) {
+        if (strcmp(username, admin_usernames[j]) == 0 && strcmp(password, admin_passwords[j]) == 0) {
+            return 1;  // Successful login
+        }
+    }
+
+    printf("Invalid username or password.\n");
+    return 0;  // Failed login
 }
