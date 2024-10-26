@@ -61,7 +61,7 @@ void deposit_funds(const char *account_number)
 
                 // Update the balance in the user's file
                 fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line
-                fprintf(file, "nitial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
+                fprintf(file, "nitial Deposit: %.2lf", initial_deposit); // Overwrite the line with the new balance
 
                 // Log the transaction
                 log_transaction(account_number, "Deposit", deposit_amount);

@@ -16,6 +16,7 @@ void generate_account_number(char *account_number)
     snprintf(account_number, ACCOUNT_NUMBER_LENGTH + 1, "232%05d", random_part); // Format as "232" followed by a 5-digit number
 }
 
+
 /**
  * Ensures that there is enough capacity in the users array to accommodate new users.
  * If the current capacity is insufficient, it reallocates the memory.
