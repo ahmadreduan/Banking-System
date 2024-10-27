@@ -217,3 +217,21 @@ Amount: 1000.00
 Date: 2024-10-26 20:58:15
 Transaction ID: VUV05WBKM1J7
 ----------------------------------------
+Account Number: 23205504
+Transaction Type: Transfer In
+Amount: 25000.00
+Date: 2024-10-27 16:37:27
+Transaction ID: VUV05WBKM1J7
+----------------------------------------
+Account Number: 23205504
+Transaction Type: Deposit
+Amount: 6000.00
+Date: 2024-10-27 17:10:53
+Transaction ID: D32CTNPA2XTO
+----------------------------------------
+Account Number: 23205504
+Transaction Type: Withdrawal
+Amount: 6000.00
+Date: 2024-10-27 17:11:14
+Transaction ID: VUV05WBKM1J7
+----------------------------------------

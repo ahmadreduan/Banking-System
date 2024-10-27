@@ -56,8 +56,8 @@ void deposit_funds(const char *account_number)
                 initial_deposit += deposit_amount;
                 printf(BGRN"Deposit successful. New balance: %.2lf\n"RESET, initial_deposit);
 
-                // Update the branch account balance
-                update_branch_account_balance(branch_balance - deposit_amount);
+                // Update branch balance after subtracting deposit amount
+                update_branch_account_balance(-deposit_amount);
 
                 // Update the balance in the user's file
                 fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line

@@ -12,7 +12,7 @@ void withdraw_funds(const char *account_number)
     char filename[150];
     snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
 
-    FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
+    FILE *file = fopen(filename, "r+");
     if (file == NULL)
     {
         printf(BRED"No account found with the account number: %s\n"RESET, account_number);
@@ -24,13 +24,12 @@ void withdraw_funds(const char *account_number)
     int found_balance = 0;
     long balance_pos = 0;
 
-    // Search for "Initial Deposit" line and record its position
     while (fgets(line, sizeof(line), file) != NULL)
     {
         if (sscanf(line, "Initial Deposit: %lf", &current_balance) == 1)
         {
             found_balance = 1;
-            balance_pos = ftell(file); // Save the current position to update the balance later
+            balance_pos = ftell(file);
             break;
         }
     }
@@ -47,17 +46,14 @@ void withdraw_funds(const char *account_number)
             current_balance -= withdrawal_amount;
             printf(BGRN"Withdrawal successful. New balance: %.2lf\n"RESET, current_balance);
 
-            // Update the balance in the file
-            fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line
-            fprintf(file, "nitial Deposit: %.2lf", current_balance); // Overwrite with new balance
+            // Update user balance in the file
+            fseek(file, balance_pos - strlen(line), SEEK_SET);
+            fprintf(file, "Initial Deposit: %.2lf", current_balance);
 
-            // Update the branch account
-            double branch_balance = get_branch_account_balance();
-            branch_balance += withdrawal_amount; // Add to the branch account
-            update_branch_account_balance(branch_balance);
-            printf(BMAG"Branch account updated. New balance: %.2lf\n"RESET, branch_balance);
+            // Update branch account balance by adding withdrawal amount
+            update_branch_account_balance(withdrawal_amount);
+            printf(BMAG"Branch account updated. New balance: %.2lf\n"RESET, get_branch_account_balance());
 
-            // Log the transaction
             log_transaction(account_number, "Withdrawal", withdrawal_amount);
         }
         else if (withdrawal_amount > current_balance)
@@ -74,5 +70,5 @@ void withdraw_funds(const char *account_number)
         printf(BRED"Error reading the account balance for account number: %s\n"RESET, account_number);
     }
 
-    fclose(file); // Close the file
+    fclose(file);
 }

@@ -7,7 +7,7 @@ NID            : 4569871236
 User Name      : alam@gmail.com
 Password       : As&123456
 Account type   : Student Account
-Initial Deposit: 50000.00
+Initial Deposit: 25000.00
 Account Pin    : 0935
 Nominee Name   : Reduan Ahmad
 Noninee NID    : 1234569874
