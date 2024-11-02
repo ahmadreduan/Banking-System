@@ -51,9 +51,6 @@
 
 #define NUM_ADMIN_USERS 3
 
-#define BORDER_CHAR '*'
-#define WIDTH 35
-
 #define PHONE_PREFIX "+880"
 #define PHONE_DIGITS 10
 #define PHONE_LENGTH (strlen(PHONE_PREFIX) + PHONE_DIGITS + 1) // +1 for null terminator
@@ -61,7 +58,7 @@
 #define MAX_PIN_LENGTH 5 // 4 digits + null terminator
 #define BRANCH_TRANSACTION_FILE "branch_transaction.txt"
 #define BRANCH_ACCOUNT_FILE "branch_account.txt"
-#define BRANCH_ACCOUNT_BALANCE 100000000000000.00 // 100 thousand crore
+
 
 // User structure definition
 typedef struct
@@ -130,8 +127,6 @@ void register_account(void);
 // Function to search and view an account based on account number
 void search_and_view_account(const char *account_number);
 
-
-
 // Function to search and display balance based on account number
 void search_and_view_balance(const char *account_number_for_balance);
 
@@ -165,9 +160,6 @@ void display_customer_options(void);
 
 // Function to handle the admin login process
 int admin_login(void);
-
-// Function to handle the customer login process
-//int customer_login(void);
 
 // Function to initialize the branch account with an initial balance
 void initialize_branch_account(void);

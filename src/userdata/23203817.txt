@@ -7,7 +7,7 @@ NID            : 1234567896
 User Name      : trisha@gmail.com
 Password       : Tr&123456
 Account type   : Mudaraba Term Deposit
-Initial Deposit: 55000.00
+Initial Deposit: 50000.00
 Account Pin    : 1234
 Nominee Name   : Trisha
 Noninee NID    : 1234567896

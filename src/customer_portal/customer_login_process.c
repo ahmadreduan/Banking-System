@@ -60,5 +60,3 @@ int customer_login(char *account_number_out)
         return 0; // Failed login, no password found
     }
 }
-
-

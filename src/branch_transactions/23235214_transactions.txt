@@ -10,3 +10,9 @@ Amount: 25000.00
 Date: 2024-10-27 16:37:27
 Transaction ID: D32CTNPA2XTO
 ----------------------------------------
+Account Number: 23235214
+Transaction Type: Transfer Out
+Amount: 20000.00
+Date: 2024-11-02 20:39:51
+Transaction ID: C2SRW09A9ASC
+----------------------------------------
