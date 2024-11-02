@@ -1,0 +1,15 @@
+Account Number : 23203817
+Full Name      : Rukaiya Akter Trisha
+Date of Birth  : 05/04/2002
+Mobile Number  : 01756984563
+Email          : trisha@gmail.com
+NID            : 1234567896
+User Name      : trisha@gmail.com
+Password       : Tr&123456
+Account type   : Mudaraba Term Deposit
+Initial Deposit: 55000.00
+Account Pin    : 1234
+Nominee Name   : Trisha
+Noninee NID    : 1234567896
+Address        : Dhaka, Bangladesh
+----------------------------------------

@@ -1,0 +1,6 @@
+Account Number: 23203817
+Transaction Type: Deposit
+Amount: 50000.00
+Date: 2024-11-02 20:20:02
+Transaction ID: 3329X66O6WKP
+----------------------------------------
