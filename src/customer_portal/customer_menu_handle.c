@@ -45,7 +45,7 @@ void customer_menu_handle(const char *account_number)
 }
 
 /**
- * Displays the balance of the currently logged-in customer.
+ * Displays the balance of the  currently logged-in customer.
  * Uses the account number from the login process to read the balance from the respective file.
  * If the account file or balance information is not found, an error message is displayed.
  *

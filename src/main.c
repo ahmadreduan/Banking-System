@@ -20,6 +20,8 @@ int is_integer(const char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
     {
+        /*isdigit একটি C স্ট্যান্ডার্ড লাইব্রেরির ফাংশন, যা নির্দিষ্ট কোনো ক্যারেক্টার ডিজিট (0-9)
+         কিনা তা যাচাই করতে ব্যবহৃত হয়। এটি ctype.h হেডার ফাইলে থাকে।*/
         if (!isdigit(str[i]))
         {
             return 0; // False if any character is not a digit
@@ -64,7 +66,7 @@ int main()
 
         if (is_integer(input))
         {
-            choice = atoi(input); // Convert valid input to integer
+            choice = atoi(input); // Convert valid input to integer | atoi একটি C স্ট্যান্ডার্ড লাইব্রেরির ফাংশন, যার পূর্ণরূপ "ASCII to Integer"
         }
         else
         {
@@ -92,7 +94,6 @@ int main()
                     switch (choice)
                     {
                     case 1:
-                        srand(time(NULL)); // Seed the random number generator with the current time
                         register_account();
                         break;
                     case 2:

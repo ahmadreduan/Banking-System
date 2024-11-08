@@ -48,7 +48,7 @@ void withdraw_funds(const char *account_number)
 
             // Update user balance in the file
             fseek(file, balance_pos - strlen(line), SEEK_SET);
-            fprintf(file, "Initial Deposit: %.2lf", current_balance);
+            fprintf(file, "nitial Deposit: %.2lf", current_balance);
 
             // Update branch account balance by adding withdrawal amount
             update_branch_account_balance(withdrawal_amount);

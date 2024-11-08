@@ -1,0 +1,15 @@
+Account Number : 23200609
+Full Name      : Hossain Ahmad
+Date of Birth  : 06/01/2006
+Mobile Number  : 01703010401
+Email          : hossain@gmail.com
+NID            : 1234567896
+User Name      : hossain@gmail.com
+Password       : Ho@123456
+Account type   : Student Account
+Initial Deposit: 2000.00
+Account Pin    : 1234
+Nominee Name   : Reduan Ahmad
+Noninee NID    : 1478523698
+Address        : Brahmanbaria,Banglasesh
+----------------------------------------

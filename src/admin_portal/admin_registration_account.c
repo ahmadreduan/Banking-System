@@ -139,7 +139,7 @@ void input_and_validate_dob(User *user)
             continue;
         }
 
-        // Convert day, month, year strings to integers
+        // Convert day, month, year strings to integers   স্ট্রিং থেকে ইনটিজারে রূপান্তর using atoi -> ASCII TO INTEGER
         day = atoi(day_str);
         month = atoi(month_str);
         year = atoi(year_str);

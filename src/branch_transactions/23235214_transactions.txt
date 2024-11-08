@@ -16,3 +16,27 @@ Amount: 20000.00
 Date: 2024-11-02 20:39:51
 Transaction ID: C2SRW09A9ASC
 ----------------------------------------
+Account Number: 23235214
+Transaction Type: Transfer In
+Amount: 500.00
+Date: 2024-11-03 01:05:55
+Transaction ID: VUV05WBKM1J7
+----------------------------------------
+Account Number: 23235214
+Transaction Type: Transfer In
+Amount: 50.00
+Date: 2024-11-03 15:34:57
+Transaction ID: C2SRW09A9ASC
+----------------------------------------
+Account Number: 23235214
+Transaction Type: Transfer In
+Amount: 50.00
+Date: 2024-11-03 15:37:18
+Transaction ID: VUV05WBKM1J7
+----------------------------------------
+Account Number: 23235214
+Transaction Type: Transfer Out
+Amount: 50.00
+Date: 2024-11-03 15:39:19
+Transaction ID: C2SRW09A9ASC
+----------------------------------------
