@@ -49,6 +49,7 @@ void customer_menu_handle(const char *account_number)
  * Uses the account number from the login process to read the balance from the respective file.
  * If the account file or balance information is not found, an error message is displayed.
  *
+ 
  * @param account_number The account number of the logged-in customer.
  */
 void view_customer_balance(const char *account_number)
