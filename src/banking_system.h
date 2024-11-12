@@ -178,7 +178,7 @@ void generate_transaction_id(char *id, int length);
 void admin_transfer_funds(void);
 
 void view_transaction_history(void);
-void deleteAccount();
+void deleteAccount(const char *account_number);
 
 
 // Customer-related functions

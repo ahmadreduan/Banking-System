@@ -48,15 +48,16 @@ void display_banking_system_home_features()
 
 void display_banking_system_features()
 {
-    print_border();                                                    
+    print_border();                                                     
     printf(BGRN "| 1. Register Account                     |\n" RESET);
-    printf(BGRN "| 2. View Account Details                 |\n" RESET); 
-    printf(BGRN "| 3. Search Account by Account Number     |\n" RESET); 
-    printf(BGRN "| 4. Balance Check by Account Number      |\n" RESET); 
-    printf(BGRN "| 5. Deposit Funds                        |\n" RESET); 
-    printf(BGRN "| 6. Withdraw Funds                       |\n" RESET); 
+    printf(BGRN "| 2. View Account Transaction             |\n" RESET);
+    printf(BGRN "| 3. View Account Details                 |\n" RESET); 
+    printf(BGRN "| 4. Balance Check by Account Number      |\n" RESET);
+    printf(BGRN "| 5. Deposit Funds                        |\n" RESET);
+    printf(BGRN "| 6. Withdraw Funds                       |\n" RESET);
     printf(BGRN "| 7. Transfer Funds                       |\n" RESET); 
-    printf(BGRN "| 8. Exit                                 |\n" RESET); 
+    printf(BGRN "| 8. Close Account                        |\n" RESET);
+    printf(BGRN "| 9. Exit                                 |\n" RESET); 
     print_border();                                                     
 }
 
