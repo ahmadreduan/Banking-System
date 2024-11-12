@@ -23,7 +23,8 @@ void display_banking_system_features()
     printf(BGRN "| 5. Deposit Funds                        |\n" RESET);
     printf(BGRN "| 6. Withdraw Funds                       |\n" RESET);
     printf(BGRN "| 7. Transfer Funds                       |\n" RESET); 
-    printf(BGRN "| 8. Exit                                 |\n" RESET); 
+    printf(BGRN "| 8. Close Account                        |\n" RESET);
+    printf(BGRN "| 9. Exit                                 |\n" RESET); 
     print_border();                                                     
 }
 
