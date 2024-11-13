@@ -43,7 +43,7 @@ void ensure_capacity(size_t new_capacity)
  */
 void remove_newline(char *str)
 {
-    size_t len = strlen(str);
+    size_t len = strlen(str);//size_t ডেটাটাইপটি একটি unsigned integer, যা সাধারণত স্ট্রিংয়ের দৈর্ঘ্য সংরক্ষণের জন্য ব্যবহৃত হয়।
     if (len > 0 && str[len - 1] == '\n')
     {
         str[len - 1] = '\0'; // Replace newline with null terminator

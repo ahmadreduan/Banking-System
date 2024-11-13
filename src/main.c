@@ -1,7 +1,7 @@
 #include "banking_system.h"
 #include "banking_system_display.c"
 
-#include "admin_portal/admin_login_portal.c"
+#include"admin_portal/admin_login_portal.c"
 #include "admin_portal/admin_deposit_funds.c"
 #include "admin_portal/admin_registration_account.c"
 #include "admin_portal/admin_transfer_funds.c"
@@ -102,7 +102,7 @@ int main()
                         break;
                     case 3: // Search Account by Account Number
                     {
-                        char account_number[ACCOUNT_NUMBER_LENGTH + 1];
+                        char account_number[ACCOUNT_NUMBER_LENGTH + 1]; //+1 রাখা হয়েছে, কারণ স্ট্রিং-এর শেষে \0 (null terminator) রাখতে অতিরিক্ত এক বাইট প্রয়োজন হয়।
                         printf(BLUE "Enter the account number: " RESET);
                         fgets(account_number, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number);
