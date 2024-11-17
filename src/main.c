@@ -1,7 +1,7 @@
 #include "banking_system.h"
 #include "banking_system_display.c"
 
-#include"admin_portal/admin_login_portal.c"
+#include "admin_portal/admin_login_portal.c"
 #include "admin_portal/admin_deposit_funds.c"
 #include "admin_portal/admin_registration_account.c"
 #include "admin_portal/admin_transfer_funds.c"
@@ -9,7 +9,8 @@
 #include "admin_portal/admin_search_and_view_balance.c"
 #include "admin_portal/admin_withdraw_funds.c"
 #include "admin_portal/admin_view_transaction_history.c"
-#include"admin_portal/admin_delete_Account.c"
+#include "admin_portal/admin_delete_Account.c"
+#include "admin_portal/admin_account_update.c"
 
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
@@ -48,7 +49,9 @@ int main()
     // Set color to CYAN for the border and YELLOW for the text inside
     printf(CYAN "********************************************\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
-    printf(CYAN "*" RESET " " CYAN "*" "    Welcome to the Banking System!  " RESET CYAN   "  *" " *\n" RESET);
+    printf(CYAN "*" RESET " " CYAN "*"
+                "    Welcome to the Banking System!  " RESET CYAN "  *"
+                " *\n" RESET);
     printf(CYAN "*" RESET "                                          " CYAN "*\n" RESET);
     printf(CYAN "********************************************\n\n\n" RESET);
 
@@ -61,7 +64,7 @@ int main()
         display_banking_system_home_features();
         printf(BGRN "Enter your choice: " RESET);
         fgets(input, sizeof(input), stdin); // Read input as a string
-        
+
         // Remove the newline character from input if it exists
         input[strcspn(input, "\n")] = 0;
 
@@ -150,6 +153,14 @@ int main()
                         deleteAccount(account_number_for_account_delete);
                     }
                     case 9:
+                    {
+                        char account_number_for_account_update[ACCOUNT_NUMBER_LENGTH + 1];
+                        printf("Enter the account number: ");
+                        fgets(account_number_for_account_update, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+                        remove_newline(account_number_for_account_update);
+                        updateAccount(account_number_for_account_update);
+                    }
+                    case 10:
                         logged_in = 0; // Logout
                         break;
                     default:

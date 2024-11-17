@@ -179,6 +179,7 @@ void admin_transfer_funds(void);
 
 void view_transaction_history(void);
 void deleteAccount(const char *account_number);
+void updateAccount(const char *account_number);
 
 
 // Customer-related functions
@@ -192,6 +193,23 @@ void view_customer_balance(const char *account_number); // Displays balance of t
 void customer_fund_transfer(const char *sender_account_number);
 void update_account_balance(const char *account_number, double new_balance);
 void customer_transaction_history(const char *account_number,int n);
+
+
+
+
+
+
+
+
+
+
+
+
+void updateFullName(User *user);
+void updateDateOfBirth(User *user);
+void updatePhone(User *user);
+void updateEmail(User *user);
+void updateAddress(User *user);
 
 
 #endif // BANKING_SYSTEM_H
