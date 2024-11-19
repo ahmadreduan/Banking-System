@@ -1,0 +1,15 @@
+Account Number : 23214108
+Full Name      : Tareq Mahmud
+Date of Birth  : 28/06/2003
+Mobile Number  : 01718485840
+Email          : tareq@gmail.com
+NID            : 1234569875
+User Name      : tareq@gmail.com
+Password       : Ta&123456
+Account type   : Mudaraba Term Deposit
+Initial Deposit: 5000.00
+Account Pin    : 1234
+Nominee Name   : Reduan
+Noninee NID    : 1234567892
+Address        : Dhaka, Bangladesh
+----------------------------------------

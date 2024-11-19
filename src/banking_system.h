@@ -8,7 +8,6 @@
 #include <string.h>
 #include <time.h>
 #include <sys/stat.h>  // for mkdir  Required for creating directories
-//#include <sys/types.h> // Also include this for POSIX systems
 #include <ctype.h> //পরীক্ষা করে  ডিজিট (0-9),বর্ণমালা (A-Z বা a-z), বড় হাতের (uppercase) অক্ষর  ছোট হাতের (lowercase) অক্ষর কিনা। 
 #include <windows.h>  // For Windows Sleep()
 

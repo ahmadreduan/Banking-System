@@ -138,7 +138,7 @@ void updateDateOfBirth(User *user)
     remove_newline(input);
     strncpy(user->date_of_birth, input, MAX_STRING_LENGTH - 1);
    
-
+}
 void updatePhone(User *user)
 {
     char input[MAX_STRING_LENGTH];

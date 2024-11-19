@@ -4,3 +4,15 @@ Amount: 5000.00
 Date: 2024-11-17 11:17:23
 Transaction ID: BN5FHTIQTR83
 ----------------------------------------
+Account Number: 23201148
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-11-19 19:47:32
+Transaction ID: D32CTNPA2XTO
+----------------------------------------
+Account Number: 23201148
+Transaction Type: Withdrawal
+Amount: 10000.00
+Date: 2024-11-19 19:53:26
+Transaction ID: VUV05WBKM1J7
+----------------------------------------

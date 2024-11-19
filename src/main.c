@@ -74,7 +74,7 @@ int main()
         }
         else
         {
-            printf("Invalid choice. Please enter a number.\n");
+            printf(BRED"Invalid choice. Please enter a number.\n"RESET);
             continue; // Skip to the next iteration if input is invalid
         }
 
