@@ -18,6 +18,8 @@
 #include "customer_portal/customer_menu_handle.c"
 #include "customer_portal/customer_login_process.c"
 
+
+
 int is_integer(const char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)

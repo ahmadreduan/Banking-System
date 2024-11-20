@@ -1,0 +1,15 @@
+Account Number : 23221442
+Full Name      : Shahadat Hossain
+Date of Birth  : 22/02/2000
+Mobile Number  : 01758963214
+Email          : ho@gmail.com
+NID            : 1234569875
+User Name      : ho@gmail.com
+Password       : Sh&123456
+Account type   : Al-Wadiah Current Account
+Initial Deposit: 5500.00
+Account Pin    : 1234
+Nominee Name   : Reduan
+Noninee NID    : 1456328974
+Address        : Dhaka
+----------------------------------------

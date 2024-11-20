@@ -193,15 +193,9 @@ void customer_fund_transfer(const char *sender_account_number);
 void update_account_balance(const char *account_number, double new_balance);
 void customer_transaction_history(const char *account_number,int n);
 
-
-
-
-
-
-
-
-
-
+double get_account_balance(const char *account_number);
+void log_transaction_atm(const char *account_number, const char *transaction_type, double amount, int atm_choice);
+void withdraw_funds_ATM(const char *account_number);
 
 
 void updateFullName(User *user);
@@ -209,6 +203,10 @@ void updateDateOfBirth(User *user);
 void updatePhone(User *user);
 void updateEmail(User *user);
 void updateAddress(User *user);
+
+
+
+
 
 
 #endif // BANKING_SYSTEM_H

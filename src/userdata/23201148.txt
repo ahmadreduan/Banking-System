@@ -7,7 +7,7 @@ NID            : 1234567896
 User Name      : reduan@gmail.com
 Password       : Re&123456
 Account type   : Mudaraba Term Deposit
-Initial Deposit: 5000.0000
+Initial Deposit: 18.00
 Account Pin    : 1234
 Nominee Name   : Rase
 Noninee NID    : 1234569874

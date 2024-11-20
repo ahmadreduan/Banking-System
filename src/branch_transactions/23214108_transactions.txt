@@ -1,0 +1,12 @@
+Account Number: 23214108
+Transaction Type: Transfer In
+Amount: 3000.00
+Date: 2024-11-19 23:30:38
+Transaction ID: 3E5P9UFYSXY5
+----------------------------------------
+Transaction Type: ATM Withdrawal
+Amount: 1000.00
+ATM Location: Natore ATM
+Transaction ID: D32CTNPA2XTO
+Date and Time: 2024-11-21 01:21:50
+----------------------------------------

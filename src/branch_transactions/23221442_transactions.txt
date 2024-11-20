@@ -1,0 +1,6 @@
+Account Number: 23221442
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-11-19 23:33:15
+Transaction ID: QT6Z1CHD5QT5
+----------------------------------------

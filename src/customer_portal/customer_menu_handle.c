@@ -2,6 +2,8 @@
 
 #include "customer_fund_transfer.c"
 #include "customer_transaction_history.c"
+#include "customer_withdraw_fund_ATM.c"
+
 /**
  * Handles the customer menu after successful login.
  */
@@ -27,15 +29,20 @@ void customer_menu_handle(const char *account_number)
             break;
         case 3:
         {
-            int n;
-            printf(BMAG"How many recent transactions would you like to see? "RESET);
-            scanf("%d", &n);
-            //int mul_n = n*6;
-            // Call the function to view transaction history
-            customer_transaction_history(account_number, n);
+            withdraw_funds_ATM(account_number);
             break;
         }
         case 4:
+        {
+            int n;
+            printf(BMAG "How many recent transactions would you like to see? " RESET);
+            scanf("%d", &n);
+            // int mul_n = n*6;
+            //  Call the function to view transaction history
+            customer_transaction_history(account_number, n);
+            break;
+        }
+        case 5:
             printf(GREEN "Logging out...\n" RESET);
             break;
         default:
