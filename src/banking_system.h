@@ -178,7 +178,7 @@ void admin_transfer_funds(void);
 
 void view_transaction_history(void);
 void deleteAccount(const char *account_number);
-void updateAccount(const char *account_number);
+void update_customer_info(const char *account_number);
 
 
 // Customer-related functions
@@ -196,16 +196,6 @@ void customer_transaction_history(const char *account_number,int n);
 double get_account_balance(const char *account_number);
 void log_transaction_atm(const char *account_number, const char *transaction_type, double amount, int atm_choice);
 void withdraw_funds_ATM(const char *account_number);
-
-
-void updateFullName(User *user);
-void updateDateOfBirth(User *user);
-void updatePhone(User *user);
-void updateEmail(User *user);
-void updateAddress(User *user);
-
-
-
 
 
 

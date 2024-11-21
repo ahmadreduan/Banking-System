@@ -10,7 +10,7 @@
 #include "admin_portal/admin_withdraw_funds.c"
 #include "admin_portal/admin_view_transaction_history.c"
 #include "admin_portal/admin_delete_Account.c"
-#include "admin_portal/admin_account_update.c"
+#include"admin_portal/admin_update_customer_info.c"
 
 #include "generate_transaction_id.c"
 #include "banking_rules.c"
@@ -153,6 +153,7 @@ int main()
                         fgets(account_number_for_account_delete, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number_for_account_delete);
                         deleteAccount(account_number_for_account_delete);
+                        break;
                     }
                     case 9:
                     {
@@ -160,7 +161,8 @@ int main()
                         printf("Enter the account number: ");
                         fgets(account_number_for_account_update, ACCOUNT_NUMBER_LENGTH + 1, stdin);
                         remove_newline(account_number_for_account_update);
-                        updateAccount(account_number_for_account_update);
+                        update_customer_info(account_number_for_account_update);
+                        break;
                     }
                     case 10:
                         logged_in = 0; // Logout

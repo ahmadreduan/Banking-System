@@ -34,7 +34,7 @@ void display_customer_options()
     print_border();
     printf(BGRN "| 1. View Balance                         |\n" RESET);
     printf(BGRN "| 2. Transfer Funds                       |\n" RESET);
-    printf(BGRN "| 3. Withdraw Funds ATM                   |\n" RESET);
+    printf(BGRN "| 3. ATM Cash Withdrawal                  |\n" RESET);
     printf(BGRN "| 4. View Transaction History             |\n" RESET);
     printf(BGRN "| 5. Logout                               |\n" RESET);
     print_border();
