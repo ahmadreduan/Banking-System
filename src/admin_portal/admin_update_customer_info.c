@@ -42,19 +42,17 @@ void update_customer_info(const char *account_number) {
     printf("5. NID\n");
     printf("6. User Name\n");
     printf("7. Password\n");
-    printf("8. Account Type\n");
-    printf("9. Initial Deposit\n");
-    printf("10. Account PIN\n");
-    printf("11. Nominee Name\n");
-    printf("12. Nominee NID\n");
-    printf("13. Address\n");
-    printf("Enter your choice (1-13): ");
+    printf("8. Account PIN\n");
+    printf("9. Nominee Name\n");
+    printf("10. Nominee NID\n");
+    printf("11. Address\n");
+    printf("Enter your choice (1-11): ");
 
     int choice;
     scanf("%d", &choice);
     getchar(); // Clear newline character from buffer
 
-    if (choice < 1 || choice > 13) {
+    if (choice < 1 || choice > 11) {
         printf("Error: Invalid choice.\n");
         return;
     }
@@ -68,8 +66,7 @@ void update_customer_info(const char *account_number) {
     // Update the selected line
     const char *field_names[] = {
         "Full Name", "Date of Birth", "Mobile Number", "Email", "NID",
-        "User Name", "Password", "Account type", "Initial Deposit",
-        "Account Pin", "Nominee Name", "Noninee NID", "Address"
+        "User Name", "Password","Account Pin", "Nominee Name", "Noninee NID", "Address"
     };
 
     int field_index = choice - 1;
@@ -103,5 +100,5 @@ void update_customer_info(const char *account_number) {
     }
     fclose(file);
 
-    printf("Update successful: '%s' has been updated in file '%s'.\n", field_names[field_index], filename);
+    printf("Update successful: '%s'.\n", field_names[field_index]);
 }

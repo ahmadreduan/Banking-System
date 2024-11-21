@@ -10,3 +10,15 @@ ATM Location: Natore ATM
 Transaction ID: D32CTNPA2XTO
 Date and Time: 2024-11-21 01:21:50
 ----------------------------------------
+Transaction Type: ATM Withdrawal
+Amount: 1000.00
+ATM Location: Uttara ATM
+Transaction ID: D32CTNPA2XTO
+Date and Time: 2024-11-21 12:59:15
+----------------------------------------
+Transaction Type: ATM Withdrawal
+Amount: 1500.00
+ATM Location: Ashulia ATM
+Transaction ID: VUV05WBKM1J7
+Date and Time: 2024-11-21 13:00:37
+----------------------------------------

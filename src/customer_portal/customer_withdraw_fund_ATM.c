@@ -10,14 +10,14 @@ void withdraw_funds_ATM(const char *account_number)
     print_border();
     printf(BGRN "| 1. Mirpur ATM\n" RESET);
     printf(BGRN "| 2. Savar ATM\n" RESET);
-    printf(BGRN "| 3. Purbachol ATM\n" RESET);
-    printf(BGRN "| 4. Brahmanbaria ATM\n" RESET);
-    printf(BGRN "| 5. Natore ATM\n" RESET);
+    printf(BGRN "| 3. Abdullah Pur ATM\n" RESET);
+    printf(BGRN "| 4. Khagan ATM\n" RESET);
+    printf(BGRN "| 5. Uttara ATM\n" RESET);
     printf(BGRN "| 6. Ashulia ATM\n" RESET);
     print_border();
 
     int atm_choice;
-    printf(BGRN "Select ATM location (1-6): " RESET);
+    printf(BGRN "Select ATM (1-6): " RESET);
     scanf("%d", &atm_choice);
 
     // Validate the choice
@@ -105,6 +105,9 @@ void withdraw_funds_ATM(const char *account_number)
     // Update the user's balance
     update_account_balance(account_number, current_balance);
 
+    update_branch_account_balance(withdrawal_amount);
+
+
     // Log the transaction
     log_transaction_atm(account_number, "ATM Withdrawal", withdrawal_amount, atm_choice);
 
@@ -147,13 +150,13 @@ void log_transaction_atm(const char *account_number, const char *transaction_typ
         fprintf(file, "Savar ATM\n");
         break;
     case 3:
-        fprintf(file, "Purbachol ATM\n");
+        fprintf(file, "Abdullah Pur ATM\n");
         break;
     case 4:
-        fprintf(file, "Brahmanbaria ATM\n");
+        fprintf(file, "Khagan ATM\n");
         break;
     case 5:
-        fprintf(file, "Natore ATM\n");
+        fprintf(file, "Uttara ATM\n");
         break;
     case 6:
         fprintf(file, "Ashulia ATM\n");

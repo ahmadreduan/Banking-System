@@ -254,7 +254,7 @@ void update_branch_account_balance(double amount)
     {
         fprintf(file, "%.2f\n", new_balance); // Write the new balance to the file
         fclose(file);
-        printf("Branch account balance updated to: %.2f\n", new_balance);
+        //printf("Branch account balance updated to: %.2f\n", new_balance);
     }
     else
     {
