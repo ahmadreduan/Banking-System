@@ -107,6 +107,7 @@ void update_account_balance(const char *account_number, double new_balance) {
     char line[256];
     while (fgets(line, sizeof(line), file) != NULL) {
         if (strstr(line, "Initial Deposit:") != NULL) {
+            //strstr স্ট্রিংয়ের মধ্যে অন্য একটি সাবস্ট্রিং খুঁজে বের করার জন্য ব্যবহৃত হয়
             fprintf(temp_file, "Initial Deposit: %.2lf\n", new_balance);
         } else {
             fprintf(temp_file, "%s", line);

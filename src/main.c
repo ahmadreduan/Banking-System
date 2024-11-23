@@ -1,5 +1,7 @@
 #include "banking_system.h"
 #include "banking_system_display.c"
+#include "banking_rules.c"
+#include "generate_transaction_id.c"
 
 #include "admin_portal/admin_login_portal.c"
 #include "admin_portal/admin_deposit_funds.c"
@@ -12,8 +14,6 @@
 #include "admin_portal/admin_delete_Account.c"
 #include "admin_portal/admin_update_customer_info.c"
 
-#include "generate_transaction_id.c"
-#include "banking_rules.c"
 
 #include "customer_portal/customer_menu_handle.c"
 #include "customer_portal/customer_login_process.c"
@@ -22,8 +22,7 @@ int is_integer(const char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
     {
-        /*isdigit একটি C স্ট্যান্ডার্ড লাইব্রেরির ফাংশন, যা নির্দিষ্ট কোনো ক্যারেক্টার ডিজিট (0-9)
-         কিনা তা যাচাই করতে ব্যবহৃত হয়। এটি ctype.h হেডার ফাইলে থাকে।*/
+        
         if (!isdigit(str[i]))
         {
             return 0; // False if any character is not a digit

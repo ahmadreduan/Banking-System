@@ -10,9 +10,9 @@
 #include <sys/stat.h>  // for mkdir  Required for creating directories
 #include <ctype.h> //পরীক্ষা করে  ডিজিট (0-9),বর্ণমালা (A-Z বা a-z), বড় হাতের (uppercase) অক্ষর  ছোট হাতের (lowercase) অক্ষর কিনা। 
 #include <windows.h>  // For Windows Sleep()
-
+#include <conio.h>  // For getch() on Windows
 #include <direct.h>
-
+#include <unistd.h>
 
 
 #define ACCOUNT_NUMBER_LENGTH 8

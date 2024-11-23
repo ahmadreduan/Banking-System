@@ -10,7 +10,7 @@ void withdraw_funds_ATM(const char *account_number)
     print_border();
     printf(BGRN "| 1. Mirpur ATM\n" RESET);
     printf(BGRN "| 2. Savar ATM\n" RESET);
-    printf(BGRN "| 3. Abdullah Pur ATM\n" RESET);
+    printf(BGRN "| 3. Abdullahpur ATM\n" RESET);
     printf(BGRN "| 4. Khagan ATM\n" RESET);
     printf(BGRN "| 5. Uttara ATM\n" RESET);
     printf(BGRN "| 6. Ashulia ATM\n" RESET);

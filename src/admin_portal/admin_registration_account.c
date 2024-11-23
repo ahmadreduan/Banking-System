@@ -253,8 +253,7 @@ int is_valid_pin(const char *pin)
 void clear_input_buffer()
 {
     int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF)
-        ;
+    while ((ch = getchar()) != '\n' && ch != EOF);
 }
 
 /**

@@ -1,4 +1,3 @@
-#include <conio.h>  // For getch() on Windows
 #include "../banking_system.h"
 
 
@@ -22,13 +21,13 @@ int admin_login() {
 
     printf("Enter admin password : ");
     while ((ch = getch()) != '\r') {  // '\r' is Enter key in Windows
-        if (ch == '\b') {  // Handle backspace
+        if (ch == '\b') {  // Handle backspace   123
             if (i > 0) {
                 i--;
                 printf("\b \b");  // Remove last '*'
             }
         } else if (i < MAX_STRING_LENGTH - 1) {  // Limit password length
-            password[i++] = ch;
+            password[i++] = ch;   
             printf("*");
         }
     }

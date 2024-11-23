@@ -59,6 +59,7 @@
   "C_Cpp.errorSquiggles": "disabled",
   "files.associations": {
     "COMMIT_EDITMSG": "git-commit",
-    "banking_system.h": "c"
+    "banking_system.h": "c",
+    "string.h": "c"
   }
 }
