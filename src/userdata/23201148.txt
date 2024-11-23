@@ -1,5 +1,5 @@
 Account Number : 23201148
-Full Name      : Ahmad Reduan
+Full Name      : Reduan Ahmad
 Date of Birth  : 25/01/2006
 Mobile Number  : 01718485840
 Email          : reduan@gmail.com
@@ -7,8 +7,7 @@ NID            : 1234567896
 User Name      : reduan@gmail.com
 Password       : Re$123456
 Account type   : Student
-Initial Deposit: 18.00
-Account Pin    : 1235
+Initial Deposit: 5008.00ccount Pin    : 1235
 Nominee Name   : Rase
 Noninee NID    : Reduan
 Address        : Brahmanbaria,Bangladesh

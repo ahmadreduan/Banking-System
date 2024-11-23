@@ -22,10 +22,12 @@ void generate_account_number(char *account_number)
  * If the current capacity is insufficient, it reallocates the memory.
  * @param new_capacity The required capacity for the users array.
  */
-void ensure_capacity(size_t new_capacity)
+void ensure_capacity(size_t new_capacity) 
 {
+    //ensure_capacity() ফাংশনটি ডাইনামিক অ্যারে users-এর জন্য পর্যাপ্ত মেমরি নিশ্চিত করে।
     if (new_capacity > user_capacity)
     {
+     //যদি একটি User অবজেক্ট ২০ বাইট দখল করে, তবে ৫০টি অবজেক্টের জন্য প্রয়োজন হবে 50 * 20 = 1000 বাইট।
         User *temp_users = realloc(users, new_capacity * sizeof(User));
         if (temp_users == NULL)
         {
@@ -169,6 +171,7 @@ int is_valid_phone(const char *phone)
     if (strncmp(phone, "+8801", 5) == 0 && length == 14)
     {
         return is_valid_digit(phone + 5); // Check if remaining part contains only digits
+        //phone + 5 ব্যবহার করে +8801 বাদ দিয়ে বাকি অংশ যাচাই করা হয়।
     }
     // Check if it starts with 01 and is 11 characters long
     else if (strncmp(phone, "01", 2) == 0 && length == 11)
@@ -205,6 +208,7 @@ int is_valid_email(const char *email)
     if (strlen(dot + 1) < 2)
     {
         return 0; // The domain is too short (e.g. '@domain.c')
+        //যদি ডোমেইন অংশের দৈর্ঘ্য ২ এর কম হয়, তাহলে এটি একটি অবৈধ ইমেইল হবে 
     }
 
     return 1; // Email is valid
@@ -420,7 +424,7 @@ void register_account()
     printf(BYEL "\t10. Student Account\n" RESET);
 
     int account_type_choice;
-    printf(BBLU "Enter the number corresponding to your account type: " RESET);
+    printf(BBLU "Enter the number corresponding account type: " RESET);
     while (scanf("%d", &account_type_choice) != 1 || account_type_choice < 1 || account_type_choice > 10)
     {
         printf(BRED "Invalid choice. Please enter a number between 1 and 10: " RESET);
@@ -487,7 +491,6 @@ void register_account()
             continue;
         }
         fflush(stdin);
-        // remove_newline(new_user.pin); // Remove newline from PIN input
 
         // Check if the PIN is valid (4 digits and numeric)
         if (is_valid_pin(new_user.pin))
