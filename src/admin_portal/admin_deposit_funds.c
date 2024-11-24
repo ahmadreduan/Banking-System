@@ -1,4 +1,4 @@
-#include"../banking_system.h"
+#include "../banking_system.h"
 
 /**
  * Searches for a user account based on the provided account number and allows deposit of funds.
@@ -12,75 +12,87 @@ void deposit_funds(const char *account_number)
     double branch_balance = get_branch_account_balance();
     if (branch_balance <= 0)
     {
-        printf(BGRN"Insufficient funds in the branch account. Current balance: %.2lf\n"RESET, branch_balance);
-        return; // Exit function if branch account balance is zero or negative
+        printf(BGRN "Insufficient funds in the branch account. Current balance: %.2lf\n" RESET, branch_balance);
+        return; // শাখা অ্যাকাউন্টের ব্যালেন্স কম হলে ফাংশন 
     }
 
-    // Construct the filename for the user's account
+    // ব্যবহারকারীর অ্যাকাউন্টের ফাইলের নাম তৈরি
     char filename[150];
-    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);// snprintf ফাংশনটি ব্যবহার করে একটি স্ট্রিং (string) তৈরি করা হচ্ছে যেখানে filename ভেরিয়েবলের মধ্যে একটি ফাইলের নাম সংরক্ষণ করা হবে।
+    snprintf(filename, sizeof(filename), "userdata/%s.txt", account_number);
 
-    FILE *file = fopen(filename, "r+"); // Open in read+write mode to update balance
+    FILE *file = fopen(filename, "r");
     if (file == NULL)
     {
-        printf(BRED"No account found with the account number: %s\n"RESET, account_number);
+        printf(BRED "No account found with the account number: %s\n" RESET, account_number);
         return;
     }
 
+    // ফাইলের সমস্ত ডেটা মেমোরিতে লোড 
+    char file_content[5000]; // ফাইলের আকার বড় হলে ডায়নামিক মেমোরি বরাদ্দ 
     char line[256];
+    char updated_content[5000] = ""; // আপডেট হওয়া কনটেন্ট রাখার জন্য
     double initial_deposit = 0;
-    long balance_pos = 0;
+    int balance_updated = 0;
 
-    // Search for "Initial Deposit" line and record its position
     while (fgets(line, sizeof(line), file) != NULL)
     {
-        if (sscanf(line, "Initial Deposit: %lf", &initial_deposit) == 1) // স্ট্রিং থেকে নির্দিষ্ট ফরম্যাট অনুযায়ী ডেটা পড়ার জন্য ব্যবহৃত হয়। sscanf একটি স্ট্রিংয়ের মধ্যে থেকে ভ্যারিয়েবলের ভ্যালু বের করে নেয়
+        // যদি "Initial Deposit" লাইন পাওয়া যায়
+        if (sscanf(line, "Initial Deposit: %lf", &initial_deposit) == 1)
         {
-            balance_pos = ftell(file); // Save the current position for updating
-            break;
+            if (!balance_updated)
+            {
+                double deposit_amount;
+                printf(BGRN "Current Balance: %.2lf\n" RESET, initial_deposit);
+                printf(BBLU "Enter amount to deposit: " RESET);
+                scanf("%lf", &deposit_amount);
+                fflush(stdin);
+
+                if (deposit_amount > 0)
+                {
+                    if (deposit_amount <= branch_balance)
+                    {
+                        initial_deposit += deposit_amount;
+                        printf(BGRN "Deposit successful. New balance: %.2lf\n" RESET, initial_deposit);
+
+                        // শাখার অ্যাকাউন্ট ব্যালেন্স আপডেট করুন
+                        update_branch_account_balance(-deposit_amount);
+
+                        // আপডেট করা ব্যালেন্স লাইন সংযুক্ত করুন
+                        snprintf(line, sizeof(line), "Initial Deposit: %.2lf\n", initial_deposit);
+                        balance_updated = 1;
+
+                        // লেনদেন লগ করুন
+                        log_transaction(account_number, "Deposit", deposit_amount);
+                    }
+                    else
+                    {
+                        printf(BRED "Insufficient funds in the branch account. Current balance: %.2lf\n" RESET, branch_balance);
+                        fclose(file);
+                        return;
+                    }
+                }
+                else
+                {
+                    printf(BRED "Invalid deposit amount.\n" RESET);
+                    fclose(file);
+                    return;
+                }
+            }
         }
+        // লাইনটি আপডেট করা হলে বা না হলে এটিকে কনটেন্টে যোগ করুন
+        strcat(updated_content, line);
     }
 
-    if (balance_pos != 0)
-    { // If balance was found
-        double deposit_amount;
-        printf(BGRN"Current Balance: %.2lf\n"RESET, initial_deposit);
-        printf(BBLU"Enter amount to deposit: "RESET);
-        scanf("%lf", &deposit_amount);
-        fflush(stdin);
+    fclose(file);
 
-        if (deposit_amount > 0)
-        {
-            // Check if there's enough balance in the branch account
-            if (deposit_amount <= branch_balance)
-            {
-                initial_deposit += deposit_amount;
-                printf(BGRN"Deposit successful. New balance: %.2lf\n"RESET, initial_deposit);
-
-                // Update branch balance after subtracting deposit amount
-                update_branch_account_balance(-deposit_amount);
-
-                // Update the balance in the user's file
-                fseek(file, balance_pos - strlen(line), SEEK_SET);         // Move to the balance line
-                fprintf(file, "nitial Deposit: %.2lf\n", initial_deposit); // Overwrite the line with the new balance
-
-                // Log the transaction
-                log_transaction(account_number, "Deposit", deposit_amount);
-            }
-            else
-            {
-                printf(BRED"Insufficient funds in the branch account. Current balance: %.2lf\n"RESET, branch_balance);
-            }
-        }
-        else
-        {
-            printf(BRED"Invalid deposit amount.\n"RESET);
-        }
-    }
-    else
+    // ফাইলটি আবার লিখুন
+    file = fopen(filename, "w");
+    if (file == NULL)
     {
-        printf(BRED"Error reading the account balance for account number: %s\n"RESET, account_number);
+        printf(BRED "Error opening file for writing: %s\n" RESET, filename);
+        return;
     }
 
+    fputs(updated_content, file);
     fclose(file);
 }

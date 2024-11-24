@@ -28,3 +28,15 @@ Amount: 10.00
 Date: 2024-11-21 13:35:42
 Transaction ID: VUV05WBKM1J7
 ----------------------------------------
+Account Number: 23214108
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-11-24 17:18:37
+Transaction ID: VUV05WBKM1J7
+----------------------------------------
+Account Number: 23214108
+Transaction Type: Transfer In
+Amount: 5000.00
+Date: 2024-11-24 17:19:02
+Transaction ID: 3E5P9UFYSXY5
+----------------------------------------
