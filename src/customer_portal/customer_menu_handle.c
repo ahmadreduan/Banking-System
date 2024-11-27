@@ -44,7 +44,7 @@ void customer_menu_handle(const char *account_number)
         }
         case 5:
             printf(GREEN "Logging out...\n" RESET);
-            break;
+            return;
         default:
             printf(RED "Invalid choice. Please try again.\n" RESET);
         }

@@ -79,7 +79,7 @@ void deposit_funds(const char *account_number)
                 }
             }
         }
-        // লাইনটি আপডেট করা হলে বা না হলে এটিকে কনটেন্টে যোগ করুন
+        // লাইনটি আপডেট করা হলে বা না হলে এটিকে কনটেন্টে যোগ 
         strcat(updated_content, line);
     }
 
