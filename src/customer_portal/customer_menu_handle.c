@@ -48,7 +48,7 @@ void customer_menu_handle(const char *account_number)
         default:
             printf(RED "Invalid choice. Please try again.\n" RESET);
         }
-    } while (choice != 4); // Keep looping until the user chooses to logout
+    } while (choice != 5); // Keep looping until the user chooses to logout
 }
 
 /**

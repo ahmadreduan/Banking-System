@@ -68,7 +68,8 @@ void update_customer_info(const char *account_number) {
     int field_index = choice - 1;
     char updated_line[MAX_LINE_LENGTH];
     snprintf(updated_line, sizeof(updated_line), "%-15s: %s\n", field_names[field_index], new_value);
-
+    // -15 = স্ট্রিংটির সর্বনিম্ন দৈর্ঘ্য ১৫ অক্ষর হবে।
+    
     // Replace the line in memory
     int line_found = 0;
     for (int i = 0; i < total_lines; i++) {

@@ -20,6 +20,6 @@ void send_withdrawal_sms(const char *account_number, double withdrawal_amount, i
     printf("at %s\n", time_str);
     printf("Account: %s\n", masked_account);
     printf("Avl Bal: %.2lf BDT\n", available_balance);
-    printf("Help: 214016\n" RESET);
+    printf("Help: 214016292\n" RESET);
     printf(BRED "Never Share Card no/OTP/PIN with anyone.\n" RESET);
 }

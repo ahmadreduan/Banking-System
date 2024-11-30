@@ -22,6 +22,8 @@ void customer_transaction_history(const char *account_number, int num_transactio
 
     // Allocate memory for storing the last `mul_num_transactions` lines
     char **transactions = (char **)malloc(mul_num_transactions * sizeof(char *));
+    //**  2D dynamic array বা array of strings তৈরির জন্য ব্যবহৃত  double pointe
+
     for (int i = 0; i < mul_num_transactions; i++) {
         transactions[i] = (char *)malloc(MAX_TRANSACTION_LENGTH * sizeof(char));
     }
@@ -34,6 +36,7 @@ void customer_transaction_history(const char *account_number, int num_transactio
         // Free the memory for the current position and replace it with the new line
         free(transactions[transaction_count % mul_num_transactions]);
         transactions[transaction_count % mul_num_transactions] = strdup(line);
+        //strdup() একটি স্ট্যান্ডার্ড লাইব্রেরি ফাংশন যা একটি স্ট্রিং-এর জন্য নতুন মেমোরি বরাদ্দ করে এবং সেই স্ট্রিংটি কপি করে।
         transaction_count++;
     }
     fclose(file);
