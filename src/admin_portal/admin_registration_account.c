@@ -14,6 +14,7 @@ void generate_account_number(char *account_number)
 
     int random_part = rand() % 100000;                                           // Generate a random number between 00000 and 99999
     snprintf(account_number, ACCOUNT_NUMBER_LENGTH + 1, "232%05d", random_part); // Format as "232" followed by a 5-digit number
+    //05 mane পূর্ণসংখ্যার দৈর্ঘ্য কম হলে স্ট্রিংটি পূরণ করতে বামে শূন্য (0) যোগ করা হবে।
 }
 
 
@@ -28,6 +29,7 @@ void ensure_capacity(size_t new_capacity)
     if (new_capacity > user_capacity)
     {
      //যদি একটি User অবজেক্ট ২০ বাইট দখল করে, তবে ৫০টি অবজেক্টের জন্য প্রয়োজন হবে 50 * 20 = 1000 বাইট।
+     //realloc() ফাংশনের কাজ হলো পূর্বে বরাদ্দকৃত মেমোরি ব্লকের আকার পরিবর্তন করা।
         User *temp_users = realloc(users, new_capacity * sizeof(User));
         if (temp_users == NULL)
         {
@@ -186,6 +188,7 @@ int is_valid_phone(const char *phone)
 int is_valid_email(const char *email)
 {
     const char *at_sign = strchr(email, '@');
+    //strchr একটি নির্দিষ্ট চরিত্র (@) কোনো স্ট্রিং-এর মধ্যে প্রথমবার কোথায় পাওয়া যায়, সেটির ঠিকানা (pointer) রিটার্ন করে।
     if (at_sign == NULL)
     {
         return 0; // No '@' character
@@ -193,14 +196,15 @@ int is_valid_email(const char *email)
 
     // Ensure there's at least one dot after the '@'
     const char *dot = strchr(at_sign, '.');
+    ////strchr একটি নির্দিষ্ট চরিত্র (.) কোনো স্ট্রিং-এর মধ্যে প্রথমবার কোথায় পাওয়া যায়, সেটির ঠিকানা (pointer) রিটার্ন করে।
     if (dot == NULL || dot == at_sign + 1)
-    {
+    {   // @.com  ai ta hote pare na karon domain ar ongsho nai
         return 0; // No dot, or dot is right after the '@'
     }
 
     // Check for valid characters before and after '@'
     if (at_sign == email || at_sign == email + strlen(email) - 1)
-    {
+    {     //gmail.com@  || @reduan.gmail.com
         return 0; // '@' is the first or last character
     }
 

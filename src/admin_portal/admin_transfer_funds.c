@@ -1,4 +1,13 @@
 #include"../banking_system.h"
+void remove_newlinetwo(char *str)
+{
+    if (str == NULL)
+        return;
+
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n')
+        str[len - 1] = '\0'; // Remove the newline character
+}
 
 void admin_transfer_funds()
 {
@@ -9,11 +18,13 @@ void admin_transfer_funds()
     // Capture source account number
     printf(BGRN"Enter the source account number: "RESET);
     fgets(source_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+    remove_newlinetwo(source_account);
     fflush(stdin);
 
     // Capture destination account number
     printf(BGRN"Enter the destination account number: "RESET);
     fgets(destination_account, ACCOUNT_NUMBER_LENGTH + 1, stdin);
+    remove_newlinetwo(destination_account);
     fflush(stdin);
 
     // Capture transfer amount
@@ -90,10 +101,12 @@ void transfer_funds(const char *source_account, const char *destination_account,
 
     // Update source account file with new balance
     fseek(source_file, source_balance_pos - strlen(line), SEEK_SET); // Go back to balance line fseek এর কাজ হলো ফাইলের পজিশন কার্সরকে নির্দিষ্ট অবস্থানে সরানো, যাতে ফাইলের সেই অংশে নতুন ডেটা লেখা যায়।
+
     fprintf(source_file, "Initial Deposit: %.2f", source_balance);
 
     // Update destination account file with new balance
     fseek(destination_file, destination_balance_pos - strlen(line), SEEK_SET); // Go back to balance line
+
     fprintf(destination_file, "nitial Deposit: %.2f", destination_balance);
 
     // Close the files

@@ -30,6 +30,7 @@ void withdraw_funds(const char *account_number)
         {
             found_balance = 1;
             balance_pos = ftell(file);
+            //ftell ফাইল প্রসেসিংয়ের সময় একটি ফাইল পয়েন্টারের বর্তমান অবস্থান নির্ধারণ করতে ব্যবহৃত হয়
             break;
         }
     }

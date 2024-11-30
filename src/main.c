@@ -55,7 +55,7 @@ int main()
     printf(CYAN "********************************************\n\n\n" RESET);
 
     int choice, logged_in = 0, customer_index = -1;
-    User user;      // Declare the User struct for logged-in customer
+    User user;      
     char input[10]; // Buffer to store user input as a string
 
     while (1)

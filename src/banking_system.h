@@ -197,7 +197,7 @@ double get_account_balance(const char *account_number);
 void log_transaction_atm(const char *account_number, const char *transaction_type, double amount, int atm_choice);
 void withdraw_funds_ATM(const char *account_number);
 
-
+void remove_newlinetwo(char *str);
 
 #endif // BANKING_SYSTEM_H
 
