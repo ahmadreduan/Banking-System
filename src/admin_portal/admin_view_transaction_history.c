@@ -29,6 +29,7 @@ void view_transaction_history() {
     }
 
     // Allocate memory for storing the last `num_transactions` lines
+    //মাল্টি-ডাইমেনশনাল অ্যারে তৈরি 
     char **transactions = (char **)malloc(mul_num_transactions * sizeof(char *));
     for (int i = 0; i < mul_num_transactions; i++) {
         transactions[i] = (char *)malloc(MAX_TRANSACTION_LENGTH * sizeof(char));
@@ -40,6 +41,7 @@ void view_transaction_history() {
     // Read each line in a circular buffer style
     while (fgets(line, sizeof(line), file) != NULL) {
         // Free the memory for the current position and replace it with the new line
+        //free: লেনদেনের পুরনো মেমরি মুক্ত করা হচ্ছে।
         free(transactions[transaction_count % mul_num_transactions]);
         transactions[transaction_count % mul_num_transactions] = strdup(line);
         //strdup() একটি স্ট্যান্ডার্ড লাইব্রেরি ফাংশন যা একটি স্ট্রিং-এর জন্য নতুন মেমোরি বরাদ্দ করে এবং সেই স্ট্রিংটি কপি করে।
@@ -50,11 +52,14 @@ void view_transaction_history() {
     // Display the most recent `num_transactions` in reverse order
     printf("\nRecent %d transaction(s) for account %s:\n", mul_num_transactions, account_number);
     int start_index = transaction_count > mul_num_transactions ? transaction_count % mul_num_transactions : 0;
+    //লেনদেন বেশি হলে কোন ইন্ডেক্স থেকে দেখানো শুরু হবে তা নির্ধারণ
     int count = transaction_count > mul_num_transactions ? mul_num_transactions : transaction_count;
+     //দেখানোর জন্য মোট কতগুলো লেনদেন আছে তা নির্ধারণ
 
     // Print in reverse order
     for (int i = count - 1; i >= 0; i--) {
         int index = (start_index + i) % mul_num_transactions;
+        //index: সার্কুলার পদ্ধতিতে লেনদেনের ডাটা অ্যাক্সেস
         printf(BBLU"%s"RESET, transactions[index]);
     }
 
