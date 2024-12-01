@@ -13,7 +13,7 @@
 #include <conio.h>  // For getch() on Windows
 #include <direct.h>
 #include <unistd.h>
-
+// presentation slide link : https://www.canva.com/design/DAGXfbbzIzc/O_3P0FWnC6Ih2oDp1cdWZg/edit?utm_content=DAGXfbbzIzc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 #define ACCOUNT_NUMBER_LENGTH 8
 #define MAX_STRING_LENGTH 100
