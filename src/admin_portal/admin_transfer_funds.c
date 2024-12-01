@@ -1,4 +1,5 @@
 #include"../banking_system.h"
+
 void remove_newlinetwo(char *str)
 {
     if (str == NULL)
@@ -69,22 +70,18 @@ void transfer_funds(const char *source_account, const char *destination_account,
     // Read the current balance from the source account file
     while (fgets(line, sizeof(line), source_file) != NULL)
     {
-        if (sscanf(line, "Initial Deposit: %lf", &source_balance) == 1)
-        {
-            source_balance_pos = ftell(source_file); // Save the position of balance for updating later
-            break;
-        }
+        sscanf(line, "Initial Deposit: %lf", &source_balance);
+        
     }
+    fclose(source_file);
 
     // Read the current balance from the destination account file
     while (fgets(line, sizeof(line), destination_file) != NULL)
     {
-        if (sscanf(line, "Initial Deposit: %lf", &destination_balance) == 1)
-        {
-            destination_balance_pos = ftell(destination_file); // Save the position of balance for updating later
-            break;
-        }
+        sscanf(line, "Initial Deposit: %lf", &destination_balance);
+        
     }
+    fclose(destination_file);
 
     // Check if there is enough balance in the source account for the transfer
     if (source_balance < amount)
@@ -99,19 +96,9 @@ void transfer_funds(const char *source_account, const char *destination_account,
     source_balance -= amount;      // Deduct from source account
     destination_balance += amount; // Add to destination account
 
-    // Update source account file with new balance
-    fseek(source_file, source_balance_pos - strlen(line), SEEK_SET); // Go back to balance line fseek এর কাজ হলো ফাইলের পজিশন কার্সরকে নির্দিষ্ট অবস্থানে সরানো, যাতে ফাইলের সেই অংশে নতুন ডেটা লেখা যায়।
-
-    fprintf(source_file, "Initial Deposit: %.2f", source_balance);
-
-    // Update destination account file with new balance
-    fseek(destination_file, destination_balance_pos - strlen(line), SEEK_SET); // Go back to balance line
-
-    fprintf(destination_file, "nitial Deposit: %.2f", destination_balance);
-
-    // Close the files
-    fclose(source_file);
-    fclose(destination_file);
+   // Update files with new balances
+    update_account_balance(source_account, source_balance);
+    update_account_balance(destination_account, destination_balance);
 
     // Log the transaction for both accounts
     log_transaction(source_account, "Transfer Out", amount);

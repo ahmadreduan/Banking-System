@@ -1,0 +1,15 @@
+Account Number : 23235016
+Full Name      : Reduan Ahmad
+Date of Birth  : 28/02/2002
+Mobile Number  : 01718485840
+Email          : reduanahmad363737@gmail.com
+NID            : 1234569875
+User Name      : reduanahmad363737@gmail.com
+Password       : Re&123456
+Account type   : Al-Wadiah Current Account
+Initial Deposit: 10500.00
+Account Pin    : 1234
+Nominee Name   : Asraful
+Noninee NID    : 1456328974
+Address        : Brahmanbaria,Bangladesh
+----------------------------------------

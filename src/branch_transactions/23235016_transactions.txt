@@ -1,0 +1,12 @@
+Account Number: 23221442
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-11-19 23:33:15
+Transaction ID: QT6Z1CHD5QT5
+----------------------------------------
+Account Number: 23235016
+Transaction Type: Transfer In
+Amount: 5000.00
+Date: 2024-12-01 11:49:54
+Transaction ID: VUV05WBKM1J7
+----------------------------------------

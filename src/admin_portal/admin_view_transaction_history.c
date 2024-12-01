@@ -42,6 +42,7 @@ void view_transaction_history() {
         // Free the memory for the current position and replace it with the new line
         free(transactions[transaction_count % mul_num_transactions]);
         transactions[transaction_count % mul_num_transactions] = strdup(line);
+        //strdup() একটি স্ট্যান্ডার্ড লাইব্রেরি ফাংশন যা একটি স্ট্রিং-এর জন্য নতুন মেমোরি বরাদ্দ করে এবং সেই স্ট্রিংটি কপি করে।
         transaction_count++;
     }
     fclose(file);

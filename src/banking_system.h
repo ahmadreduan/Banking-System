@@ -179,6 +179,8 @@ void admin_transfer_funds(void);
 void view_transaction_history(void);
 void deleteAccount(const char *account_number);
 void update_customer_info(const char *account_number);
+void transfer_funds(const char *source_account, const char *destination_account, double amount);
+//void admin_update_account_balance(const char *account_number, double new_balance);
 
 
 // Customer-related functions

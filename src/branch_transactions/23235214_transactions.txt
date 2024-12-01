@@ -1,0 +1,12 @@
+Account Number: 23235214
+Transaction Type: Transfer Out
+Amount: 5000.00
+Date: 2024-12-01 11:49:54
+Transaction ID: D32CTNPA2XTO
+----------------------------------------
+Account Number: 23235214
+Transaction Type: Deposit
+Amount: 5000.00
+Date: 2024-12-01 11:50:49
+Transaction ID: C2SRW09A9ASC
+----------------------------------------

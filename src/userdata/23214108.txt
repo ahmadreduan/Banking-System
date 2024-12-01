@@ -7,7 +7,7 @@ NID            : 1234569875
 User Name      : tareq@gmail.com
 Password       : Ta&123456
 Account type   : Mudaraba Term Deposit
-Initial Deposit: 16818.00
+Initial Deposit: 14000.00
 Account Pin    : 1234
 Nominee Name   : Reduan
 Noninee NID    : 1234567892

@@ -7,7 +7,7 @@ NID            : 1234567896
 User Name      : reduan@gmail.com
 Password       : Re$123456
 Account type   : Student
-Initial Deposit: 15008.00
+Initial Deposit: 8000.00
 Account Pin    : 1235
 Nominee Name   : Rase
 Noninee NID    : Reduan
