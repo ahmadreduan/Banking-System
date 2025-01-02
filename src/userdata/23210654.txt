@@ -1,0 +1,15 @@
+Account Number : 23210654
+Full Name      : Reduan Ahmad
+Date of Birth  : 23/01/2006
+Mobile Number  : 01718485840
+Email          : reduan@gmail.com
+NID            : 1234567890
+User Name      : reduan@gmail.com
+Password       : Re@1234567
+Account type   : Mudaraba Term Deposit
+Initial Deposit: 1000.00
+Account Pin    : 1234
+Nominee Name   : Rasel
+Noninee NID    : 1234567890
+Address        : Dhaka, Bangladesh
+----------------------------------------
