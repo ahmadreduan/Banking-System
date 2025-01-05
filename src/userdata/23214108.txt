@@ -8,7 +8,7 @@ User Name      : tareq@gmail.com
 Password       : Ta&123456
 Account type   : Mudaraba Term Deposit
 Initial Deposit: 14000.00
-Account Pin    : 1234
+Account Pin    : 1444
 Nominee Name   : Reduan
 Noninee NID    : 1234567892
 Address        : Dhaka, Bangladesh
