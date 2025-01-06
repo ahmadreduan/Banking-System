@@ -11,5 +11,5 @@ Initial Deposit: 14000.00
 Account Pin    : 1444
 Nominee Name   : Reduan
 Noninee NID    : 1234567892
-Address        : Dhaka, Bangladesh
+Address        : Brahmanbaria,Brahmanbaria sadar , Bangladesh
 ----------------------------------------
